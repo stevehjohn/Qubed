@@ -10,4 +10,8 @@
       <PackageReference Include="xunit.v3" Version="3.2.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RubiksCube.Core\RubiksCube.Core.csproj" />
+    </ItemGroup>
+
 </Project>
