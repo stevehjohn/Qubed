@@ -21,10 +21,10 @@ public class Cube
             {
                 Face.Up, new()
                 {
-                    { Face.Front, (1, 1) },
-                    { Face.Left, (1, 1) },
-                    { Face.Back, (1, 1) },
-                    { Face.Right, (1, 1) }
+                    { Face.Front, (0, 0) },
+                    { Face.Left, (0, 0) },
+                    { Face.Back, (0, 0) },
+                    { Face.Right, (0, 0) }
                 }
             }
         };
