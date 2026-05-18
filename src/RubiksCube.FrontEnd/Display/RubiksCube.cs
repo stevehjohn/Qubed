@@ -36,9 +36,9 @@ public sealed class RubiksCube : Game
 
     private bool _isSolving;
 
-    private float _yaw = -0.179993838f;
+    private float _yaw = -5.16999674f;
 
-    private float _pitch = -1.59999871f;
+    private float _pitch = -0.0299983565f;
 
     private float _cameraDistance = 9.95f;
 
