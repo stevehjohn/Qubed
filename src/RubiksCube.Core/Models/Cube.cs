@@ -18,7 +18,20 @@ public class Cube
     {
         foreach (var face in Enum.GetValues<Face>())
         {
-            _faces[(int) face] = new Colour[3, 3];
+            this[face] = new Colour[3, 3];
+        }
+
+        for (var x = 0; x < 3; x++)
+        {
+            for (var y = 0; y < 3; y++)
+            {
+                this[Face.Up, x, y] = Colour.White;
+                this[Face.Down, x, y] = Colour.Yellow;
+                this[Face.Front, x, y] = Colour.Red;
+                this[Face.Back, x, y] = Colour.Orange;
+                this[Face.Left, x, y] = Colour.Blue;
+                this[Face.Right, x, y] = Colour.Green;
+            }
         }
     }
 
@@ -26,6 +39,12 @@ public class Cube
     {
         get => _faces[(int) face][x, y];
         set => _faces[(int) face][x, y] = value;
+    }
+
+    private Colour[,] this[Face face]
+    {
+        get => _faces[(int) face];
+        init => _faces[(int) face] = value;
     }
 
     public void ApplyMove(Face face, Direction direction)
@@ -37,7 +56,7 @@ public class Cube
 
     private void RotateFace(Face face, Direction direction)
     {
-        var matrix = _faces[(int) face];
+        var matrix = this[face];
 
         if (direction == Direction.Clockwise)
         {
