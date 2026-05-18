@@ -39,14 +39,14 @@ public class Solver
             {
                 stopwatch.Stop();
                 
-                Console.WriteLine(stopwatch.Elapsed);
+                Console.WriteLine($", elapsed time: {stopwatch.Elapsed}.");
                 
                 return (true, path, stopwatch.Elapsed);
             }
 
             stopwatch.Stop();
                         
-            Console.WriteLine(stopwatch.Elapsed);
+            Console.WriteLine($", elapsed time: {stopwatch.Elapsed}.");
         }
 
         return (false, path, stopwatch.Elapsed);
