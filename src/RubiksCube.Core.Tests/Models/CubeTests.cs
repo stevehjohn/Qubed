@@ -15,6 +15,7 @@ public class CubeTests
     public void FourClockwiseTurnsReturnsToSolved(Face face)
     {
         var cube = new Cube();
+        
         var expected = new Cube();
 
         for (var i = 0; i < 4; i++)
@@ -35,9 +36,11 @@ public class CubeTests
     public void ClockwiseThenAntiClockwiseReturnsToSolved(Face face)
     {
         var cube = new Cube();
+        
         var expected = new Cube();
 
         cube.ApplyMove(face, Direction.Clockwise);
+        
         cube.ApplyMove(face, Direction.AntiClockwise);
 
         AssertCubeEqual(expected, cube);
