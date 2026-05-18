@@ -12,7 +12,7 @@ public class CubeTests
     [InlineData(Face.Back)]
     [InlineData(Face.Left)]
     [InlineData(Face.Right)]
-    public void FourClockwiseTurns_ReturnsToSolved(Face face)
+    public void FourClockwiseTurnsReturnsToSolved(Face face)
     {
         var cube = new Cube();
         var expected = new Cube();
@@ -32,7 +32,7 @@ public class CubeTests
     [InlineData(Face.Back)]
     [InlineData(Face.Left)]
     [InlineData(Face.Right)]
-    public void ClockwiseThenAntiClockwise_ReturnsToSolved(Face face)
+    public void ClockwiseThenAntiClockwiseReturnsToSolved(Face face)
     {
         var cube = new Cube();
         var expected = new Cube();
