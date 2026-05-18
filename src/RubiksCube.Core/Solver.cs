@@ -68,7 +68,7 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
-            if (move.Face == previousFace)
+            if (move.Face == previousFace || IsSameAxis(move.Face, previousFace))
             {
                 continue;
             }
@@ -88,6 +88,22 @@ public class Solver
         }
 
         return false;
+    }
+
+    private static bool IsSameAxis(Face face, Face? previousFace)
+    {
+        if (previousFace is null)
+        {
+            return false;
+        }
+
+        return (face, previousFace.Value) switch
+        {
+            (Face.Up, Face.Down) or (Face.Down, Face.Up) => true,
+            (Face.Left, Face.Right) or (Face.Right, Face.Left) => true,
+            (Face.Front, Face.Back) or (Face.Back, Face.Front) => true,
+            _ => false
+        };
     }
 
     private bool HasWhiteCross()
