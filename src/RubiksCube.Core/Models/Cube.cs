@@ -26,6 +26,51 @@ public class Cube
                     { Face.Back, new Slice() },
                     { Face.Right, new Slice() }
                 }
+            },
+            {
+                Face.Down, new()
+                {
+                    { Face.Front, new Slice() },
+                    { Face.Left, new Slice() },
+                    { Face.Back, new Slice() },
+                    { Face.Right, new Slice() }
+                }
+            },
+            {
+                Face.Front, new()
+                {
+                    { Face.Front, new Slice() },
+                    { Face.Left, new Slice() },
+                    { Face.Back, new Slice() },
+                    { Face.Right, new Slice() }
+                }
+            },
+            {
+                Face.Back, new()
+                {
+                    { Face.Front, new Slice() },
+                    { Face.Left, new Slice() },
+                    { Face.Back, new Slice() },
+                    { Face.Right, new Slice() }
+                }
+            },
+            {
+                Face.Left, new()
+                {
+                    { Face.Front, new Slice() },
+                    { Face.Left, new Slice() },
+                    { Face.Back, new Slice() },
+                    { Face.Right, new Slice() }
+                }
+            },
+            {
+                Face.Right, new()
+                {
+                    { Face.Front, new Slice() },
+                    { Face.Left, new Slice() },
+                    { Face.Back, new Slice() },
+                    { Face.Right, new Slice() }
+                }
             }
         };
 
