@@ -113,8 +113,12 @@ public class Cube
     public void UndoMove()
     {
         var move = _history.Pop();
+
+        var opposite = move.Direction.Opposite();
         
-        ApplyMove(move.Face, move.Direction.Opposite());
+        RotateFace(move.Face, opposite);
+
+        RotateEdges(move.Face, opposite);
     }
 
     public void ApplyMove(Face face, Direction direction)
