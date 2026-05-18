@@ -11,8 +11,8 @@ public class Cube
                 Face.Up,
                 [
                     new(Face.Front, Axis.Row, 0, false),
-                    new(Face.Left, Axis.Row, 0, false),
-                    new(Face.Back, Axis.Row, 0, false),
+                    new(Face.Left,  Axis.Row, 0, false),
+                    new(Face.Back,  Axis.Row, 0, false),
                     new(Face.Right, Axis.Row, 0, false)
                 ]
             },
@@ -20,45 +20,45 @@ public class Cube
                 Face.Down,
                 [
                     new(Face.Right, Axis.Row, 2, false),
-                    new(Face.Back, Axis.Row, 2, false),
-                    new(Face.Left, Axis.Row, 2, false),
+                    new(Face.Back,  Axis.Row, 2, false),
+                    new(Face.Left,  Axis.Row, 2, false),
                     new(Face.Front, Axis.Row, 2, false)
                 ]
             },
             {
                 Face.Front,
                 [
-                    new(Face.Up, Axis.Row, 2, false),
+                    new(Face.Up,    Axis.Row,    2, false),
                     new(Face.Right, Axis.Column, 0, false),
-                    new(Face.Down, Axis.Row, 0, true),
-                    new(Face.Left, Axis.Column, 2, true)
+                    new(Face.Down,  Axis.Row,    0, true),
+                    new(Face.Left,  Axis.Column, 2, true)
                 ]
             },
             {
                 Face.Back,
                 [
-                    new(Face.Left, Axis.Column, 0, false),
-                    new(Face.Down, Axis.Row, 2, true),
+                    new(Face.Left,  Axis.Column, 0, false),
+                    new(Face.Down,  Axis.Row,    2, false),
                     new(Face.Right, Axis.Column, 2, true),
-                    new(Face.Up, Axis.Row, 0, false)
+                    new(Face.Up,    Axis.Row,    0, true)
                 ]
             },
             {
                 Face.Left,
                 [
-                    new(Face.Up, Axis.Column, 0, false),
+                    new(Face.Up,    Axis.Column, 0, false),
                     new(Face.Front, Axis.Column, 0, false),
-                    new(Face.Down, Axis.Column, 0, false),
-                    new(Face.Back, Axis.Column, 2, true)
+                    new(Face.Down,  Axis.Column, 0, false),
+                    new(Face.Back,  Axis.Column, 2, true)
                 ]
             },
             {
                 Face.Right,
                 [
-                    new(Face.Back, Axis.Column, 0, true),
-                    new(Face.Down, Axis.Column, 2, false),
+                    new(Face.Back,  Axis.Column, 0, true),
+                    new(Face.Down,  Axis.Column, 2, false),
                     new(Face.Front, Axis.Column, 2, false),
-                    new(Face.Up, Axis.Column, 2, false)
+                    new(Face.Up,    Axis.Column, 2, false)
                 ]
             }
         };
