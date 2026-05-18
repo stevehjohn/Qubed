@@ -4,7 +4,7 @@ public class Cube
 {
     private readonly Colour[][,] _faces = new Colour[6][,];
 
-    private readonly Dictionary<Face, Slice[]> _affectedSlices =
+    private static readonly Dictionary<Face, Slice[]> AffectedSlices =
         new()
         {
             {
@@ -157,41 +157,39 @@ public class Cube
 
     private void RotateEdges(Face face, Direction direction)
     {
-        var slices = _affectedSlices[face];
+        var slices = AffectedSlices[face];
 
-        var values = new Colour[4][];
+        Span<Colour> values = stackalloc Colour[12];
 
         for (var i = 0; i < 4; i++)
         {
-            values[i] = ReadSlice(slices[i]);
+            ReadSlice(slices[i], values.Slice(i * 3, 3));
         }
 
         if (direction == Direction.Clockwise)
         {
-            WriteSlice(slices[0], values[3]);
+            WriteSlice(slices[0], values.Slice(9, 3));
 
-            WriteSlice(slices[1], values[0]);
+            WriteSlice(slices[1], values.Slice(0, 3));
 
-            WriteSlice(slices[2], values[1]);
+            WriteSlice(slices[2], values.Slice(3, 3));
 
-            WriteSlice(slices[3], values[2]);
+            WriteSlice(slices[3], values.Slice(6, 3));
         }
         else
         {
-            WriteSlice(slices[0], values[1]);
+            WriteSlice(slices[0], values.Slice(3, 3));
 
-            WriteSlice(slices[1], values[2]);
+            WriteSlice(slices[1], values.Slice(6, 3));
 
-            WriteSlice(slices[2], values[3]);
+            WriteSlice(slices[2], values.Slice(9, 3));
 
-            WriteSlice(slices[3], values[0]);
+            WriteSlice(slices[3], values.Slice(0, 3));
         }
     }
 
-    private Colour[] ReadSlice(Slice slice)
+    private void ReadSlice(Slice slice, Span<Colour> values)
     {
-        var values = new Colour[3];
-
         for (var i = 0; i < 3; i++)
         {
             var source = slice.Reversed ? 2 - i : i;
@@ -200,11 +198,9 @@ public class Cube
                 ? this[slice.Face, source, slice.Index]
                 : this[slice.Face, slice.Index, source];
         }
-
-        return values;
     }
 
-    private void WriteSlice(Slice slice, Colour[] values)
+    private void WriteSlice(Slice slice, ReadOnlySpan<Colour> values)
     {
         for (var i = 0; i < 3; i++)
         {
