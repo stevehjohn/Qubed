@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RubiksCube.Core;
 using RubiksCube.Core.Models;
 
 namespace RubiksCube.FrontEnd.Display;
@@ -219,7 +220,7 @@ public sealed class RubiksCube : Game
 
         var counterClockwise = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift);
 
-        StartFaceRotation(face, ! counterClockwise);
+        StartFaceRotation(new Move(face, counterClockwise ? Direction.AntiClockwise : Direction.Clockwise));
 
         return true;
     }
@@ -360,31 +361,33 @@ public sealed class RubiksCube : Game
             return;
         }
 
-        var counterClockwise = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift);
+        var direction = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift)
+            ? Direction.AntiClockwise
+            : Direction.Clockwise;
 
         if (WasKeyPressed(keyboard, Keys.U))
         {
-            StartFaceRotation(Face.Up, ! counterClockwise);
+            StartFaceRotation(new Move(Face.Up, direction));
         }
         else if (WasKeyPressed(keyboard, Keys.D))
         {
-            StartFaceRotation(Face.Down, ! counterClockwise);
+            StartFaceRotation(new Move(Face.Down, direction));
         }
         else if (WasKeyPressed(keyboard, Keys.F))
         {
-            StartFaceRotation(Face.Front, ! counterClockwise);
+            StartFaceRotation(new Move(Face.Front, direction));
         }
         else if (WasKeyPressed(keyboard, Keys.B))
         {
-            StartFaceRotation(Face.Back, ! counterClockwise);
+            StartFaceRotation(new Move(Face.Back, direction));
         }
         else if (WasKeyPressed(keyboard, Keys.L))
         {
-            StartFaceRotation(Face.Left, ! counterClockwise);
+            StartFaceRotation(new Move(Face.Left, direction));
         }
         else if (WasKeyPressed(keyboard, Keys.R))
         {
-            StartFaceRotation(Face.Right, ! counterClockwise);
+            StartFaceRotation(new Move(Face.Right, direction));
         }
     }
 
@@ -411,7 +414,7 @@ public sealed class RubiksCube : Game
 
         var face = (Face) Random.Shared.Next(6);
 
-        StartFaceRotation(face, Random.Shared.Next(2) == 1);
+        StartFaceRotation(new Move(face, Random.Shared.Next(2) == 1 ? Direction.Clockwise : Direction.AntiClockwise ));
 
         _scrambleTurns--;
 
@@ -447,7 +450,7 @@ public sealed class RubiksCube : Game
         StartNextSolveRotation();
     }
 
-    private List<Move> FindSolveMoves()
+    private IReadOnlyList<Move> FindSolveMoves()
     {
         var cube = new Cube();
 
@@ -462,7 +465,11 @@ public sealed class RubiksCube : Game
             }
         }
 
-        return [];
+        var solver = new Solver(cube);
+        
+        var result = solver.Solve();
+
+        return result.Moves;
     }
 
     private Colour GetFaceColor(Face face, int row, int col)
@@ -506,12 +513,12 @@ public sealed class RubiksCube : Game
             return;
         }
 
-        StartFaceRotation(move.Face, move.Clockwise);
+        StartFaceRotation(move);
     }
 
-    private void StartFaceRotation(Face face, bool clockwise)
+    private void StartFaceRotation(Move move)
     {
-        _activeRotation = new FaceRotation(face, clockwise);
+        _activeRotation = new FaceRotation(move);
     }
 
     private bool WasKeyPressed(KeyboardState keyboard, Keys key)
@@ -521,7 +528,7 @@ public sealed class RubiksCube : Game
 
     private void CompleteFaceRotation(FaceRotation rotation)
     {
-        var turn = CreateTurnMatrix(rotation.Face, rotation.Clockwise, QuarterTurn);
+        var turn = CreateTurnMatrix(rotation.Face, rotation.Direction == Direction.Clockwise, QuarterTurn);
 
         foreach (var cubie in _cubies.Where(cubie => IsCubieOnFace(cubie, rotation.Face)))
         {
@@ -559,7 +566,7 @@ public sealed class RubiksCube : Game
 
         var easedProgress = 1f - MathF.Pow(1f - progress, 3f);
 
-        return CreateTurnMatrix(rotation.Face, rotation.Clockwise, easedProgress * QuarterTurn);
+        return CreateTurnMatrix(rotation.Face, rotation.Direction == Direction.Clockwise, easedProgress * QuarterTurn);
     }
 
     private static Matrix CreateTurnMatrix(Face face, bool clockwise, float angle)

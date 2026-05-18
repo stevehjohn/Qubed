@@ -2,11 +2,18 @@ using RubiksCube.Core.Models;
 
 namespace RubiksCube.FrontEnd.Display;
 
-public sealed class FaceRotation(Face face, bool clockwise)
+public sealed class FaceRotation
 {
-    public Face Face { get; } = face;
+    private readonly Move _move;
 
-    public bool Clockwise { get; } = clockwise;
+    public FaceRotation(Move move)
+    {
+        _move = move;
+    }
+
+    public Face Face => _move.Face;
+
+    public Direction Direction => _move.Direction;
 
     public float Elapsed { get; set; }
 }
