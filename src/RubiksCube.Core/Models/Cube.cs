@@ -170,54 +170,61 @@ public class Cube
     {
         var slices = _affectedSlices[face];
 
-        var values = new Colour[4][];
+        Span<Colour> a = stackalloc Colour[3];
+        
+        Span<Colour> b = stackalloc Colour[3];
+        
+        Span<Colour> c = stackalloc Colour[3];
+        
+        Span<Colour> d = stackalloc Colour[3];
 
-        for (var i = 0; i < 4; i++)
-        {
-            values[i] = ReadSlice(slices[i]);
-        }
+        ReadSlice(slices[0], a);
+        
+        ReadSlice(slices[1], b);
+        
+        ReadSlice(slices[2], c);
+        
+        ReadSlice(slices[3], d);
 
         switch (direction)
         {
             case Direction.Clockwise:
-                WriteSlice(slices[0], values[3]);
-
-                WriteSlice(slices[1], values[0]);
-
-                WriteSlice(slices[2], values[1]);
-
-                WriteSlice(slices[3], values[2]);
-
+                WriteSlice(slices[0], d);
+                
+                WriteSlice(slices[1], a);
+                
+                WriteSlice(slices[2], b);
+                
+                WriteSlice(slices[3], c);
+                
                 break;
 
             case Direction.AntiClockwise:
-                WriteSlice(slices[0], values[1]);
-
-                WriteSlice(slices[1], values[2]);
-
-                WriteSlice(slices[2], values[3]);
-
-                WriteSlice(slices[3], values[0]);
-
+                WriteSlice(slices[0], b);
+                
+                WriteSlice(slices[1], c);
+                
+                WriteSlice(slices[2], d);
+                
+                WriteSlice(slices[3], a);
+                
                 break;
 
             case Direction.HalfTurn:
-                WriteSlice(slices[0], values[2]);
+                WriteSlice(slices[0], c);
                 
-                WriteSlice(slices[1], values[3]);
+                WriteSlice(slices[1], d);
                 
-                WriteSlice(slices[2], values[0]);
+                WriteSlice(slices[2], a);
                 
-                WriteSlice(slices[3], values[1]);
+                WriteSlice(slices[3], b);
                 
                 break;
         }
     }
 
-    private Colour[] ReadSlice(Slice slice)
+    private void ReadSlice(Slice slice, Span<Colour> values)
     {
-        var values = new Colour[3];
-
         for (var i = 0; i < 3; i++)
         {
             var source = slice.Reversed ? 2 - i : i;
@@ -226,11 +233,9 @@ public class Cube
                 ? this[slice.Face, source, slice.Index]
                 : this[slice.Face, slice.Index, source];
         }
-
-        return values;
     }
 
-    private void WriteSlice(Slice slice, Colour[] values)
+    private void WriteSlice(Slice slice, ReadOnlySpan<Colour> values)
     {
         for (var i = 0; i < 3; i++)
         {
