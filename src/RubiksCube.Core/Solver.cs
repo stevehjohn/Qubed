@@ -113,4 +113,3 @@ public class Solver
 
     private static bool IsTrivialReverse(Move a, Move b) => a.Face == b.Face && a.Direction != b.Direction;
 }
-}
