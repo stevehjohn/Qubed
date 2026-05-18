@@ -1,1 +1,1 @@
-dotnet run --project RubicksCube.FrontEnd -c Release $*
+dotnet run --project src/RubiksCube.FrontEnd/RubiksCube.Frontend.csproj -c Release $*

@@ -33,7 +33,7 @@ public class Solver
         {
             stopwatch.Restart();
             
-            Console.Write($"Depth: {maxDepth} ");
+            Console.Write($"Depth: {maxDepth}");
             
             if (Search(_cube.Clone(), path, maxDepth, null))
             {
