@@ -15,62 +15,62 @@ public class Cube
             { Face.Right, [Face.Back, Face.Down, Face.Front, Face.Up] }
         };
 
-    private readonly Dictionary<Face, Dictionary<Face, Slice>> _affectedSlices =
+    private readonly Dictionary<Face, Slice[]> _affectedSlices =
         new()
         {
             {
-                Face.Up, new()
-                {
-                    { Face.Front, new Slice() },
-                    { Face.Left, new Slice() },
-                    { Face.Back, new Slice() },
-                    { Face.Right, new Slice() }
-                }
+                Face.Up,
+                [
+                    new Slice(Face.Front, Axis.Column, 0, false),
+                    new Slice(Face.Left, Axis.Column, 0, false),
+                    new Slice(Face.Back, Axis.Column, 0, false),
+                    new Slice(Face.Right, Axis.Column, 0, false)
+                ]
             },
             {
-                Face.Down, new()
-                {
-                    { Face.Right, new Slice() },
-                    { Face.Back, new Slice() },
-                    { Face.Left, new Slice() },
-                    { Face.Front, new Slice() }
-                }
+                Face.Down,
+                [
+                    new Slice(Face.Right, Axis.Column, 0, false),
+                    new Slice(Face.Back, Axis.Column, 0, false),
+                    new Slice(Face.Left, Axis.Column, 0, false),
+                    new Slice(Face.Front, Axis.Column, 0, false)
+                ]
             },
             {
-                Face.Front, new()
-                {
-                    { Face.Up, new Slice() },
-                    { Face.Right, new Slice() },
-                    { Face.Down, new Slice() },
-                    { Face.Left, new Slice() }
-                }
+                Face.Up,
+                [
+                    new Slice(Face.Front, Axis.Column, 0, false),
+                    new Slice(Face.Left, Axis.Column, 0, false),
+                    new Slice(Face.Back, Axis.Column, 0, false),
+                    new Slice(Face.Right, Axis.Column, 0, false)
+                ]
             },
             {
-                Face.Back, new()
-                {
-                    { Face.Left, new Slice() },
-                    { Face.Down, new Slice() },
-                    { Face.Right, new Slice() },
-                    { Face.Up, new Slice() }
-                }
+                Face.Up,
+                [
+                    new Slice(Face.Front, Axis.Column, 0, false),
+                    new Slice(Face.Left, Axis.Column, 0, false),
+                    new Slice(Face.Back, Axis.Column, 0, false),
+                    new Slice(Face.Right, Axis.Column, 0, false)
+                ]
             },
             {
-                Face.Left, new()
-                {
-                    { Face.Up, new Slice() },
-                    { Face.Front, new Slice() },
-                    { Face.Down, new Slice() },
-                    { Face.Back, new Slice() }
-                }
+                Face.Up,
+                [
+                    new Slice(Face.Front, Axis.Column, 0, false),
+                    new Slice(Face.Left, Axis.Column, 0, false),
+                    new Slice(Face.Back, Axis.Column, 0, false),
+                    new Slice(Face.Right, Axis.Column, 0, false)
+                ]
             },
             {
-                Face.Right, new()
-                {
-                    { Face.Back, new Slice() },
-                    { Face.Down, new Slice() },
-                    { Face.Front, new Slice() },
-                    { Face.Up, new Slice() }
-                }
+                Face.Up,
+                [
+                    new Slice(Face.Front, Axis.Column, 0, false),
+                    new Slice(Face.Left, Axis.Column, 0, false),
+                    new Slice(Face.Back, Axis.Column, 0, false),
+                    new Slice(Face.Right, Axis.Column, 0, false)
+                ]
             }
         };
 
