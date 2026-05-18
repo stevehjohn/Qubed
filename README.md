@@ -20,3 +20,16 @@ Red    | Front
 Orange | Back
 Blue   | Left
 Green  | Right
+
+### Net Layout
+
+```
+    +---+
+    | U |
++---+---+---+---+
+| L | F | R | B |
++---+---+---+---+
+    | D |
+    +---+
+```
+
