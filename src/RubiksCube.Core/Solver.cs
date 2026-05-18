@@ -5,7 +5,14 @@ namespace RubiksCube.Core;
 
 public class Solver
 {
-    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Cube cube)
+    private readonly Cube _cube;
+
+    public Solver(Cube cube)
+    {
+        _cube = cube;
+    }
+
+    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
     {
         var moves = new List<Move>();
         
