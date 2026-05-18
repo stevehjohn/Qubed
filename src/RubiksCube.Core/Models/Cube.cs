@@ -30,46 +30,46 @@ public class Cube
             {
                 Face.Down, new()
                 {
-                    { Face.Front, new Slice() },
-                    { Face.Left, new Slice() },
+                    { Face.Right, new Slice() },
                     { Face.Back, new Slice() },
-                    { Face.Right, new Slice() }
+                    { Face.Left, new Slice() },
+                    { Face.Front, new Slice() }
                 }
             },
             {
                 Face.Front, new()
                 {
-                    { Face.Front, new Slice() },
-                    { Face.Left, new Slice() },
-                    { Face.Back, new Slice() },
-                    { Face.Right, new Slice() }
+                    { Face.Up, new Slice() },
+                    { Face.Right, new Slice() },
+                    { Face.Down, new Slice() },
+                    { Face.Left, new Slice() }
                 }
             },
             {
                 Face.Back, new()
                 {
-                    { Face.Front, new Slice() },
                     { Face.Left, new Slice() },
-                    { Face.Back, new Slice() },
-                    { Face.Right, new Slice() }
+                    { Face.Down, new Slice() },
+                    { Face.Right, new Slice() },
+                    { Face.Up, new Slice() }
                 }
             },
             {
                 Face.Left, new()
                 {
+                    { Face.Up, new Slice() },
                     { Face.Front, new Slice() },
-                    { Face.Left, new Slice() },
-                    { Face.Back, new Slice() },
-                    { Face.Right, new Slice() }
+                    { Face.Down, new Slice() },
+                    { Face.Back, new Slice() }
                 }
             },
             {
                 Face.Right, new()
                 {
-                    { Face.Front, new Slice() },
-                    { Face.Left, new Slice() },
                     { Face.Back, new Slice() },
-                    { Face.Right, new Slice() }
+                    { Face.Down, new Slice() },
+                    { Face.Front, new Slice() },
+                    { Face.Up, new Slice() }
                 }
             }
         };
