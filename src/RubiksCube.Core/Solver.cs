@@ -17,7 +17,7 @@ public class Solver
 
         var index = 0;
         
-        foreach (var face in Enum.GetValues<Face>())
+        foreach (var face in faces)
         {
             AllMoves[index++] = new Move(face, Direction.Clockwise);
             
