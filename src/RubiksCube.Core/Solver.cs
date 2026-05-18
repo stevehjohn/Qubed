@@ -7,16 +7,26 @@ public class Solver
 {
     private readonly Cube _cube;
     
-    private static readonly Move[] AllMoves = Enum
-        .GetValues<Face>()
-        .SelectMany(face => new[]
+    private static readonly Move[] AllMoves;
+
+    static Solver()
+    {
+        var faces = Enum.GetValues<Face>();
+        
+        AllMoves = new Move[faces.Length * 3];
+
+        var index = 0;
+        
+        foreach (var face in Enum.GetValues<Face>())
         {
-            new Move(face, Direction.Clockwise),
-            new Move(face, Direction.AntiClockwise),
-            new Move(face, Direction.HalfTurn)
-        })
-        .ToArray();
-    
+            AllMoves[index++] = new Move(face, Direction.Clockwise);
+            
+            AllMoves[index++] = new Move(face, Direction.AntiClockwise);
+            
+            AllMoves[index++] = new Move(face, Direction.HalfTurn);
+        }
+    }
+
     public Solver(Cube cube) => _cube = cube.Clone();
 
     public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
