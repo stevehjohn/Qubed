@@ -20,27 +20,35 @@ public class Solver
 
     public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
     {
-        var stopwatch = Stopwatch.StartNew();
-        
         var path = new List<Move>();
 
         if (_cube.IsSolved())
         {
-            return (true, path, stopwatch.Elapsed);
+            return (true, path, TimeSpan.Zero);
         }
 
+        var stopwatch = new Stopwatch();
+        
         for (var maxDepth = 1; maxDepth <= 20; maxDepth++)
         {
+            stopwatch.Restart();
+            
+            Console.Write($"Depth: {maxDepth} ");
+            
             if (Search(_cube.Clone(), path, maxDepth, null))
             {
                 stopwatch.Stop();
                 
+                Console.WriteLine(stopwatch.Elapsed);
+                
                 return (true, path, stopwatch.Elapsed);
             }
+
+            stopwatch.Stop();
+                        
+            Console.WriteLine(stopwatch.Elapsed);
         }
 
-        stopwatch.Stop();
-        
         return (false, path, stopwatch.Elapsed);
     }
 
