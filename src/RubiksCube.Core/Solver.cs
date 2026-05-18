@@ -29,19 +29,25 @@ public class Solver
 
     public Solver(Cube cube) => _cube = cube.Clone();
 
+    private readonly List<Move> _moves = [];
+
     public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
     {
-        var path = new List<Move>();
+        _moves.Clear();
 
         if (_cube.IsSolved())
         {
-            return (true, path, TimeSpan.Zero);
+            return (true, _moves, TimeSpan.Zero);
         }
 
         var stopwatch = Stopwatch.StartNew();
 
         stopwatch.Stop();
 
-        return (false, path, stopwatch.Elapsed);
+        return (false, _moves, stopwatch.Elapsed);
+    }
+
+    private void FindWhiteEdge()
+    {
     }
 }
