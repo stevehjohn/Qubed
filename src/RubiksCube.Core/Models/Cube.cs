@@ -4,15 +4,30 @@ public class Cube
 {
     private readonly Colour[][,] _faces = new Colour[6][,];
 
-    private readonly Face[][] _affectedEdges =
-    [
-        [Face.Front, Face.Left, Face.Back, Face.Right], // Up
-        [Face.Right, Face.Back, Face.Left, Face.Front], // Down
-        [Face.Up, Face.Right, Face.Down, Face.Left],    // Front,
-        [Face.Left, Face.Down, Face.Right, Face.Up],    // Back,
-        [Face.Up, Face.Front, Face.Down, Face.Back],    // Left,
-        [Face.Back, Face.Down, Face.Front, Face.Up]     // Right,
-    ];
+    private readonly Dictionary<Face, Face[]> _affectedEdges =
+        new()
+        {
+            { Face.Up, [Face.Front, Face.Left, Face.Back, Face.Right] },
+            { Face.Down, [Face.Right, Face.Back, Face.Left, Face.Front] },
+            { Face.Front, [Face.Up, Face.Right, Face.Down, Face.Left] },
+            { Face.Back, [Face.Left, Face.Down, Face.Right, Face.Up] },
+            { Face.Left, [Face.Up, Face.Front, Face.Down, Face.Back] },
+            { Face.Right, [Face.Back, Face.Down, Face.Front, Face.Up] }
+        };
+
+    private readonly Dictionary<Face, Dictionary<Face, (int Row, int Column)>> _affectedSlices =
+        new()
+        {
+            {
+                Face.Up, new()
+                {
+                    { Face.Front, (1, 1) },
+                    { Face.Left, (1, 1) },
+                    { Face.Back, (1, 1) },
+                    { Face.Right, (1, 1) }
+                }
+            }
+        };
 
     public Cube()
     {
