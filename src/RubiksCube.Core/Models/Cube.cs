@@ -133,7 +133,7 @@ public class Cube
                 }
             }
         }
-        
+
         return true;
     }
 
@@ -141,17 +141,28 @@ public class Cube
     {
         var matrix = this[face];
 
-        if (direction == Direction.Clockwise)
+        switch (direction)
         {
-            (matrix[0, 0], matrix[2, 0], matrix[2, 2], matrix[0, 2]) = (matrix[0, 2], matrix[0, 0], matrix[2, 0], matrix[2, 2]);
+            case Direction.Clockwise:
+                (matrix[0, 0], matrix[2, 0], matrix[2, 2], matrix[0, 2]) = (matrix[0, 2], matrix[0, 0], matrix[2, 0], matrix[2, 2]);
 
-            (matrix[1, 0], matrix[2, 1], matrix[1, 2], matrix[0, 1]) = (matrix[0, 1], matrix[1, 0], matrix[2, 1], matrix[1, 2]);
-        }
-        else
-        {
-            (matrix[0, 0], matrix[2, 0], matrix[2, 2], matrix[0, 2]) = (matrix[2, 0], matrix[2, 2], matrix[0, 2], matrix[0, 0]);
+                (matrix[1, 0], matrix[2, 1], matrix[1, 2], matrix[0, 1]) = (matrix[0, 1], matrix[1, 0], matrix[2, 1], matrix[1, 2]);
 
-            (matrix[1, 0], matrix[2, 1], matrix[1, 2], matrix[0, 1]) = (matrix[2, 1], matrix[1, 2], matrix[0, 1], matrix[1, 0]);
+                break;
+
+            case Direction.AntiClockwise:
+                (matrix[0, 0], matrix[2, 0], matrix[2, 2], matrix[0, 2]) = (matrix[2, 0], matrix[2, 2], matrix[0, 2], matrix[0, 0]);
+
+                (matrix[1, 0], matrix[2, 1], matrix[1, 2], matrix[0, 1]) = (matrix[2, 1], matrix[1, 2], matrix[0, 1], matrix[1, 0]);
+
+                break;
+
+            default:
+                (matrix[0, 0], matrix[2, 2], matrix[2, 0], matrix[0, 2]) = (matrix[2, 2], matrix[0, 0], matrix[0, 2], matrix[2, 0]);
+
+                (matrix[1, 0], matrix[1, 2], matrix[0, 1], matrix[2, 1]) = (matrix[1, 2], matrix[1, 0], matrix[2, 1], matrix[0, 1]);
+
+                break;
         }
     }
 
@@ -166,25 +177,40 @@ public class Cube
             values[i] = ReadSlice(slices[i]);
         }
 
-        if (direction == Direction.Clockwise)
+        switch (direction)
         {
-            WriteSlice(slices[0], values[3]);
+            case Direction.Clockwise:
+                WriteSlice(slices[0], values[3]);
 
-            WriteSlice(slices[1], values[0]);
+                WriteSlice(slices[1], values[0]);
 
-            WriteSlice(slices[2], values[1]);
+                WriteSlice(slices[2], values[1]);
 
-            WriteSlice(slices[3], values[2]);
-        }
-        else
-        {
-            WriteSlice(slices[0], values[1]);
+                WriteSlice(slices[3], values[2]);
 
-            WriteSlice(slices[1], values[2]);
+                break;
 
-            WriteSlice(slices[2], values[3]);
+            case Direction.AntiClockwise:
+                WriteSlice(slices[0], values[1]);
 
-            WriteSlice(slices[3], values[0]);
+                WriteSlice(slices[1], values[2]);
+
+                WriteSlice(slices[2], values[3]);
+
+                WriteSlice(slices[3], values[0]);
+
+                break;
+
+            default:
+                WriteSlice(slices[0], values[2]);
+                
+                WriteSlice(slices[1], values[3]);
+                
+                WriteSlice(slices[2], values[0]);
+                
+                WriteSlice(slices[3], values[1]);
+                
+                break;
         }
     }
 
