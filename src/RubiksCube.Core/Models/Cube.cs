@@ -84,6 +84,14 @@ public class Cube
         }
     }
 
+    private Cube(Cube cube)
+    {
+        foreach (var face in Enum.GetValues<Face>())
+        {
+            this[face] = (Colour[,]) cube._faces[(int) face].Clone();
+        }
+    }
+
     public Colour this[Face face, int x, int y]
     {
         get => _faces[(int) face][x, y];
@@ -101,6 +109,11 @@ public class Cube
         RotateFace(face, direction);
 
         RotateEdges(face, direction);
+    }
+
+    public Cube Clone()
+    {
+        return new Cube(this);
     }
 
     private void RotateFace(Face face, Direction direction)
@@ -135,21 +148,21 @@ public class Cube
         if (direction == Direction.Clockwise)
         {
             WriteSlice(slices[0], values[3]);
-            
+
             WriteSlice(slices[1], values[0]);
-            
+
             WriteSlice(slices[2], values[1]);
-            
+
             WriteSlice(slices[3], values[2]);
         }
         else
         {
             WriteSlice(slices[0], values[1]);
-            
+
             WriteSlice(slices[1], values[2]);
-            
+
             WriteSlice(slices[2], values[3]);
-            
+
             WriteSlice(slices[3], values[0]);
         }
     }
