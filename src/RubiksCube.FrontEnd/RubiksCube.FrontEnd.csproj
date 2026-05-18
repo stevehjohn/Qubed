@@ -5,7 +5,7 @@
         <PublishReadyToRun>false</PublishReadyToRun>
         <TieredCompilation>false</TieredCompilation>
         <LangVersion>14</LangVersion>
-        <OutputType>Exe</OutputType>
+        <OutputType>WinExe</OutputType>
     </PropertyGroup>
     <PropertyGroup>
         <ApplicationManifest>app.manifest</ApplicationManifest>
