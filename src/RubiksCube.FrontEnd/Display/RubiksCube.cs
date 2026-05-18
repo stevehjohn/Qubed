@@ -447,7 +447,25 @@ public sealed class RubiksCube : Game
         StartNextSolveRotation();
     }
 
-    private Color GetFaceColor(Face face, int row, int col)
+    private List<Move> FindSolveMoves()
+    {
+        var cube = new Cube();
+
+        foreach (var face in Enum.GetValues<Face>())
+        {
+            for (var x = 0; x < 3; x++)
+            {
+                for (var y = 0; y < 3; y++)
+                {
+                    cube[face, x, y] = GetFaceColor(face, y, x);
+                }
+            }
+        }
+
+        return [];
+    }
+
+    private Colour GetFaceColor(Face face, int row, int col)
     {
         Vector3 position = face switch
         {
@@ -464,7 +482,19 @@ public sealed class RubiksCube : Game
         var cubie = _cubies.Single(c => c.Position.X == position.X && c.Position.Y == position.Y && c.Position.Z == position.Z);
         // ReSharper restore CompareOfFloatsByEqualityOperator
 
-        return cubie.Stickers.Single(s => s.Face == face).Color;
+        return ToColour(cubie.Stickers.Single(s => s.Face == face).Color);
+    }
+    
+    private static Colour ToColour(Color color)
+    {
+        if (color == Color.White)  return Colour.White;
+        if (color == Color.Yellow) return Colour.Yellow;
+        if (color == Color.Red)    return Colour.Red;
+        if (color == Color.Orange) return Colour.Orange;
+        if (color == Color.Blue)   return Colour.Blue;
+        if (color == Color.Green)  return Colour.Green;
+
+        throw new ArgumentOutOfRangeException(nameof(color), color, "Unknown sticker colour.");
     }
 
     private void StartNextSolveRotation()
@@ -481,11 +511,6 @@ public sealed class RubiksCube : Game
     private void StartFaceRotation(Face face, bool clockwise)
     {
         _activeRotation = new FaceRotation(face, clockwise);
-    }
-
-    private static List<Move> FindSolveMoves()
-    {
-        return [];
     }
 
     private bool WasKeyPressed(KeyboardState keyboard, Keys key)
