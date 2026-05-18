@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiksCube.Core", "RubiksCu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiksCube.Core.Tests", "RubiksCube.Core.Tests\RubiksCube.Core.Tests.csproj", "{751C2601-0825-42CF-B1B1-7982B11DB223}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{30A1E6B8-93C2-42EB-ACCF-6BD7EC76C49D}"
+	ProjectSection(SolutionItems) = preProject
+		..\run.sh = ..\run.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

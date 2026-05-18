@@ -1,0 +1,1 @@
+dotnet run --project RubicksCube.FrontEnd -c Release $*
