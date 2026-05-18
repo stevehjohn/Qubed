@@ -502,6 +502,7 @@ public sealed class RubiksCube : Game
         if (! _solveQueue.TryDequeue(out var move))
         {
             _isSolving = false;
+            
             return;
         }
 

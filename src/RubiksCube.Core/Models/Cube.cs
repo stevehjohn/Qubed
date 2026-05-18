@@ -116,6 +116,27 @@ public class Cube
         return new Cube(this);
     }
 
+    public bool IsSolved()
+    {
+        foreach (var face in Enum.GetValues<Face>())
+        {
+            var center = this[face, 1, 1];
+
+            for (var x = 0; x < 3; x++)
+            {
+                for (var y = 0; y < 3; y++)
+                {
+                    if (this[face, x, y] != center)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+
     private void RotateFace(Face face, Direction direction)
     {
         var matrix = this[face];
