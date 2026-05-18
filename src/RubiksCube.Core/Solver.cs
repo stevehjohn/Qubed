@@ -47,7 +47,7 @@ public class Solver
         return (false, _moves, stopwatch.Elapsed);
     }
 
-    private void FindWhiteEdge()
+    private void FindWhiteCross()
     {
     }
 }
