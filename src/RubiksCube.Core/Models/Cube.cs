@@ -3,18 +3,7 @@ namespace RubiksCube.Core.Models;
 public class Cube
 {
     private readonly Colour[][,] _faces = new Colour[6][,];
-
-    private readonly Dictionary<Face, Face[]> _affectedEdges =
-        new()
-        {
-            { Face.Up, [Face.Front, Face.Left, Face.Back, Face.Right] },
-            { Face.Down, [Face.Right, Face.Back, Face.Left, Face.Front] },
-            { Face.Front, [Face.Up, Face.Right, Face.Down, Face.Left] },
-            { Face.Back, [Face.Left, Face.Down, Face.Right, Face.Up] },
-            { Face.Left, [Face.Up, Face.Front, Face.Down, Face.Back] },
-            { Face.Right, [Face.Back, Face.Down, Face.Front, Face.Up] }
-        };
-
+    
     private readonly Dictionary<Face, Slice[]> _affectedSlices =
         new()
         {
@@ -37,39 +26,39 @@ public class Cube
                 ]
             },
             {
-                Face.Up,
+                Face.Front,
                 [
-                    new Slice(Face.Front, Axis.Column, 0, false),
-                    new Slice(Face.Left, Axis.Column, 0, false),
-                    new Slice(Face.Back, Axis.Column, 0, false),
-                    new Slice(Face.Right, Axis.Column, 0, false)
+                    new Slice(Face.Up, Axis.Column, 0, false),
+                    new Slice(Face.Right, Axis.Column, 0, false),
+                    new Slice(Face.Down, Axis.Column, 0, false),
+                    new Slice(Face.Left, Axis.Column, 0, false)
                 ]
             },
             {
-                Face.Up,
+                Face.Back,
                 [
-                    new Slice(Face.Front, Axis.Column, 0, false),
                     new Slice(Face.Left, Axis.Column, 0, false),
-                    new Slice(Face.Back, Axis.Column, 0, false),
-                    new Slice(Face.Right, Axis.Column, 0, false)
+                    new Slice(Face.Down, Axis.Column, 0, false),
+                    new Slice(Face.Right, Axis.Column, 0, false),
+                    new Slice(Face.Up, Axis.Column, 0, false)
                 ]
             },
             {
-                Face.Up,
+                Face.Left,
                 [
+                    new Slice(Face.Up, Axis.Column, 0, false),
                     new Slice(Face.Front, Axis.Column, 0, false),
-                    new Slice(Face.Left, Axis.Column, 0, false),
-                    new Slice(Face.Back, Axis.Column, 0, false),
-                    new Slice(Face.Right, Axis.Column, 0, false)
+                    new Slice(Face.Down, Axis.Column, 0, false),
+                    new Slice(Face.Back, Axis.Column, 0, false)
                 ]
             },
             {
-                Face.Up,
+                Face.Right,
                 [
-                    new Slice(Face.Front, Axis.Column, 0, false),
-                    new Slice(Face.Left, Axis.Column, 0, false),
                     new Slice(Face.Back, Axis.Column, 0, false),
-                    new Slice(Face.Right, Axis.Column, 0, false)
+                    new Slice(Face.Down, Axis.Column, 0, false),
+                    new Slice(Face.Front, Axis.Column, 0, false),
+                    new Slice(Face.Up, Axis.Column, 0, false)
                 ]
             }
         };
