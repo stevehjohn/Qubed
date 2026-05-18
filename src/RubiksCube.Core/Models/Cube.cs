@@ -135,15 +135,21 @@ public class Cube
         if (direction == Direction.Clockwise)
         {
             WriteSlice(slices[0], values[3]);
+            
             WriteSlice(slices[1], values[0]);
+            
             WriteSlice(slices[2], values[1]);
+            
             WriteSlice(slices[3], values[2]);
         }
         else
         {
             WriteSlice(slices[0], values[1]);
+            
             WriteSlice(slices[1], values[2]);
+            
             WriteSlice(slices[2], values[3]);
+            
             WriteSlice(slices[3], values[0]);
         }
     }
