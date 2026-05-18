@@ -1,4 +1,4 @@
-# Rubiks Cube Simulator and Solver
+# Rubik's Cube Simulator and Solver
 
 ## Controls
 
