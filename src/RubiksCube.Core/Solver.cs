@@ -51,7 +51,7 @@ public class Solver
 
     private void FindWhiteCross()
     {
-        for (var maxDepth = 0; maxDepth <= 8; maxDepth++)
+        for (var maxDepth = 0; maxDepth <= 20; maxDepth++)
         {
             if (SearchWhiteCross(maxDepth, null))
             {
@@ -80,6 +80,7 @@ public class Solver
             }
 
             _cube.ApplyMove(move.Face, move.Direction);
+            
             _moves.Add(move);
 
             if (SearchWhiteCross(depth - 1, move.Face))
@@ -88,6 +89,7 @@ public class Solver
             }
 
             _moves.RemoveAt(_moves.Count - 1);
+            
             _cube.ApplyMove(move.Face, Opposite(move.Direction));
         }
 
@@ -111,10 +113,6 @@ public class Solver
             _cube[Face.Up, 1, 0] == Colour.White &&
             _cube[Face.Up, 0, 1] == Colour.White &&
             _cube[Face.Up, 2, 1] == Colour.White &&
-            _cube[Face.Up, 1, 2] == Colour.White &&
-            _cube[Face.Back, 1, 0] == _cube[Face.Back, 1, 1] &&
-            _cube[Face.Left, 1, 0] == _cube[Face.Left, 1, 1] &&
-            _cube[Face.Right, 1, 0] == _cube[Face.Right, 1, 1] &&
-            _cube[Face.Front, 1, 0] == _cube[Face.Front, 1, 1];
+            _cube[Face.Up, 1, 2] == Colour.White;
     }
 }
