@@ -5,12 +5,14 @@ namespace RubiksCube.Core;
 
 public class Solver
 {
-    public (bool Solved, List<Move> Moves, TimeSpan Duration) Solve(Cube cube)
+    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Cube cube)
     {
-        var stopwatch = Stopwatch.StartNew();
+        var moves = new List<Move>();
         
+        var stopwatch = Stopwatch.StartNew();
+
         stopwatch.Stop();
         
-        return (false, null, stopwatch.Elapsed);
+        return (false, moves, stopwatch.Elapsed);
     }
 }
