@@ -15,16 +15,16 @@ public class Cube
             { Face.Right, [Face.Back, Face.Down, Face.Front, Face.Up] }
         };
 
-    private readonly Dictionary<Face, Dictionary<Face, (int Row, int Column)>> _affectedSlices =
+    private readonly Dictionary<Face, Dictionary<Face, Slice>> _affectedSlices =
         new()
         {
             {
                 Face.Up, new()
                 {
-                    { Face.Front, (0, 0) },
-                    { Face.Left, (0, 0) },
-                    { Face.Back, (0, 0) },
-                    { Face.Right, (0, 0) }
+                    { Face.Front, new Slice() },
+                    { Face.Left, new Slice() },
+                    { Face.Back, new Slice() },
+                    { Face.Right, new Slice() }
                 }
             }
         };
