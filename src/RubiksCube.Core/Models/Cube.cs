@@ -1,8 +1,12 @@
+using RubiksCube.Core.Extension;
+
 namespace RubiksCube.Core.Models;
 
 public class Cube
 {
     private readonly Colour[][,] _faces = new Colour[6][,];
+
+    private readonly Stack<Move> _history = [];
 
     private readonly Dictionary<Face, Slice[]> _affectedSlices =
         new()
@@ -90,6 +94,8 @@ public class Cube
         {
             this[face] = (Colour[,]) cube._faces[(int) face].Clone();
         }
+        
+        _history.Clear();
     }
 
     public Colour this[Face face, int x, int y]
@@ -104,11 +110,20 @@ public class Cube
         init => _faces[(int) face] = value;
     }
 
+    public void UndoMove()
+    {
+        var move = _history.Pop();
+        
+        ApplyMove(move.Face, move.Direction.Opposite());
+    }
+
     public void ApplyMove(Face face, Direction direction)
     {
         RotateFace(face, direction);
 
         RotateEdges(face, direction);
+        
+        _history.Push(new Move(face, direction));
     }
 
     public Cube Clone()
@@ -135,6 +150,17 @@ public class Cube
         }
 
         return true;
+    }
+
+    private static Direction Opposite(Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Clockwise => Direction.AntiClockwise,
+            Direction.AntiClockwise => Direction.Clockwise,
+            Direction.HalfTurn => Direction.HalfTurn,
+            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+        };
     }
 
     private void RotateFace(Face face, Direction direction)

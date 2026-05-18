@@ -90,21 +90,10 @@ public class Solver
 
             _moves.RemoveAt(_moves.Count - 1);
             
-            _cube.ApplyMove(move.Face, Opposite(move.Direction));
+            _cube.UndoMove();
         }
 
         return false;
-    }
-
-    private static Direction Opposite(Direction direction)
-    {
-        return direction switch
-        {
-            Direction.Clockwise => Direction.AntiClockwise,
-            Direction.AntiClockwise => Direction.Clockwise,
-            Direction.HalfTurn => Direction.HalfTurn,
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
-        };
     }
 
     private bool HasWhiteCross()
