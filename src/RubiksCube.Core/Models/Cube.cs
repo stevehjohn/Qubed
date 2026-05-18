@@ -123,5 +123,61 @@ public class Cube
 
     private void RotateEdges(Face face, Direction direction)
     {
+        var slices = _affectedSlices[face];
+
+        var values = new Colour[4][];
+
+        for (var i = 0; i < 4; i++)
+        {
+            values[i] = ReadSlice(slices[i]);
+        }
+
+        if (direction == Direction.Clockwise)
+        {
+            WriteSlice(slices[0], values[3]);
+            WriteSlice(slices[1], values[0]);
+            WriteSlice(slices[2], values[1]);
+            WriteSlice(slices[3], values[2]);
+        }
+        else
+        {
+            WriteSlice(slices[0], values[1]);
+            WriteSlice(slices[1], values[2]);
+            WriteSlice(slices[2], values[3]);
+            WriteSlice(slices[3], values[0]);
+        }
+    }
+
+    private Colour[] ReadSlice(Slice slice)
+    {
+        var values = new Colour[3];
+
+        for (var i = 0; i < 3; i++)
+        {
+            var source = slice.Reversed ? 2 - i : i;
+
+            values[i] = slice.Axis == Axis.Row
+                ? this[slice.Face, source, slice.Index]
+                : this[slice.Face, slice.Index, source];
+        }
+
+        return values;
+    }
+
+    private void WriteSlice(Slice slice, Colour[] values)
+    {
+        for (var i = 0; i < 3; i++)
+        {
+            var target = slice.Reversed ? 2 - i : i;
+
+            if (slice.Axis == Axis.Row)
+            {
+                this[slice.Face, target, slice.Index] = values[i];
+            }
+            else
+            {
+                this[slice.Face, slice.Index, target] = values[i];
+            }
+        }
     }
 }
