@@ -52,13 +52,6 @@ public class Solver
     private void FindWhiteCross()
     {
         Console.WriteLine(SearchWhiteCross(40, null));
-        // for (var maxDepth = 0; maxDepth <= 20; maxDepth++)
-        // {
-        //     if (SearchWhiteCross(maxDepth, null))
-        //     {
-        //         return;
-        //     }
-        // }
     }
 
     private bool SearchWhiteCross(int depth, Face? previousFace)
