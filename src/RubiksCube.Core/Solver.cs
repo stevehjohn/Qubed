@@ -94,6 +94,8 @@ public class Solver
         
         Console.WriteLine(BruteForce(HasGryCorner));
 
+        Console.WriteLine(BruteForce(HasRbyCorner));
+
         Console.WriteLine(_cube.ToString());
 
         stopwatch.Stop();
@@ -312,5 +314,13 @@ public class Solver
                && _cube[Face.Left, 2, 2] == Colour.Green
                && _cube[Face.Front, 0, 2] == Colour.Red
                && _cube[Face.Down, 0, 0] == Colour.Yellow;
+    }
+
+    private bool HasRbyCorner()
+    {
+        return HasGryCorner()
+               && _cube[Face.Left, 2, 2] == Colour.Green
+               && _cube[Face.Right, 0, 2] == Colour.Red
+               && _cube[Face.Down, 2, 0] == Colour.Yellow;
     }
 }
