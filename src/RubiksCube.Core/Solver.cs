@@ -5,6 +5,8 @@ namespace RubiksCube.Core;
 
 public class Solver
 {
+    private const int MaxDepth = 20;
+    
     private readonly Cube _cube;
 
     private static readonly Move[] AllMoves;
@@ -42,7 +44,7 @@ public class Solver
 
         var stopwatch = Stopwatch.StartNew();
 
-        BruteForce(HasDaisy);
+        BruteForce(HasDaisy, MaxDepth);
         
         stopwatch.Stop();
 
@@ -53,8 +55,13 @@ public class Solver
         return (_cube.IsSolved(), moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<bool> heuristic)
+    private bool BruteForce(Func<bool> heuristic, int depth)
     {
+        if (depth == 0)
+        {
+            return false;
+        }
+
         if (heuristic())
         {
             return true;
@@ -71,7 +78,7 @@ public class Solver
             
             _moves.Push(move);
 
-            if (BruteForce(heuristic))
+            if (BruteForce(heuristic, --depth))
             {
                 return true;
             }
