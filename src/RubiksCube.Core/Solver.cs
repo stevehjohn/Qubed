@@ -56,7 +56,7 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasWhiteCross));
         
-        Console.WriteLine("Corners");
+        Console.WriteLine("\nCorners\n");
 
         Console.WriteLine(BruteForce(HasRgwCorner));
 
@@ -66,7 +66,7 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasRgwRbwBwoGwoCorners));
         
-        Console.WriteLine("Middle");
+        Console.WriteLine("\nMiddle\n");
 
         Console.WriteLine(BruteForce(HasRedGreenMiddle));
 
@@ -76,11 +76,11 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasBlueOrangeMiddle));
 
-        Console.WriteLine("Yellow Cross");
+        Console.WriteLine("\nYellow Cross\n");
 
         Console.WriteLine(BruteForce(HasYellowCross));
         
-        Console.WriteLine("Yellow Edges");
+        Console.WriteLine("\nYellow Edges\n");
 
         Console.WriteLine(BruteForce(HasYellowRedEdge));
         
