@@ -39,6 +39,8 @@ public class Solver
 
         if (_cube.IsSolved())
         {
+            Console.WriteLine(_cube.ToString());
+
             return (true, _moves, TimeSpan.Zero);
         }
 
@@ -50,13 +52,13 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasWhiteCross, MaxDepth));
 
-        Console.WriteLine(BruteForce(HasRgwCorners, MaxDepth));
+        Console.WriteLine(BruteForce(HasRgwCorner, MaxDepth));
 
         Console.WriteLine(BruteForce(HasRgwRbwCorners, MaxDepth));
-
-        Console.WriteLine(BruteForce(HasRgwRbwBwoCorners, MaxDepth));
-
-        Console.WriteLine(BruteForce(HasAllCorners, MaxDepth));
+        //
+        // Console.WriteLine(BruteForce(HasRgwRbwBwoCorners, MaxDepth));
+        //
+        // Console.WriteLine(BruteForce(HasAllCorners, MaxDepth));
 
         Console.WriteLine(_cube.ToString());
 
@@ -142,7 +144,7 @@ public class Solver
                && _cube[Face.Back, 1, 0] == Colour.Orange;
     }
 
-    private bool HasRgwCorners()
+    private bool HasRgwCorner()
     {
         return HasWhiteCross()
                && _cube[Face.Up, 0, 2] == Colour.White
@@ -153,16 +155,18 @@ public class Solver
     private bool HasRgwRbwCorners()
     {
         return HasWhiteCross()
-               && HasRgwCorners()
-               && _cube[Face.Up, 0, 0] == Colour.White
-               && _cube[Face.Right, 2, 0] == Colour.Blue;
+               && HasRgwCorner()
+               && _cube[Face.Up, 2, 2] == Colour.White
+               && _cube[Face.Front, 2, 0] == Colour.Red
+               && _cube[Face.Right, 0, 0] == Colour.Blue;
     }
 
     private bool HasRgwRbwBwoCorners()
     {
         return HasWhiteCross()
-               && HasRgwCorners()
+               && HasRgwCorner()
                && _cube[Face.Up, 2, 2] == Colour.White
+               && _cube[Face.Right, 0, 0] == Colour.Blue
                && _cube[Face.Back, 0, 0] == Colour.Orange;
     }
 
