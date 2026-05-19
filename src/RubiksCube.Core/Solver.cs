@@ -5,6 +5,8 @@ namespace RubiksCube.Core;
 
 public class Solver
 {
+    private const int MinDepth = 5;
+
     private const int MaxDepth = 15;
 
     private readonly Cube _cube;
@@ -48,19 +50,19 @@ public class Solver
 
         Console.WriteLine(_cube.ToString());
 
-        Console.WriteLine(BruteForce(HasDaisy, MaxDepth));
+        Console.WriteLine(BruteForce(HasDaisy));
         
-        Console.WriteLine(BruteForce(HasWhiteCross, MaxDepth));
+        Console.WriteLine(BruteForce(HasWhiteCross));
         
-        Console.WriteLine(BruteForce(HasRgwCorner, MaxDepth));
+        Console.WriteLine(BruteForce(HasRgwCorner));
 
-        Console.WriteLine(BruteForce(HasRgwRbwCorners, MaxDepth)); 
+        Console.WriteLine(BruteForce(HasRgwRbwCorners)); 
 
-        Console.WriteLine(BruteForce(HasRgwRbwBwoCorners, MaxDepth));
+        Console.WriteLine(BruteForce(HasRgwRbwBwoCorners));
         
-        Console.WriteLine(BruteForce(HasRgwRbwBwoRgyCorners, MaxDepth));
+        Console.WriteLine(BruteForce(HasRgwRbwBwoRgyCorners));
         
-        Console.WriteLine(BruteForce(HasRedMiddle, MaxDepth));
+        Console.WriteLine(BruteForce(HasRedMiddle));
 
         Console.WriteLine(_cube.ToString());
 
@@ -69,7 +71,22 @@ public class Solver
         return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<bool> heuristic, int depth)
+    private bool BruteForce(Func<bool> heuristic)
+    {
+        for (var depth = MinDepth; depth <= MaxDepth; depth++)
+        {
+            var result = Search(heuristic, depth);
+
+            if (result)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool Search(Func<bool> heuristic, int depth)
     {
         if (depth == 0)
         {
@@ -102,7 +119,7 @@ public class Solver
 
             _moves.Add(move);
 
-            if (BruteForce(heuristic, depth - 1))
+            if (Search(heuristic, depth - 1))
             {
                 return true;
             }
