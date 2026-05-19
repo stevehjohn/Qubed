@@ -253,6 +253,14 @@ public class Solver
                && _cube[Face.Back, 0, 1]== Colour.Orange;
     }
 
+    private bool HasYellowCross()
+    {
+        return _cube[Face.Down, 1, 0] == Colour.Yellow
+               && _cube[Face.Down, 2, 1] == Colour.Yellow
+               && _cube[Face.Down, 1, 2] == Colour.Yellow
+               && _cube[Face.Down, 0, 1] == Colour.Yellow;
+    }
+
     // private bool HasGreenMiddle()
     // {
     //     return HasRightBlueMiddle()
