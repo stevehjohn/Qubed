@@ -230,12 +230,12 @@ public class Solver
     private bool HasLeftGreenMiddle()
     {
         return HasRedMiddle()
-               && _cube[Face.Front, 0, 1] == Colour.Red;
+               && _cube[Face.Left, 0, 1] == Colour.Green;
     }
 
     private bool HasGreenMiddle()
     {
         return HasLeftGreenMiddle()
-               && _cube[Face.Front, 2, 1] == Colour.Red;
+               && _cube[Face.Left, 2, 1] == Colour.Green;
     }
 }
