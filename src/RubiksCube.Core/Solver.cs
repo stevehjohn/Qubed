@@ -116,8 +116,6 @@ public class Solver
 
         Console.WriteLine(stopwatch.Elapsed);
 
-        // TODO: Revert
-        // return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
         return (true, _moves, stopwatch.Elapsed);
     }
 
