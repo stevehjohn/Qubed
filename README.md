@@ -12,6 +12,10 @@
 
 ## Notes
 
+### Coordinates
+
+All coordinates are (x, y) or (column, row).
+
 ### Faces
 
 White  | Up
