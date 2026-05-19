@@ -474,7 +474,7 @@ public sealed class RubiksCube : Game
 
     private Colour GetFaceColor(Face face, int row, int col)
     {
-        Vector3 position = face switch
+        var position = face switch
         {
             Face.Up => new Vector3(col - 1, 1, row - 1),
             Face.Down => new Vector3(col - 1, -1, row - 1),

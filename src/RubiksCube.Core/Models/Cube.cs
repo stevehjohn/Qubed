@@ -160,6 +160,7 @@ public class Cube
     {
         var matrix = this[face];
 
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (direction)
         {
             case Direction.Clockwise:
@@ -205,6 +206,7 @@ public class Cube
 
         ReadSlice(slices[3], d);
 
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (direction)
         {
             case Direction.Clockwise:
