@@ -62,7 +62,7 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasRgwRbwBwoCorners));
 
-        Console.WriteLine(BruteForce(HasRgwRbwBwoRgyCorners));
+        Console.WriteLine(BruteForce(HasRgwRbwBwoGwoCorners));
 
         Console.WriteLine(BruteForce(HasLeftRedMiddle));
 
@@ -217,17 +217,17 @@ public class Solver
                && _cube[Face.Back, 0, 0] == Colour.Orange;
     }
 
-    private bool HasRgwRbwBwoRgyCorners()
+    private bool HasRgwRbwBwoGwoCorners()
     {
         return HasRgwRbwBwoCorners()
                && _cube[Face.Up, 0, 0] == Colour.White
                && _cube[Face.Left, 2, 2] == Colour.Green
-               && _cube[Face.Down, 0, 0] == Colour.Yellow;
+               && _cube[Face.Back, 2, 0] == Colour.Orange;
     }
 
     private bool HasLeftRedMiddle()
     {
-        return HasRgwRbwBwoRgyCorners()
+        return HasRgwRbwBwoGwoCorners()
                && _cube[Face.Front, 0, 1] == Colour.Red;
     }
 
