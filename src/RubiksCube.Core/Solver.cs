@@ -46,19 +46,11 @@ public class Solver
         
         Console.WriteLine(_cube.ToString());
         
-        Console.WriteLine();
-
         Console.WriteLine(BruteForce(HasDaisy, MaxDepth));
-        
-        Console.WriteLine();
-        
-        Console.WriteLine(_cube.ToString());
-        
-        Console.WriteLine();
 
         Console.WriteLine(BruteForce(HasWhiteCross, MaxDepth));
         
-        Console.WriteLine();
+        Console.WriteLine(BruteForce(HasWhiteCorners, MaxDepth));
         
         Console.WriteLine(_cube.ToString());
 
@@ -142,5 +134,13 @@ public class Solver
                && _cube[Face.Front, 1, 0] ==Colour.Red
                && _cube[Face.Right, 1, 0] ==Colour.Blue
                && _cube[Face.Back, 1, 0] ==Colour.Orange;
+    }
+
+    private bool HasWhiteCorners()
+    {
+        return _cube[Face.Up, 0, 0] == Colour.White
+               && _cube[Face.Up, 2, 0] == Colour.White
+               && _cube[Face.Up, 2, 2] == Colour.White
+               && _cube[Face.Up, 0, 2] == Colour.White;
     }
 }
