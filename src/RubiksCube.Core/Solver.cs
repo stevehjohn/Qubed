@@ -72,8 +72,8 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasGreenMiddle));
 
-        // Console.WriteLine(BruteForce(HasLeftBlueMiddle));
-        //
+        Console.WriteLine(BruteForce(HasLeftOrangeMiddle));
+        
         // Console.WriteLine(BruteForce(HasBlueMiddle));
         //
         // Console.WriteLine(BruteForce(HasLeftOrangeMiddle));
@@ -251,7 +251,7 @@ public class Solver
                && _cube[Face.Left, 2, 1] == Colour.Green;
     }
 
-    private bool HasLeftGreenMiddle()
+    private bool HasLeftOrangeMiddle()
     {
         return HasGreenMiddle()
                && _cube[Face.Left, 0, 1] == Colour.Green;
@@ -261,12 +261,6 @@ public class Solver
     {
         return HasGreenMiddle()
                && _cube[Face.Right, 2, 1] == Colour.Blue;
-    }
-
-    private bool HasLeftOrangeMiddle()
-    {
-        return HasBlueMiddle()
-               && _cube[Face.Back, 0, 1] == Colour.Orange;
     }
 
     private bool HasOrangeMiddle()
