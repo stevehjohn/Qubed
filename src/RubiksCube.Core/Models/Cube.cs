@@ -289,7 +289,22 @@ public class Cube
             
             builder.AppendLine();
         }
-        
+
+        for (var y = 0; y < 3; y++)
+        {
+            foreach (var face in new[] { Face.Left, Face.Front, Face.Right, Face.Back } )
+            {
+                for (var x = 0; x < 3; x++)
+                {
+                    builder.Append($"{this[face, x, x].ToInitial()} ");
+                }
+
+                builder.Append(' ');
+            }
+            
+            builder.AppendLine();
+        }
+
         return builder.ToString();
     }
 }
