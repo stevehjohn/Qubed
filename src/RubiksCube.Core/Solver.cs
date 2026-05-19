@@ -44,7 +44,7 @@ public class Solver
 
         var stopwatch = Stopwatch.StartNew();
 
-        BruteForce(HasDaisy, MaxDepth);
+        Console.WriteLine(BruteForce(HasDaisy, MaxDepth));
         
         stopwatch.Stop();
 
