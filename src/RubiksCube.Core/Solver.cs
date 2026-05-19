@@ -50,7 +50,7 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasWhiteCross, MaxDepth));
 
-        // Console.WriteLine(BruteForce(HasWhiteCorners, MaxDepth));
+        Console.WriteLine(BruteForce(HasWhiteCorners, MaxDepth));
 
         Console.WriteLine(_cube.ToString());
 
@@ -138,7 +138,8 @@ public class Solver
 
     private bool HasWhiteCorners()
     {
-        return _cube[Face.Up, 0, 0] == Colour.White
+        return HasWhiteCross() 
+               && _cube[Face.Up, 0, 0] == Colour.White
                && _cube[Face.Up, 2, 0] == Colour.White
                && _cube[Face.Up, 2, 2] == Colour.White
                && _cube[Face.Up, 0, 2] == Colour.White;
