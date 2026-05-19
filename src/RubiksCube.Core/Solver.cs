@@ -72,7 +72,7 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasBlueOrangeMiddle));
 
-        // Console.WriteLine(BruteForce(HasLeftOrangeMiddle));
+        Console.WriteLine(BruteForce(HasYellowCross));
         
         // Console.WriteLine(BruteForce(HasBlueMiddle));
         //
