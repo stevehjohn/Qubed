@@ -9,6 +9,8 @@ public class Solver
 
     private static readonly Move[] AllMoves;
 
+    private readonly Stack<Move> _moves = [];
+
     static Solver()
     {
         var faces = Enum.GetValues<Face>();
@@ -29,16 +31,9 @@ public class Solver
 
     public Solver(Cube cube) => _cube = cube.Clone();
 
-    private readonly List<Move> _moves = [];
-
     public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
     {
         _moves.Clear();
-
-        if (_cube.IsSolved())
-        {
-            return (true, _moves, TimeSpan.Zero);
-        }
 
         var stopwatch = Stopwatch.StartNew();
 
@@ -46,19 +41,44 @@ public class Solver
         
         stopwatch.Stop();
 
-        return (false, _moves, stopwatch.Elapsed);
+        if (_cube.IsSolved())
+        {
+            var moves = _moves.ToList();
+
+            moves.Reverse();
+            
+            return (true, moves, TimeSpan.Zero);
+        }
+
+        return (false, moves, stopwatch.Elapsed);
     }
 
-    private void BruteForce(Func<bool> heuristic)
+    private bool BruteForce(Func<bool> heuristic)
     {
         if (heuristic())
         {
-            return;
+            return true;
         }
 
         foreach (var move in AllMoves)
         {
+            if (move == _moves[^1])
+            {
+                continue;
+            }
+
             _cube.ApplyMove(move);
+            
+            _moves.Add(move);
+
+            if (BruteForce(heuristic))
+            {
+                return true;
+            }
+            
+            _cube.UndoMove();
+            
+            _moves.RemoveAt(_moves.Count - 1);
         }
     }
 
