@@ -17,17 +17,17 @@ public class Solver
     {
         var faces = Enum.GetValues<Face>();
 
-        AllMoves = new Move[faces.Length * 3];
+        AllMoves = new Move[faces.Length * 2];
 
         var index = 0;
 
         foreach (var face in faces)
         {
             AllMoves[index++] = new Move(face, Direction.Clockwise);
-
+            
             AllMoves[index++] = new Move(face, Direction.AntiClockwise);
 
-            AllMoves[index++] = new Move(face, Direction.HalfTurn);
+            //AllMoves[index++] = new Move(face, Direction.HalfTurn);
         }
     }
 
