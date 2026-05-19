@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
 using RubiksCube.Core;
 using RubiksCube.Core.Models;
@@ -536,7 +535,7 @@ public sealed class RubiksCube : Game
 
     private void CompleteFaceRotation(FaceRotation rotation)
     {
-        var turn = CreateTurnMatrix(rotation.Face, rotation.Direction == Direction.AntiClockwise, QuarterTurn);
+        var turn = CreateTurnMatrix(rotation.Face, rotation.Direction, QuarterTurn);
 
         foreach (var cubie in _cubies.Where(cubie => IsCubieOnFace(cubie, rotation.Face)))
         {
@@ -574,7 +573,7 @@ public sealed class RubiksCube : Game
 
         var easedProgress = 1f - MathF.Pow(1f - progress, 3f);
 
-        return CreateTurnMatrix(rotation.Face, rotation.Direction == Direction.Clockwise, easedProgress * QuarterTurn);
+        return CreateTurnMatrix(rotation.Face, rotation.Direction, easedProgress * QuarterTurn);
     }
 
     private static Matrix CreateTurnMatrix(Face face, Direction direction, float angle)
