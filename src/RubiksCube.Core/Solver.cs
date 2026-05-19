@@ -99,10 +99,14 @@ public class Solver
         Console.WriteLine(BruteForce(HasGoyCorner));
 
         Console.WriteLine(BruteForce(HasBoyCorner));
-
+        
         Console.WriteLine(_cube.ToString());
 
         stopwatch.Stop();
+        
+        Console.WriteLine();
+
+        Console.WriteLine(stopwatch.Elapsed);
 
         return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
