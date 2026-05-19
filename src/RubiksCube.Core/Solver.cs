@@ -5,39 +5,50 @@ namespace RubiksCube.Core;
 
 public class Solver
 {
-    private const int MinDepth = 1;
+    private const int MinDepth = 6;
 
     private const int MaxDepth = 15;
 
     private readonly Cube _cube;
 
-    private static readonly Move[] AllMoves;
+    private static readonly Move[] AllMoves =
+    [
+        new(Face.Down, Direction.Clockwise),
+        new(Face.Down, Direction.AntiClockwise),
+        new(Face.Down, Direction.HalfTurn),
+
+        new(Face.Front, Direction.Clockwise),
+        new(Face.Front, Direction.AntiClockwise),
+        new(Face.Front, Direction.HalfTurn),
+
+        new(Face.Right, Direction.Clockwise),
+        new(Face.Right, Direction.AntiClockwise),
+        new(Face.Right, Direction.HalfTurn),
+
+        new(Face.Left, Direction.Clockwise),
+        new(Face.Left, Direction.AntiClockwise),
+        new(Face.Left, Direction.HalfTurn),
+
+        new(Face.Back, Direction.Clockwise),
+        new(Face.Back, Direction.AntiClockwise),
+        new(Face.Back, Direction.HalfTurn),
+
+        new(Face.Up, Direction.Clockwise),
+        new(Face.Up, Direction.AntiClockwise),
+        new(Face.Up, Direction.HalfTurn)
+    ];
 
     private readonly List<Move> _moves = [];
 
-    private readonly Dictionary<(ulong A, ulong B, ulong C), int> _visitedDepths = [];
-
-    static Solver()
-    {
-        var faces = Enum.GetValues<Face>();
-
-        AllMoves = new Move[faces.Length * 3];
-
-        var index = 0;
-
-        foreach (var face in faces)
-        {
-            AllMoves[index++] = new Move(face, Direction.Clockwise);
-
-            AllMoves[index++] = new Move(face, Direction.AntiClockwise);
-
-            AllMoves[index++] = new Move(face, Direction.HalfTurn);
-        }
-    }
-
     public Solver(Cube cube) => _cube = cube.Clone();
 
-    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
+    public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback, Action<List<Move>> stepCallback = null)
+    {
+        Task.Run(() => Solve(stepCallback))
+            .ContinueWith(task => { callback(task.Result); }, TaskContinuationOptions.OnlyOnRanToCompletion);
+    }
+
+    private (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<List<Move>> stepCallback)
     {
         _moves.Clear();
 
@@ -52,88 +63,114 @@ public class Solver
 
         Console.WriteLine(_cube.ToString());
 
-        Console.WriteLine(BruteForce(HasDaisy));
+        Console.WriteLine(BruteForce(HasDaisy, stepCallback));
 
-        Console.WriteLine(BruteForce(HasWhiteCross));
-        
+        Console.WriteLine(BruteForce(HasWhiteCross, stepCallback));
+
         Console.WriteLine("\nCorners\n");
 
-        Console.WriteLine(BruteForce(HasRgwCorner));
+        Console.WriteLine(BruteForce(HasRgwCorner, stepCallback));
 
-        Console.WriteLine(BruteForce(HasRbwCorners));
+        Console.WriteLine(BruteForce(HasRbwCorners, stepCallback));
 
-        Console.WriteLine(BruteForce(HasRgwWboCorners));
+        Console.WriteLine(BruteForce(HasRgwWboCorners, stepCallback));
 
-        Console.WriteLine(BruteForce(HasGwoCorners));
-        
+        Console.WriteLine(BruteForce(HasGwoCorners, stepCallback));
+
         Console.WriteLine("\nMiddle\n");
 
-        Console.WriteLine(BruteForce(HasRedGreenMiddle));
+        Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback));
 
-        Console.WriteLine(BruteForce(HasRedBlueMiddle));
+        Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback));
 
-        Console.WriteLine(BruteForce(HasOrangeGreenMiddle));
+        Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback));
 
-        Console.WriteLine(BruteForce(HasBlueOrangeMiddle));
+        Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback));
 
         Console.WriteLine("\nYellow Cross\n");
 
-        Console.WriteLine(BruteForce(HasYellowCross));
-        
+        Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
+
         Console.WriteLine("\nYellow Edges\n");
 
-        Console.WriteLine(BruteForce(HasYellowRedEdge));
-        
-        Console.WriteLine(BruteForce(HasYellowBlueEdge));
+        Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true));
 
-        Console.WriteLine(BruteForce(HasYellowOrangeEdge));
-
-        Console.WriteLine(BruteForce(HasYellowGreenEdge));
-        
         Console.WriteLine("\nRemaining Corners\n");
+
+        Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
         
-        Console.WriteLine(BruteForce(HasGryCorner));
-
-        Console.WriteLine(BruteForce(HasRbyCorner));
-
-        Console.WriteLine(BruteForce(HasGoyCorner));
-
-        Console.WriteLine(BruteForce(HasBoyCorner));
+        Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
         
+        Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
+        
+        Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
+
         Console.WriteLine(_cube.ToString());
 
         stopwatch.Stop();
-        
+
         Console.WriteLine();
 
         Console.WriteLine(stopwatch.Elapsed);
 
-        return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
+        return (true, _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<bool> heuristic, int minDepth = MinDepth)
+    private bool BruteForce(Func<Cube, bool> heuristic, Action<List<Move>> stepCallback, bool excludeUpFace = false)
     {
-        if (heuristic())
-        {
-            return true;
-        }
-
         var stopwatch = new Stopwatch();
-        
-        for (var depth = minDepth; depth <= MaxDepth; depth++)
+
+        for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
             Console.Write(depth);
 
             stopwatch.Restart();
-            
-            _visitedDepths.Clear();
 
-            var result = Search(heuristic, depth);
-            
+            var found = false;
+
+            List<Move> foundMoves = null;
+
+            var innerDepth = depth;
+
+            Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
+            {
+                if (move.Face == Face.Up && excludeUpFace)
+                {
+                    return;
+                }
+
+                var cubeCopy = _cube.Clone();
+
+                var newMoves = new List<Move> { move };
+
+                cubeCopy.ApplyMove(move);
+
+                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFace))
+                {
+                    lock (state)
+                    {
+                        found = true;
+
+                        foundMoves = newMoves;
+                    }
+
+                    state.Stop();
+                }
+            });
+
             Console.WriteLine($" {stopwatch.Elapsed}");
 
-            if (result)
+            if (found)
             {
+                _moves.AddRange(foundMoves);
+
+                foreach (var move in foundMoves)
+                {
+                    _cube.ApplyMove(move);
+                }
+                
+                stepCallback(foundMoves);
+
                 return true;
             }
         }
@@ -141,9 +178,9 @@ public class Solver
         return false;
     }
 
-    private bool Search(Func<bool> heuristic, int depth)
+    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFace)
     {
-        if (heuristic())
+        if (heuristic(cube))
         {
             return true;
         }
@@ -153,49 +190,41 @@ public class Solver
             return false;
         }
 
-        var hash = _cube.GetHash();
-
-        var key = (hash.A, hash.B, hash.C);
-
-        if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
-        {
-            return false;
-        }
-
-        _visitedDepths[key] = depth;
-        
         foreach (var move in AllMoves)
         {
-            if (_moves.Count > 0)
+            if (move.Face == Face.Up && excludeUpFace)
             {
-                var last = _moves[^1];
+                continue;
+            }
 
-                if (move.Face == last.Face)
+            if (moves.Count > 0)
+            {
+                if (move.Face == lastMove.Face)
                 {
                     continue;
                 }
 
-                if (AxisOf(move.Face) == AxisOf(last.Face))
+                if (AxisOf(move.Face) == AxisOf(lastMove.Face))
                 {
-                    if (move.Face < last.Face)
+                    if (move.Face < lastMove.Face)
                     {
                         continue;
                     }
                 }
             }
 
-            _cube.ApplyMove(move);
+            cube.ApplyMove(move);
 
-            _moves.Add(move);
+            moves.Add(move);
 
-            if (Search(heuristic, depth - 1))
+            if (Search(heuristic, cube, moves, move, depth - 1, excludeUpFace))
             {
                 return true;
             }
 
-            _cube.UndoMove();
+            cube.UndoMove();
 
-            _moves.RemoveAt(_moves.Count - 1);
+            moves.RemoveAt(moves.Count - 1);
         }
 
         return false;
@@ -212,148 +241,133 @@ public class Solver
         };
     }
 
-    private bool HasDaisy()
+    private static bool HasDaisy(Cube cube)
     {
-        return _cube[Face.Down, 1, 0] == Colour.White
-               && _cube[Face.Down, 2, 1] == Colour.White
-               && _cube[Face.Down, 1, 2] == Colour.White
-               && _cube[Face.Down, 0, 1] == Colour.White;
+        return cube[Face.Down, 1, 0] == Colour.White
+               && cube[Face.Down, 2, 1] == Colour.White
+               && cube[Face.Down, 1, 2] == Colour.White
+               && cube[Face.Down, 0, 1] == Colour.White;
     }
 
-    private bool HasWhiteCross()
+    private static bool HasWhiteCross(Cube cube)
     {
-        return _cube[Face.Up, 1, 0] == Colour.White
-               && _cube[Face.Up, 2, 1] == Colour.White
-               && _cube[Face.Up, 1, 2] == Colour.White
-               && _cube[Face.Up, 0, 1] == Colour.White
-               && _cube[Face.Left, 1, 0] == Colour.Green
-               && _cube[Face.Front, 1, 0] == Colour.Red
-               && _cube[Face.Right, 1, 0] == Colour.Blue
-               && _cube[Face.Back, 1, 0] == Colour.Orange;
+        return cube[Face.Up, 1, 0] == Colour.White
+               && cube[Face.Up, 2, 1] == Colour.White
+               && cube[Face.Up, 1, 2] == Colour.White
+               && cube[Face.Up, 0, 1] == Colour.White
+               && cube[Face.Left, 1, 0] == Colour.Green
+               && cube[Face.Front, 1, 0] == Colour.Red
+               && cube[Face.Right, 1, 0] == Colour.Blue
+               && cube[Face.Back, 1, 0] == Colour.Orange;
     }
 
-    private bool HasRgwCorner()
+    private static bool HasRgwCorner(Cube cube)
     {
-        return HasWhiteCross()
-               && _cube[Face.Up, 0, 2] == Colour.White
-               && _cube[Face.Left, 2, 0] == Colour.Green
-               && _cube[Face.Front, 0, 0] == Colour.Red;
+        return HasWhiteCross(cube)
+               && cube[Face.Up, 0, 2] == Colour.White
+               && cube[Face.Left, 2, 0] == Colour.Green
+               && cube[Face.Front, 0, 0] == Colour.Red;
     }
 
-    private bool HasRbwCorners()
+    private static bool HasRbwCorners(Cube cube)
     {
-        return HasRgwCorner()
-               && _cube[Face.Up, 2, 2] == Colour.White
-               && _cube[Face.Front, 2, 0] == Colour.Red
-               && _cube[Face.Right, 0, 0] == Colour.Blue;
+        return HasRgwCorner(cube)
+               && cube[Face.Up, 2, 2] == Colour.White
+               && cube[Face.Front, 2, 0] == Colour.Red
+               && cube[Face.Right, 0, 0] == Colour.Blue;
     }
 
-    private bool HasRgwWboCorners()
+    private static bool HasRgwWboCorners(Cube cube)
     {
-        return HasRbwCorners()
-               && _cube[Face.Up, 2, 0] == Colour.White
-               && _cube[Face.Right, 2, 0] == Colour.Blue
-               && _cube[Face.Back, 0, 0] == Colour.Orange;
+        return HasRbwCorners(cube)
+               && cube[Face.Up, 2, 0] == Colour.White
+               && cube[Face.Right, 2, 0] == Colour.Blue
+               && cube[Face.Back, 0, 0] == Colour.Orange;
     }
 
-    private bool HasGwoCorners()
+    private static bool HasGwoCorners(Cube cube)
     {
-        return HasRgwWboCorners()
-               && _cube[Face.Up, 0, 0] == Colour.White
-               && _cube[Face.Left, 0, 0] == Colour.Green
-               && _cube[Face.Back, 2, 0] == Colour.Orange;
+        return HasRgwWboCorners(cube)
+               && cube[Face.Up, 0, 0] == Colour.White
+               && cube[Face.Left, 0, 0] == Colour.Green
+               && cube[Face.Back, 2, 0] == Colour.Orange;
     }
 
-    private bool HasRedGreenMiddle()
+    private static bool HasRedGreenMiddle(Cube cube)
     {
-        return HasGwoCorners()
-               && _cube[Face.Front, 0, 1] == Colour.Red
-               && _cube[Face.Left, 2, 1] == Colour.Green;
+        return HasGwoCorners(cube)
+               && cube[Face.Front, 0, 1] == Colour.Red
+               && cube[Face.Left, 2, 1] == Colour.Green;
     }
 
-    private bool HasRedBlueMiddle()
+    private static bool HasRedBlueMiddle(Cube cube)
     {
-        return HasRedGreenMiddle()
-               && _cube[Face.Front, 2, 1] == Colour.Red
-               && _cube[Face.Right, 0, 1] == Colour.Blue;
+        return HasRedGreenMiddle(cube)
+               && cube[Face.Front, 2, 1] == Colour.Red
+               && cube[Face.Right, 0, 1] == Colour.Blue;
     }
 
-    private bool HasOrangeGreenMiddle()
+    private static bool HasOrangeGreenMiddle(Cube cube)
     {
-        return HasRedBlueMiddle()
-               && _cube[Face.Back, 2, 1] == Colour.Orange
-               && _cube[Face.Left, 0, 1] == Colour.Green;
+        return HasRedBlueMiddle(cube)
+               && cube[Face.Back, 2, 1] == Colour.Orange
+               && cube[Face.Left, 0, 1] == Colour.Green;
     }
 
-    private bool HasBlueOrangeMiddle()
+    private static bool HasBlueOrangeMiddle(Cube cube)
     {
-        return HasOrangeGreenMiddle()
-               && _cube[Face.Right, 2, 1] == Colour.Blue
-               && _cube[Face.Back, 0, 1] == Colour.Orange;
+        return HasOrangeGreenMiddle(cube)
+               && cube[Face.Right, 2, 1] == Colour.Blue
+               && cube[Face.Back, 0, 1] == Colour.Orange;
     }
 
-    private bool HasYellowCross()
+    private static bool HasYellowCross(Cube cube)
     {
-        return HasBlueOrangeMiddle()
-               && _cube[Face.Down, 1, 0] == Colour.Yellow
-               && _cube[Face.Down, 2, 1] == Colour.Yellow
-               && _cube[Face.Down, 1, 2] == Colour.Yellow
-               && _cube[Face.Down, 0, 1] == Colour.Yellow;
+        return HasBlueOrangeMiddle(cube)
+               && cube[Face.Down, 1, 0] == Colour.Yellow
+               && cube[Face.Down, 2, 1] == Colour.Yellow
+               && cube[Face.Down, 1, 2] == Colour.Yellow
+               && cube[Face.Down, 0, 1] == Colour.Yellow;
     }
 
-    private bool HasYellowRedEdge()
+    private static bool HasAlignedYellowCross(Cube cube)
     {
-        return HasYellowCross()
-               && _cube[Face.Front, 1, 2] == Colour.Red;
+        return HasYellowCross(cube)
+               && cube[Face.Front, 1, 2] == Colour.Red
+               && cube[Face.Right, 1, 2] == Colour.Blue
+               && cube[Face.Back, 1, 2] == Colour.Orange
+               && cube[Face.Left, 1, 2] == Colour.Green;
     }
 
-    private bool HasYellowBlueEdge()
+    private static bool HasGryCorner(Cube cube)
     {
-        return HasYellowRedEdge()
-               && _cube[Face.Right, 1, 2] == Colour.Blue;
+        return HasAlignedYellowCross(cube)
+               && cube[Face.Left, 2, 2] == Colour.Green
+               && cube[Face.Front, 0, 2] == Colour.Red
+               && cube[Face.Down, 0, 0] == Colour.Yellow;
     }
 
-    private bool HasYellowOrangeEdge()
+    private static bool HasRbyCorner(Cube cube)
     {
-        return HasYellowBlueEdge()
-               && _cube[Face.Back, 1, 2] == Colour.Orange;
+        return HasGryCorner(cube)
+               && cube[Face.Front, 2, 2] == Colour.Red
+               && cube[Face.Right, 0, 2] == Colour.Blue
+               && cube[Face.Down, 2, 0] == Colour.Yellow;
     }
 
-    private bool HasYellowGreenEdge()
+    private static bool HasGoyCorner(Cube cube)
     {
-        return HasYellowOrangeEdge()
-               && _cube[Face.Left, 1, 2] == Colour.Green;
+        return HasRbyCorner(cube)
+               && cube[Face.Left, 0, 2] == Colour.Green
+               && cube[Face.Back, 2, 2] == Colour.Orange
+               && cube[Face.Down, 0, 2] == Colour.Yellow;
     }
 
-    private bool HasGryCorner()
+    private static bool HasBoyCorner(Cube cube)
     {
-        return HasYellowGreenEdge()
-               && _cube[Face.Left, 2, 2] == Colour.Green
-               && _cube[Face.Front, 0, 2] == Colour.Red
-               && _cube[Face.Down, 0, 0] == Colour.Yellow;
-    }
-
-    private bool HasRbyCorner()
-    {
-        return HasGryCorner()
-               && _cube[Face.Front, 2, 2] == Colour.Red
-               && _cube[Face.Right, 0, 2] == Colour.Blue
-               && _cube[Face.Down, 2, 0] == Colour.Yellow;
-    }
-
-    private bool HasGoyCorner()
-    {
-        return HasRbyCorner()
-               && _cube[Face.Left, 0, 2] == Colour.Green
-               && _cube[Face.Back, 2, 2] == Colour.Orange
-               && _cube[Face.Down, 0, 2] == Colour.Yellow;
-    }
-
-    private bool HasBoyCorner()
-    {
-        return HasGoyCorner()
-               && _cube[Face.Back, 0, 2] == Colour.Orange
-               && _cube[Face.Right, 2, 2] == Colour.Blue
-               && _cube[Face.Down, 2, 2] == Colour.Yellow;
+        return HasGoyCorner(cube)
+               && cube[Face.Back, 0, 2] == Colour.Orange
+               && cube[Face.Right, 2, 2] == Colour.Blue
+               && cube[Face.Down, 2, 2] == Colour.Yellow;
     }
 }

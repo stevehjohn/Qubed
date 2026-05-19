@@ -6,9 +6,17 @@
 - Use the mouse wheel to zoom in or out.
 - Click a cube face, or press `U`, `D`, `F`, `B`, `L`, or `R`, to animate a clockwise quarter-turn of that face.
 - Hold `Shift` while clicking a face or pressing a face key to animate the counter-clockwise turn.
+- Hold `Control` while clicking a face or pressing a face key to animate the half-face turn.
 - Press `Space` to search for and animate a solution from the current cube state.
 - Press `Esc` to exit.
 - Press `S` to scramble.
+
+## Ideas
+
+- Replay last solve.
+  - Save scramble state.
+  - Reset cube to it.
+  - Play saved moves from solver.
 
 ## Notes
 

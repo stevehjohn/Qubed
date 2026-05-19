@@ -283,47 +283,6 @@ public class Cube
         }
     }
 
-    public (ulong A, ulong B, ulong C) GetHash()
-    {
-        ulong a = 0;
-
-        ulong b = 0;
-
-        ulong c = 0;
-
-        var index = 0;
-
-        foreach (var face in Enum.GetValues<Face>())
-        {
-            for (var y = 0; y < 3; y++)
-            {
-                for (var x = 0; x < 3; x++)
-                {
-                    var value = (ulong) this[face, x, y];
-
-                    switch (index)
-                    {
-                        case < 18:
-                            a |= value << (index * 3);
-                            break;
-                        
-                        case < 36:
-                            b |= value << ((index - 18) * 3);
-                            break;
-                        
-                        default:
-                            c |= value << ((index - 36) * 3);
-                            break;
-                    }
-
-                    index++;
-                }
-            }
-        }
-
-        return (a, b, c);
-    }
-
     public override string ToString()
     {
         var builder = new StringBuilder();

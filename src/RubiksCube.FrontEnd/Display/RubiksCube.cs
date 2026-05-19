@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -47,6 +48,8 @@ public sealed class RubiksCube : Game
 
     private float _rotationDuration = 0.25f;
 
+    private bool _solverFinished;
+
     private const float CubieSize = 0.92f;
 
     private const float Spacing = 1.05f;
@@ -62,6 +65,8 @@ public sealed class RubiksCube : Game
     private const float MaxCameraDistance = 18f;
 
     private const float CubePickHalfExtent = Spacing + CubieSize / 2f + 0.05f;
+
+    private readonly Lock _solveLock = new();
 
     private readonly Color[] _faceColors =
     [
@@ -143,6 +148,11 @@ public sealed class RubiksCube : Game
 
         UpdateActiveRotation(gameTime);
 
+        if (_isSolving && _activeRotation is null)
+        {
+            StartNextSolveRotation();
+        }
+
         TryStartSolveAnimation(keyboard);
 
         TryStartFaceRotation(keyboard);
@@ -184,6 +194,12 @@ public sealed class RubiksCube : Game
 
     private void UpdateMouseControls(MouseState mouse)
     {
+        if (! IsMouseInsideClientArea(mouse))
+        {
+            _mouseDragMode = MouseDragMode.None;
+            return;
+        }
+
         _mouseDragMode = mouse.LeftButton switch
         {
             ButtonState.Pressed when _previousMouse.LeftButton == ButtonState.Released => TryStartMouseFaceRotation(mouse) ? MouseDragMode.FaceTurn : MouseDragMode.Orbit,
@@ -207,6 +223,16 @@ public sealed class RubiksCube : Game
         _cameraDistance = MathHelper.Clamp(_cameraDistance - scrollDelta * MouseZoomScale, MinCameraDistance, MaxCameraDistance);
 
         UpdateView();
+    }
+
+    private bool IsMouseInsideClientArea(MouseState mouse)
+    {
+        var viewport = GraphicsDevice.Viewport;
+
+        return mouse.X >= 0
+               && mouse.Y >= 0
+               && mouse.X < viewport.Width
+               && mouse.Y < viewport.Height;
     }
 
     private bool TryStartMouseFaceRotation(MouseState mouse)
@@ -435,26 +461,10 @@ public sealed class RubiksCube : Game
             return;
         }
 
-        var solution = FindSolveMoves();
-
-        if (solution.Count == 0)
-        {
-            return;
-        }
-
-        _solveQueue.Clear();
-
-        foreach (var move in solution)
-        {
-            _solveQueue.Enqueue(move);
-        }
-
-        _isSolving = true;
-
-        StartNextSolveRotation();
+        FindSolveMoves();
     }
 
-    private IReadOnlyList<Move> FindSolveMoves()
+    private void FindSolveMoves()
     {
         var cube = new Cube();
 
@@ -471,9 +481,32 @@ public sealed class RubiksCube : Game
 
         var solver = new Solver(cube);
 
-        var result = solver.Solve();
-        
-        return result.Moves;
+        lock (_solveLock)
+        {
+            _solveQueue.Clear();
+        }
+
+        _isSolving = true;
+
+        _solverFinished = false;
+
+        solver.SolveAsync(SolvedCallback, StepCallback);
+    }
+
+    private void SolvedCallback((bool Solved, IReadOnlyList<Move> Moves, TimeSpan Elapsed) result)
+    {
+        _solverFinished = true;
+    }
+
+    private void StepCallback(List<Move> moves)
+    {
+        lock (_solveLock)
+        {
+            foreach (var move in moves)
+            {
+                _solveQueue.Enqueue(move);
+            }
+        }
     }
 
     private Colour GetFaceColor(Face face, int x, int y)
@@ -513,11 +546,19 @@ public sealed class RubiksCube : Game
 
     private void StartNextSolveRotation()
     {
-        if (! _solveQueue.TryDequeue(out var move))
-        {
-            _isSolving = false;
+        Move move;
 
-            return;
+        lock (_solveLock)
+        {
+            if (! _solveQueue.TryDequeue(out move))
+            {
+                return;
+            }
+
+            if (_solverFinished && _solveQueue.Count == 0)
+            {
+                _isSolving = false;
+            }
         }
 
         StartFaceRotation(move);
