@@ -6,7 +6,7 @@ namespace RubiksCube.Core;
 public class Solver
 {
     private const int MaxDepth = 20;
-    
+
     private readonly Cube _cube;
 
     private static readonly Move[] AllMoves;
@@ -45,9 +45,9 @@ public class Solver
         var stopwatch = Stopwatch.StartNew();
 
         Console.WriteLine(BruteForce(HasDaisy, MaxDepth));
-        
+
         stopwatch.Stop();
-        
+
         return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
 
@@ -73,23 +73,38 @@ public class Solver
                 {
                     continue;
                 }
-            }
+                
+                if (AxisOf(move.Face) == AxisOf(last.Face))
+                {
+                    continue;
+                }            }
 
             _cube.ApplyMove(move);
-            
+
             _moves.Add(move);
 
             if (BruteForce(heuristic, depth - 1))
             {
                 return true;
             }
-            
+
             _cube.UndoMove();
 
             _moves.RemoveAt(_moves.Count - 1);
         }
 
         return false;
+    }
+
+    private static int AxisOf(Face face)
+    {
+        return face switch
+        {
+            Face.Left or Face.Right => 0,
+            Face.Up or Face.Down => 1,
+            Face.Front or Face.Back => 2,
+            _ => throw new ArgumentOutOfRangeException(nameof(face))
+        };
     }
 
     private bool HasDaisy()
