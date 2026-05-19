@@ -62,7 +62,7 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
-            if (move == _moves.Peek())
+            if (_moves.Count > 0 && move == _moves.Peek())
             {
                 continue;
             }
