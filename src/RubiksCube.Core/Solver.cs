@@ -51,6 +51,14 @@ public class Solver
 
     private void BruteForce(Func<bool> heuristic)
     {
+        if (heuristic())
+        {
+            return;
+        }
+
+        foreach (var move in AllMoves)
+        {
+        }
     }
 
     private bool HasDaisy()
