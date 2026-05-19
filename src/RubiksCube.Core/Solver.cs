@@ -15,6 +15,8 @@ public class Solver
 
     private readonly List<Move> _moves = [];
 
+    private readonly HashSet<string> _visited = [];
+
     static Solver()
     {
         var faces = Enum.GetValues<Face>();
@@ -79,6 +81,8 @@ public class Solver
         {
             Console.WriteLine(depth);
             
+            _visited.Clear();
+            
             var result = Search(heuristic, depth);
 
             if (result)
@@ -101,7 +105,11 @@ public class Solver
         {
             return true;
         }
-
+        var key = _cube.ToString() + ":" + depth;
+        if (!_visited.Add(key))
+        {
+            return false;
+        }
         foreach (var move in AllMoves)
         {
             if (_moves.Count > 0)
@@ -211,7 +219,7 @@ public class Solver
 
     private bool HasRedMiddle()
     {
-        return HasRedMiddle()
+        return HasLeftRedMiddle()
                && _cube[Face.Front, 2, 1] == Colour.Red;
     }
 }
