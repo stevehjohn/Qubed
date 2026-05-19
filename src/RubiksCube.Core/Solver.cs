@@ -39,7 +39,7 @@ public class Solver
 
         if (_cube.IsSolved())
         {
-            return (true, null, TimeSpan.Zero);
+            return (true, _moves, TimeSpan.Zero);
         }
 
         var stopwatch = Stopwatch.StartNew();
