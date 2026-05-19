@@ -414,7 +414,7 @@ public sealed class RubiksCube : Game
 
         var face = (Face) Random.Shared.Next(6);
 
-        StartFaceRotation(new Move(face, Random.Shared.Next(2) == 1 ? Direction.Clockwise : Direction.AntiClockwise ));
+        StartFaceRotation(new Move(face, Random.Shared.Next(2) == 1 ? Direction.Clockwise : Direction.AntiClockwise));
 
         _scrambleTurns--;
 
@@ -460,48 +460,51 @@ public sealed class RubiksCube : Game
             {
                 for (var y = 0; y < 3; y++)
                 {
-                    cube[face, x, y] = GetFaceColor(face, y, x);
+                    cube[face, x, y] = GetFaceColor(face, x, y);
                 }
             }
         }
-        
+
         Console.WriteLine(cube.ToString());
 
         var solver = new Solver(cube);
-        
+
         var result = solver.Solve();
 
         return result.Moves;
     }
 
-    private Colour GetFaceColor(Face face, int row, int col)
+    private Colour GetFaceColor(Face face, int x, int y)
     {
         var position = face switch
         {
-            Face.Up => new Vector3(col - 1, 1, row - 1),
-            Face.Down => new Vector3(col - 1, -1, row - 1),
-            Face.Front => new Vector3(col - 1, row - 1, 1),
-            Face.Back => new Vector3(col - 1, row - 1, -1),
-            Face.Left => new Vector3(-1, row - 1, col - 1),
-            Face.Right => new Vector3(1, row - 1, col - 1),
+            Face.Up => new Vector3(x - 1, 1, y - 1),
+            Face.Front => new Vector3(x - 1, 1 - y, 1),
+            Face.Left => new Vector3(-1, 1 - y, x - 1),
+            Face.Down => new Vector3(x - 1, -1, 1 - y),
+            Face.Right => new Vector3(1, 1 - y, 1 - x),
+            Face.Back => new Vector3(1 - x, 1 - y, -1),
             _ => throw new ArgumentOutOfRangeException(nameof(face))
         };
 
         // ReSharper disable CompareOfFloatsByEqualityOperator
-        var cubie = _cubies.Single(c => c.Position.X == position.X && c.Position.Y == position.Y && c.Position.Z == position.Z);
+        var cubie = _cubies.Single(c =>
+            c.Position.X == position.X &&
+            c.Position.Y == position.Y &&
+            c.Position.Z == position.Z);
         // ReSharper restore CompareOfFloatsByEqualityOperator
 
         return ToColour(cubie.Stickers.Single(s => s.Face == face).Color);
     }
-    
+
     private static Colour ToColour(Color color)
     {
-        if (color == Color.White)  return Colour.White;
+        if (color == Color.White) return Colour.White;
         if (color == Color.Yellow) return Colour.Yellow;
-        if (color == Color.Red)    return Colour.Red;
+        if (color == Color.Red) return Colour.Red;
         if (color == Color.Orange) return Colour.Orange;
-        if (color == Color.Blue)   return Colour.Blue;
-        if (color == Color.Green)  return Colour.Green;
+        if (color == Color.Blue) return Colour.Blue;
+        if (color == Color.Green) return Colour.Green;
 
         throw new ArgumentOutOfRangeException(nameof(color), color, "Unknown sticker colour.");
     }
@@ -511,7 +514,7 @@ public sealed class RubiksCube : Game
         if (! _solveQueue.TryDequeue(out var move))
         {
             _isSolving = false;
-            
+
             return;
         }
 
