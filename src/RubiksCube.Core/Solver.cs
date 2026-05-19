@@ -15,7 +15,7 @@ public class Solver
 
     private readonly List<Move> _moves = [];
 
-    private readonly HashSet<(ulong A, ulong B, ulong C, int D)> _visited = [];
+    private readonly Dictionary<(ulong A, ulong B, ulong C), int> _visitedDepths = [];
 
     static Solver()
     {
@@ -121,7 +121,7 @@ public class Solver
 
             stopwatch.Restart();
             
-            _visited.Clear();
+            _visitedDepths.Clear();
 
             var result = Search(heuristic, depth);
             
@@ -150,11 +150,15 @@ public class Solver
 
         var hash = _cube.GetHash();
 
-        if (! _visited.Add((hash.A, hash.B, hash.C, depth)))
+        var key = (hash.A, hash.B, hash.C);
+
+        if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
         {
             return false;
         }
 
+        _visitedDepths[key] = depth;
+        
         foreach (var move in AllMoves)
         {
             if (_moves.Count > 0)
