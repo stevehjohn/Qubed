@@ -33,7 +33,7 @@ public class Solver
 
     public Solver(Cube cube) => _cube = cube.Clone();
 
-    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
+    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<Move> callback = null)
     {
         _moves.Clear();
 
@@ -55,6 +55,8 @@ public class Solver
         Console.WriteLine(BruteForce(HasRgwRbwCorners, MaxDepth));
 
         Console.WriteLine(BruteForce(HasRgwRbwBwoCorners, MaxDepth));
+
+        Console.WriteLine(BruteForce(HasAllCorners, MaxDepth));
 
         Console.WriteLine(_cube.ToString());
 
@@ -155,12 +157,18 @@ public class Solver
                && _cube[Face.Up, 0, 0] == Colour.White
                && _cube[Face.Right, 2, 0] == Colour.Blue;
     }
-    
+
     private bool HasRgwRbwBwoCorners()
     {
         return HasWhiteCross()
                && HasRgwCorners()
                && _cube[Face.Up, 2, 2] == Colour.White
                && _cube[Face.Back, 0, 0] == Colour.Orange;
+    }
+
+    private bool HasAllCorners()
+    {
+        return HasRgwRbwBwoCorners()
+               && _cube[Face.Up, 2, 0] == Colour.White;
     }
 }
