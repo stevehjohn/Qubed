@@ -43,6 +43,10 @@ public class Solver
         }
 
         var stopwatch = Stopwatch.StartNew();
+        
+        Console.WriteLine(_cube.ToString());
+        
+        Console.WriteLine();
 
         Console.WriteLine(BruteForce(HasDaisy, MaxDepth));
         

@@ -469,14 +469,10 @@ public sealed class RubiksCube : Game
             }
         }
 
-        Console.WriteLine(cube.ToString());
-
         var solver = new Solver(cube);
 
         var result = solver.Solve();
         
-        Console.WriteLine(result.Solved);
-
         return result.Moves;
     }
 
