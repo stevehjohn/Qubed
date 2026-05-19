@@ -14,6 +14,8 @@ public class Solver
 
     private static readonly Move[] AllMoves;
 
+    private static readonly Move[] FinalMoves;
+
     private readonly List<Move> _moves = [];
 
     private readonly ConcurrentDictionary<(ulong A, ulong B, ulong C), int> _visitedDepths = [];
@@ -24,6 +26,8 @@ public class Solver
 
         AllMoves = new Move[faces.Length * 3];
 
+        FinalMoves = new Move[(faces.Length - 1) * 3];
+
         var index = 0;
 
         foreach (var face in faces)
@@ -33,6 +37,15 @@ public class Solver
             AllMoves[index++] = new Move(face, Direction.AntiClockwise);
 
             AllMoves[index++] = new Move(face, Direction.HalfTurn);
+
+            if (face != Face.Up)
+            {
+                FinalMoves[index++] = new Move(face, Direction.Clockwise);
+
+                FinalMoves[index++] = new Move(face, Direction.AntiClockwise);
+
+                FinalMoves[index++] = new Move(face, Direction.HalfTurn);
+            }
         }
     }
 
@@ -79,21 +92,21 @@ public class Solver
 
         Console.WriteLine("\nYellow Cross\n");
 
-        Console.WriteLine(BruteForce(HasYellowCross));
+        Console.WriteLine(BruteForce(HasYellowCross, FinalMoves));
 
         Console.WriteLine("\nYellow Edges\n");
 
-        Console.WriteLine(BruteForce(HasYellowCross));
+        Console.WriteLine(BruteForce(HasYellowCross, FinalMoves));
 
         Console.WriteLine("\nRemaining Corners\n");
 
-        Console.WriteLine(BruteForce(HasGryCorner));
-        
-        Console.WriteLine(BruteForce(HasRbyCorner));
-        
-        Console.WriteLine(BruteForce(HasGoyCorner));
-        
-        Console.WriteLine(BruteForce(HasBoyCorner));
+        Console.WriteLine(BruteForce(HasGryCorner, FinalMoves));
+
+        Console.WriteLine(BruteForce(HasRbyCorner, FinalMoves));
+
+        Console.WriteLine(BruteForce(HasGoyCorner, FinalMoves));
+
+        Console.WriteLine(BruteForce(HasBoyCorner, FinalMoves));
 
         Console.WriteLine(_cube.ToString());
 
@@ -106,11 +119,16 @@ public class Solver
         return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<Cube, bool> heuristic, int minDepth = MinDepth)
+    private bool BruteForce(Func<Cube, bool> heuristic, Move[] allowedMoves = null)
     {
         var stopwatch = new Stopwatch();
 
-        for (var depth = minDepth; depth <= MaxDepth; depth++)
+        if (allowedMoves == null)
+        {
+            allowedMoves = AllMoves;
+        }
+
+        for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
             Console.Write(depth);
 
@@ -123,7 +141,7 @@ public class Solver
             var innerDepth = depth;
 
             _visitedDepths.Clear();
-            
+
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
                 var cubeCopy = _cube.Clone();
@@ -132,7 +150,7 @@ public class Solver
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1))
+                if (Search(heuristic, allowedMoves, cubeCopy, newMoves, move, innerDepth - 1))
                 {
                     lock (state)
                     {
@@ -163,7 +181,7 @@ public class Solver
         return false;
     }
 
-    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth)
+    private bool Search(Func<Cube, bool> heuristic, Move[] allowedMoves, Cube cube, List<Move> moves, Move lastMove, int depth)
     {
         if (heuristic(cube))
         {
@@ -181,10 +199,10 @@ public class Solver
         {
             return false;
         }
-        
+
         _visitedDepths[key] = depth;
 
-        foreach (var move in AllMoves)
+        foreach (var move in allowedMoves)
         {
             if (moves.Count > 0)
             {
@@ -206,7 +224,7 @@ public class Solver
 
             moves.Add(move);
 
-            if (Search(heuristic, cube, moves, move, depth - 1))
+            if (Search(heuristic, allowedMoves, cube, moves, lastMove, depth - 1))
             {
                 return true;
             }
