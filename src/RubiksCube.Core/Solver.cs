@@ -98,6 +98,8 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasGoyCorner));
 
+        Console.WriteLine(BruteForce(HasBoyCorner));
+
         Console.WriteLine(_cube.ToString());
 
         stopwatch.Stop();
