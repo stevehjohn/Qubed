@@ -155,6 +155,11 @@ public class Solver
             {
                 _moves.AddRange(foundMoves);
 
+                foreach (var move in foundMoves)
+                {
+                    _cube.ApplyMove(move);
+                }
+
                 return true;
             }
         }
@@ -174,10 +179,14 @@ public class Solver
             return false;
         }
 
-        if (_visitedDepths.TryGetValue(cube.GetHash(), out var seenDepth) && seenDepth >= depth)
+        var key = cube.GetHash();
+
+        if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
         {
             return false;
         }
+        
+        _visitedDepths[key] = depth;
 
         foreach (var move in AllMoves)
         {
