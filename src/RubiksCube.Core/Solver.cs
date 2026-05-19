@@ -11,7 +11,7 @@ public class Solver
 
     private static readonly Move[] AllMoves;
 
-    private readonly Stack<Move> _moves = [];
+    private readonly List<Move> _moves = [];
 
     static Solver()
     {
@@ -71,7 +71,7 @@ public class Solver
         {
             if (_moves.Count > 0)
             {
-                var last = _moves.Peek();
+                var last = _moves[^1];
 
                 if (move.Face == last.Face)
                 {
@@ -90,7 +90,7 @@ public class Solver
             
             _cube.UndoMove();
 
-            _moves.Pop();
+            _moves.RemoveAt(_moves.Count - 1);
         }
 
         return false;
