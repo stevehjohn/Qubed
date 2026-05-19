@@ -47,6 +47,8 @@ public sealed class RubiksCube : Game
 
     private float _rotationDuration = 0.25f;
 
+    private bool _solverFinished;
+
     private const float CubieSize = 0.92f;
 
     private const float Spacing = 1.05f;
@@ -466,19 +468,24 @@ public sealed class RubiksCube : Game
 
         _isSolving = true;
 
+        _solverFinished = false;
+
         solver.SolveAsync(SolvedCallback, StepCallback);
     }
 
     private void SolvedCallback((bool Solved, IReadOnlyList<Move> Moves, TimeSpan Elapsed) result)
     {
-        _isSolving = false;
+        _solverFinished = true;
     }
 
     private void StepCallback(List<Move> moves)
     {
-        foreach (var move in moves)
+        lock (_solveLock)
         {
-            _solveQueue.Enqueue(move);
+            foreach (var move in moves)
+            {
+                _solveQueue.Enqueue(move);
+            }
         }
     }
 
@@ -529,6 +536,11 @@ public sealed class RubiksCube : Game
             }
         }
 
+        if (_solverFinished && _solveQueue.Count == 0)
+        {
+            _isSolving = false;
+        }
+        
         StartFaceRotation(move);
     }
 
