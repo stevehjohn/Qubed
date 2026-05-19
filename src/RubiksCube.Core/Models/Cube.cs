@@ -1,3 +1,4 @@
+using System.Text;
 using RubiksCube.Core.Extension;
 
 namespace RubiksCube.Core.Models;
@@ -271,5 +272,24 @@ public class Cube
                 this[slice.Face, slice.Index, target] = values[i];
             }
         }
+    }
+    
+    public override string ToString()
+    {
+        var builder = new StringBuilder();
+
+        for (var y = 0; y < 3; y++)
+        {
+            builder.Append(new string(' ', 7));
+            
+            for (var x = 0; x < 3; x++)
+            {
+                builder.Append($"{this[Face.Up, x, x].ToInitial()} ");
+            }
+            
+            builder.AppendLine();
+        }
+        
+        return builder.ToString();
     }
 }
