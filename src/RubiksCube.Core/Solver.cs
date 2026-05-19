@@ -73,11 +73,12 @@ public class Solver
                 {
                     continue;
                 }
-                
+
                 if (AxisOf(move.Face) == AxisOf(last.Face))
                 {
                     continue;
-                }            }
+                }
+            }
 
             _cube.ApplyMove(move);
 
