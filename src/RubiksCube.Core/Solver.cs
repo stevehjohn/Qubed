@@ -110,9 +110,9 @@ public class Solver
             return true;
         }
 
-        var key = _cube.ToString() + ":" + depth;
+        var hash = _cube.GetHash();
         
-        if (! _visited.Add(_cube.GetHash()))
+        if (! _visited.Add(hash))
         {
             return false;
         }
@@ -149,6 +149,8 @@ public class Solver
             _cube.UndoMove();
 
             _moves.RemoveAt(_moves.Count - 1);
+
+            _visited.Remove(hash);
         }
 
         return false;
