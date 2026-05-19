@@ -331,7 +331,7 @@ public class Solver
     private bool HasGoyCorner()
     {
         return HasRbyCorner()
-               && _cube[Face.Left, 2, 0] == Colour.Green
+               && _cube[Face.Left, 0, 2] == Colour.Green
                && _cube[Face.Back, 2, 2] == Colour.Orange
                && _cube[Face.Down, 0, 2] == Colour.Yellow;
     }
