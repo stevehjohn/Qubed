@@ -80,6 +80,8 @@ public class Solver
 
             _moves.Pop();
         }
+
+        return false;
     }
 
     private bool HasDaisy()
