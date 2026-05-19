@@ -95,11 +95,11 @@ public class Solver
         Console.WriteLine("\nRemaining Corners\n");
 
         Console.WriteLine(BruteForce(HasGryCorner));
-
+        
         Console.WriteLine(BruteForce(HasRbyCorner));
-
+        
         Console.WriteLine(BruteForce(HasGoyCorner));
-
+        
         Console.WriteLine(BruteForce(HasBoyCorner));
         
         Console.WriteLine(_cube.ToString());
