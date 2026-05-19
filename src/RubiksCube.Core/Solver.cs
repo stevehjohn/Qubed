@@ -62,14 +62,14 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
-            if (move == _moves[^1])
+            if (move == _moves.Peek())
             {
                 continue;
             }
 
             _cube.ApplyMove(move);
             
-            _moves.Add(move);
+            _moves.Push(move);
 
             if (BruteForce(heuristic))
             {
@@ -77,8 +77,8 @@ public class Solver
             }
             
             _cube.UndoMove();
-            
-            _moves.RemoveAt(_moves.Count - 1);
+
+            _moves.Pop();
         }
     }
 
