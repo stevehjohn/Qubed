@@ -95,7 +95,7 @@ public class Cube
         {
             this[face] = (Colour[,]) cube._faces[(int) face].Clone();
         }
-        
+
         _history.Clear();
     }
 
@@ -116,7 +116,7 @@ public class Cube
         var move = _history.Pop();
 
         var opposite = move.Direction.Opposite();
-        
+
         RotateFace(move.Face, opposite);
 
         RotateEdges(move.Face, opposite);
@@ -127,7 +127,7 @@ public class Cube
         RotateFace(face, direction);
 
         RotateEdges(face, direction);
-        
+
         _history.Push(new Move(face, direction));
     }
 
@@ -136,7 +136,7 @@ public class Cube
         RotateFace(move.Face, move.Direction);
 
         RotateEdges(move.Face, move.Direction);
-        
+
         _history.Push(move);
     }
 
@@ -165,7 +165,7 @@ public class Cube
 
         return true;
     }
-    
+
     private void RotateFace(Face face, Direction direction)
     {
         var matrix = this[face];
@@ -176,21 +176,21 @@ public class Cube
                 (matrix[0, 0], matrix[2, 0], matrix[2, 2], matrix[0, 2]) = (matrix[0, 2], matrix[0, 0], matrix[2, 0], matrix[2, 2]);
 
                 (matrix[1, 0], matrix[2, 1], matrix[1, 2], matrix[0, 1]) = (matrix[0, 1], matrix[1, 0], matrix[2, 1], matrix[1, 2]);
-                
+
                 break;
 
             case Direction.AntiClockwise:
                 (matrix[0, 0], matrix[2, 0], matrix[2, 2], matrix[0, 2]) = (matrix[2, 0], matrix[2, 2], matrix[0, 2], matrix[0, 0]);
 
                 (matrix[1, 0], matrix[2, 1], matrix[1, 2], matrix[0, 1]) = (matrix[2, 1], matrix[1, 2], matrix[0, 1], matrix[1, 0]);
-                
+
                 break;
 
             case Direction.HalfTurn:
                 (matrix[0, 0], matrix[2, 2], matrix[2, 0], matrix[0, 2]) = (matrix[2, 2], matrix[0, 0], matrix[0, 2], matrix[2, 0]);
 
                 (matrix[1, 0], matrix[1, 2], matrix[0, 1], matrix[2, 1]) = (matrix[1, 2], matrix[1, 0], matrix[2, 1], matrix[0, 1]);
-                
+
                 break;
         }
     }
@@ -281,7 +281,48 @@ public class Cube
             }
         }
     }
-    
+
+    public (ulong A, ulong B, ulong C) GetHash()
+    {
+        ulong a = 0;
+        
+        ulong b = 0;
+        
+        ulong c = 0;
+
+        var index = 0;
+
+        foreach (var face in Enum.GetValues<Face>())
+        {
+            for (var y = 0; y < 3; y++)
+            {
+                for (var x = 0; x < 3; x++)
+                {
+                    var value = (ulong) this[face, x, y];
+
+                    var bit = index * 3;
+
+                    if (bit < 64)
+                    {
+                        a |= value << bit;
+                    }
+                    else if (bit < 128)
+                    {
+                        b |= value << (bit - 64);
+                    }
+                    else
+                    {
+                        c |= value << (bit - 128);
+                    }
+
+                    index++;
+                }
+            }
+        }
+
+        return (a, b, c);
+    }
+
     public override string ToString()
     {
         var builder = new StringBuilder();
@@ -289,20 +330,20 @@ public class Cube
         for (var y = 0; y < 3; y++)
         {
             builder.Append(new string(' ', 7));
-            
+
             for (var x = 0; x < 3; x++)
             {
                 builder.Append($"{this[Face.Up, x, y].ToInitial()} ");
             }
-            
+
             builder.AppendLine();
         }
-        
+
         builder.AppendLine();
 
         for (var y = 0; y < 3; y++)
         {
-            foreach (var face in new[] { Face.Left, Face.Front, Face.Right, Face.Back } )
+            foreach (var face in new[] { Face.Left, Face.Front, Face.Right, Face.Back })
             {
                 for (var x = 0; x < 3; x++)
                 {
@@ -311,21 +352,21 @@ public class Cube
 
                 builder.Append(' ');
             }
-            
+
             builder.AppendLine();
         }
-        
+
         builder.AppendLine();
-        
+
         for (var y = 0; y < 3; y++)
         {
             builder.Append(new string(' ', 7));
-            
+
             for (var x = 0; x < 3; x++)
             {
                 builder.Append($"{this[Face.Down, x, y].ToInitial()} ");
             }
-            
+
             builder.AppendLine();
         }
 

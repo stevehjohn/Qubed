@@ -15,7 +15,7 @@ public class Solver
 
     private readonly List<Move> _moves = [];
 
-    private readonly HashSet<string> _visited = [];
+    private readonly HashSet<(ulong a, ulong b, ulong c)> _visited = [];
 
     static Solver()
     {
@@ -110,12 +110,12 @@ public class Solver
             return true;
         }
 
-        // var key = _cube.ToString() + ":" + depth;
-        //
-        // if (! _visited.Add(key))
-        // {
-        //     return false;
-        // }
+        var key = _cube.ToString() + ":" + depth;
+        
+        if (! _visited.Add(_cube.GetHash()))
+        {
+            return false;
+        }
 
         foreach (var move in AllMoves)
         {
