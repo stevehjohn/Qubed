@@ -5,7 +5,7 @@ namespace RubiksCube.Core;
 
 public class Solver
 {
-    private const int MinDepth = 5;
+    private const int MinDepth = 1;
 
     private const int MaxDepth = 15;
 
@@ -62,6 +62,8 @@ public class Solver
         
         Console.WriteLine(BruteForce(HasRgwRbwBwoRgyCorners));
         
+        Console.WriteLine(BruteForce(HasLeftRedMiddle));
+
         Console.WriteLine(BruteForce(HasRedMiddle));
 
         Console.WriteLine(_cube.ToString());
@@ -75,6 +77,8 @@ public class Solver
     {
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
+            Console.WriteLine(depth);
+            
             var result = Search(heuristic, depth);
 
             if (result)
@@ -111,7 +115,10 @@ public class Solver
 
                 if (AxisOf(move.Face) == AxisOf(last.Face))
                 {
-                    continue;
+                    if (move.Face < last.Face) 
+                    {
+                        continue;
+                    }
                 }
             }
 
@@ -196,10 +203,15 @@ public class Solver
 
     }
 
-    private bool HasRedMiddle()
+    private bool HasLeftRedMiddle()
     {
         return HasRgwRbwBwoRgyCorners()
-               && _cube[Face.Front, 0, 1] == Colour.Red
+               && _cube[Face.Front, 0, 1] == Colour.Red;
+    }
+
+    private bool HasRedMiddle()
+    {
+        return HasRedMiddle()
                && _cube[Face.Front, 2, 1] == Colour.Red;
     }
 }
