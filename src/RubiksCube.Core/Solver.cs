@@ -15,7 +15,7 @@ public class Solver
 
     private readonly List<Move> _moves = [];
 
-    private readonly HashSet<(ulong a, ulong b, ulong c)> _visited = [];
+    private readonly HashSet<(ulong A, ulong B, ulong C, int D)> _visited = [];
 
     static Solver()
     {
@@ -111,8 +111,8 @@ public class Solver
         }
 
         var hash = _cube.GetHash();
-        
-        if (! _visited.Add(hash))
+
+        if (! _visited.Add((hash.A, hash.B, hash.C, depth)))
         {
             return false;
         }
@@ -149,8 +149,6 @@ public class Solver
             _cube.UndoMove();
 
             _moves.RemoveAt(_moves.Count - 1);
-
-            _visited.Remove(hash);
         }
 
         return false;
