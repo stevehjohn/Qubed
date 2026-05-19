@@ -128,6 +128,8 @@ public class Solver
 
             var innerDepth = depth;
 
+            _visitedDepths.Clear();
+            
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
                 var cubeCopy = _cube.Clone();
