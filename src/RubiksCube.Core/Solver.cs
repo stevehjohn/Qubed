@@ -58,7 +58,7 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasRgwRbwBwoCorners, MaxDepth));
         
-        // Console.WriteLine(BruteForce(HasAllCorners, MaxDepth));
+        Console.WriteLine(BruteForce(HasRgwRbwBwoRgyCorners, MaxDepth));
 
         Console.WriteLine(_cube.ToString());
 
