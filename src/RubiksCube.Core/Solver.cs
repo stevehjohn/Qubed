@@ -28,23 +28,25 @@ public class Solver
 
         FinalMoves = new Move[(faces.Length - 1) * 3];
 
-        var index = 0;
+        var index1 = 0;
+        
+        var index2 = 0;
 
         foreach (var face in faces)
         {
-            AllMoves[index++] = new Move(face, Direction.Clockwise);
+            AllMoves[index1++] = new Move(face, Direction.Clockwise);
 
-            AllMoves[index++] = new Move(face, Direction.AntiClockwise);
+            AllMoves[index1++] = new Move(face, Direction.AntiClockwise);
 
-            AllMoves[index++] = new Move(face, Direction.HalfTurn);
+            AllMoves[index1++] = new Move(face, Direction.HalfTurn);
 
             if (face != Face.Up)
             {
-                FinalMoves[index++] = new Move(face, Direction.Clockwise);
+                FinalMoves[index2++] = new Move(face, Direction.Clockwise);
 
-                FinalMoves[index++] = new Move(face, Direction.AntiClockwise);
+                FinalMoves[index2++] = new Move(face, Direction.AntiClockwise);
 
-                FinalMoves[index++] = new Move(face, Direction.HalfTurn);
+                FinalMoves[index2++] = new Move(face, Direction.HalfTurn);
             }
         }
     }
@@ -123,10 +125,7 @@ public class Solver
     {
         var stopwatch = new Stopwatch();
 
-        if (allowedMoves == null)
-        {
-            allowedMoves = AllMoves;
-        }
+        allowedMoves ??= AllMoves;
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
@@ -248,7 +247,7 @@ public class Solver
         };
     }
 
-    private bool HasDaisy(Cube cube)
+    private static bool HasDaisy(Cube cube)
     {
         return cube[Face.Down, 1, 0] == Colour.White
                && cube[Face.Down, 2, 1] == Colour.White
@@ -256,7 +255,7 @@ public class Solver
                && cube[Face.Down, 0, 1] == Colour.White;
     }
 
-    private bool HasWhiteCross(Cube cube)
+    private static bool HasWhiteCross(Cube cube)
     {
         return cube[Face.Up, 1, 0] == Colour.White
                && cube[Face.Up, 2, 1] == Colour.White
@@ -268,7 +267,7 @@ public class Solver
                && cube[Face.Back, 1, 0] == Colour.Orange;
     }
 
-    private bool HasRgwCorner(Cube cube)
+    private static bool HasRgwCorner(Cube cube)
     {
         return HasWhiteCross(cube)
                && cube[Face.Up, 0, 2] == Colour.White
@@ -276,7 +275,7 @@ public class Solver
                && cube[Face.Front, 0, 0] == Colour.Red;
     }
 
-    private bool HasRbwCorners(Cube cube)
+    private static bool HasRbwCorners(Cube cube)
     {
         return HasRgwCorner(cube)
                && cube[Face.Up, 2, 2] == Colour.White
@@ -284,7 +283,7 @@ public class Solver
                && cube[Face.Right, 0, 0] == Colour.Blue;
     }
 
-    private bool HasRgwWboCorners(Cube cube)
+    private static bool HasRgwWboCorners(Cube cube)
     {
         return HasRbwCorners(cube)
                && cube[Face.Up, 2, 0] == Colour.White
@@ -292,7 +291,7 @@ public class Solver
                && cube[Face.Back, 0, 0] == Colour.Orange;
     }
 
-    private bool HasGwoCorners(Cube cube)
+    private static bool HasGwoCorners(Cube cube)
     {
         return HasRgwWboCorners(cube)
                && cube[Face.Up, 0, 0] == Colour.White
@@ -300,35 +299,35 @@ public class Solver
                && cube[Face.Back, 2, 0] == Colour.Orange;
     }
 
-    private bool HasRedGreenMiddle(Cube cube)
+    private static bool HasRedGreenMiddle(Cube cube)
     {
         return HasGwoCorners(cube)
                && cube[Face.Front, 0, 1] == Colour.Red
                && cube[Face.Left, 2, 1] == Colour.Green;
     }
 
-    private bool HasRedBlueMiddle(Cube cube)
+    private static bool HasRedBlueMiddle(Cube cube)
     {
         return HasRedGreenMiddle(cube)
                && cube[Face.Front, 2, 1] == Colour.Red
                && cube[Face.Right, 0, 1] == Colour.Blue;
     }
 
-    private bool HasOrangeGreenMiddle(Cube cube)
+    private static bool HasOrangeGreenMiddle(Cube cube)
     {
         return HasRedBlueMiddle(cube)
                && cube[Face.Back, 2, 1] == Colour.Orange
                && cube[Face.Left, 0, 1] == Colour.Green;
     }
 
-    private bool HasBlueOrangeMiddle(Cube cube)
+    private static bool HasBlueOrangeMiddle(Cube cube)
     {
         return HasOrangeGreenMiddle(cube)
                && cube[Face.Right, 2, 1] == Colour.Blue
                && cube[Face.Back, 0, 1] == Colour.Orange;
     }
 
-    private bool HasYellowCross(Cube cube)
+    private static bool HasYellowCross(Cube cube)
     {
         return HasBlueOrangeMiddle(cube)
                && cube[Face.Down, 1, 0] == Colour.Yellow
@@ -337,7 +336,7 @@ public class Solver
                && cube[Face.Down, 0, 1] == Colour.Yellow;
     }
 
-    private bool HasAlignedYellowCross(Cube cube)
+    private static bool HasAlignedYellowCross(Cube cube)
     {
         return HasYellowCross(cube)
                && cube[Face.Front, 1, 2] == Colour.Red
@@ -346,7 +345,7 @@ public class Solver
                && cube[Face.Left, 1, 2] == Colour.Green;
     }
 
-    private bool HasGryCorner(Cube cube)
+    private static bool HasGryCorner(Cube cube)
     {
         return HasAlignedYellowCross(cube)
                && cube[Face.Left, 2, 2] == Colour.Green
@@ -354,7 +353,7 @@ public class Solver
                && cube[Face.Down, 0, 0] == Colour.Yellow;
     }
 
-    private bool HasRbyCorner(Cube cube)
+    private static bool HasRbyCorner(Cube cube)
     {
         return HasGryCorner(cube)
                && cube[Face.Front, 2, 2] == Colour.Red
@@ -362,7 +361,7 @@ public class Solver
                && cube[Face.Down, 2, 0] == Colour.Yellow;
     }
 
-    private bool HasGoyCorner(Cube cube)
+    private static bool HasGoyCorner(Cube cube)
     {
         return HasRbyCorner(cube)
                && cube[Face.Left, 0, 2] == Colour.Green
@@ -370,7 +369,7 @@ public class Solver
                && cube[Face.Down, 0, 2] == Colour.Yellow;
     }
 
-    private bool HasBoyCorner(Cube cube)
+    private static bool HasBoyCorner(Cube cube)
     {
         return HasGoyCorner(cube)
                && cube[Face.Back, 0, 2] == Colour.Orange
