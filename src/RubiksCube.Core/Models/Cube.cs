@@ -286,9 +286,9 @@ public class Cube
     public (ulong A, ulong B, ulong C) GetHash()
     {
         ulong a = 0;
-        
+
         ulong b = 0;
-        
+
         ulong c = 0;
 
         var index = 0;
@@ -301,18 +301,18 @@ public class Cube
                 {
                     var value = (ulong) this[face, x, y];
 
-                    var bit = index * 3;
-
-                    switch (bit)
+                    switch (index)
                     {
-                        case < 64:
-                            a |= value << bit;
+                        case < 18:
+                            a |= value << (index * 3);
                             break;
-                        case < 128:
-                            b |= value << (bit - 64);
+                        
+                        case < 36:
+                            b |= value << ((index - 18) * 3);
                             break;
+                        
                         default:
-                            c |= value << (bit - 128);
+                            c |= value << ((index - 36) * 3);
                             break;
                     }
 
