@@ -312,7 +312,7 @@ public class Solver
 
     private bool HasGryCorner()
     {
-        return HasYellowOrangeEdge()
+        return HasYellowGreenEdge()
                && _cube[Face.Left, 2, 2] == Colour.Green
                && _cube[Face.Front, 0, 2] == Colour.Red
                && _cube[Face.Down, 0, 0] == Colour.Yellow;
