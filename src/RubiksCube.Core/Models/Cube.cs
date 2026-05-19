@@ -155,18 +155,7 @@ public class Cube
 
         return true;
     }
-
-    private static Direction Opposite(Direction direction)
-    {
-        return direction switch
-        {
-            Direction.Clockwise => Direction.AntiClockwise,
-            Direction.AntiClockwise => Direction.Clockwise,
-            Direction.HalfTurn => Direction.HalfTurn,
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
-        };
-    }
-
+    
     private void RotateFace(Face face, Direction direction)
     {
         var matrix = this[face];
