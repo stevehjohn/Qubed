@@ -113,6 +113,11 @@ public class Solver
 
     private bool BruteForce(Func<bool> heuristic, int minDepth = MinDepth)
     {
+        if (heuristic())
+        {
+            return true;
+        }
+
         var stopwatch = new Stopwatch();
         
         for (var depth = minDepth; depth <= MaxDepth; depth++)
