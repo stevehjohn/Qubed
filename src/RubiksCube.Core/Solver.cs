@@ -89,6 +89,8 @@ public class Solver
         Console.WriteLine(BruteForce(HasYellowOrangeEdge));
 
         Console.WriteLine(BruteForce(HasYellowGreenEdge));
+        
+        Console.WriteLine("\nRemaining Corners\n");
 
         Console.WriteLine(_cube.ToString());
 
