@@ -56,7 +56,7 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasRgwRbwCorners, MaxDepth)); 
 
-        // Console.WriteLine(BruteForce(HasRgwRbwBwoCorners, MaxDepth));
+        Console.WriteLine(BruteForce(HasRgwRbwBwoCorners, MaxDepth));
         
         // Console.WriteLine(BruteForce(HasAllCorners, MaxDepth));
 
@@ -163,7 +163,7 @@ public class Solver
     private bool HasRgwRbwBwoCorners()
     {
         return HasRgwRbwCorners()
-               && _cube[Face.Up, 2, 2] == Colour.White
+               && _cube[Face.Up, 2, 0] == Colour.White
                && _cube[Face.Right, 2, 0] == Colour.Blue
                && _cube[Face.Back, 0, 0] == Colour.Orange;
     }
