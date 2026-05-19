@@ -24,10 +24,10 @@ public class Cube
             {
                 Face.Down,
                 [
-                    new(Face.Right, Axis.Row, 2, false),
-                    new(Face.Back, Axis.Row, 2, false),
+                    new(Face.Front, Axis.Row, 2, false),
                     new(Face.Left, Axis.Row, 2, false),
-                    new(Face.Front, Axis.Row, 2, false)
+                    new(Face.Back, Axis.Row, 2, false),
+                    new(Face.Right, Axis.Row, 2, false)
                 ]
             },
             {

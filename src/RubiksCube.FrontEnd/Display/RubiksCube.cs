@@ -487,7 +487,7 @@ public sealed class RubiksCube : Game
             Face.Up => new Vector3(x - 1, 1, y - 1),
             Face.Front => new Vector3(x - 1, 1 - y, 1),
             Face.Left => new Vector3(-1, 1 - y, x - 1),
-            Face.Down => new Vector3(x - 1, -1, 1 - y),
+            Face.Down => new Vector3(x - 1, -1, y - 1),
             Face.Right => new Vector3(1, 1 - y, 1 - x),
             Face.Back => new Vector3(1 - x, 1 - y, -1),
             _ => throw new ArgumentOutOfRangeException(nameof(face))
