@@ -69,9 +69,14 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
-            if (_moves.Count > 0 && move == _moves.Peek())
+            if (_moves.Count > 0)
             {
-                continue;
+                var last = _moves.Peek();
+
+                if (move.Face == last.Face)
+                {
+                    continue;
+                }
             }
 
             _cube.ApplyMove(move);
