@@ -102,13 +102,13 @@ public class Solver
 
         Console.WriteLine("\nRemaining Corners\n");
 
-        Console.WriteLine(BruteForce(HasGryCorner, FinalMoves));
+        Console.WriteLine(BruteForce(HasGryCorner));
 
-        Console.WriteLine(BruteForce(HasRbyCorner, FinalMoves));
+        Console.WriteLine(BruteForce(HasRbyCorner));
 
-        Console.WriteLine(BruteForce(HasGoyCorner, FinalMoves));
+        Console.WriteLine(BruteForce(HasGoyCorner));
 
-        Console.WriteLine(BruteForce(HasBoyCorner, FinalMoves));
+        Console.WriteLine(BruteForce(HasBoyCorner));
 
         Console.WriteLine(_cube.ToString());
 
