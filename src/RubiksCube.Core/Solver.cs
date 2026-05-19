@@ -108,14 +108,14 @@ public class Solver
 
     private bool Search(Func<bool> heuristic, int depth)
     {
-        if (depth == 0)
-        {
-            return false;
-        }
-
         if (heuristic())
         {
             return true;
+        }
+
+        if (depth == 0)
+        {
+            return false;
         }
 
         var hash = _cube.GetHash();
