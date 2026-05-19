@@ -173,21 +173,24 @@ public class Cube
         switch (direction)
         {
             case Direction.Clockwise:
-                // Correct Clockwise for [x, y]: Top-Left [0,0] goes to Top-Right [2,0]
                 (matrix[0, 0], matrix[2, 0], matrix[2, 2], matrix[0, 2]) = (matrix[0, 2], matrix[0, 0], matrix[2, 0], matrix[2, 2]);
+
                 (matrix[1, 0], matrix[2, 1], matrix[1, 2], matrix[0, 1]) = (matrix[0, 1], matrix[1, 0], matrix[2, 1], matrix[1, 2]);
+                
                 break;
 
             case Direction.AntiClockwise:
-                // Correct Anti-Clockwise for [x, y]: Top-Left [0,0] goes to Bottom-Left [0,2]
                 (matrix[0, 0], matrix[2, 0], matrix[2, 2], matrix[0, 2]) = (matrix[2, 0], matrix[2, 2], matrix[0, 2], matrix[0, 0]);
+
                 (matrix[1, 0], matrix[2, 1], matrix[1, 2], matrix[0, 1]) = (matrix[2, 1], matrix[1, 2], matrix[0, 1], matrix[1, 0]);
+                
                 break;
 
             case Direction.HalfTurn:
-                // This remains correct because 180 degrees is direction-agnostic
                 (matrix[0, 0], matrix[2, 2], matrix[2, 0], matrix[0, 2]) = (matrix[2, 2], matrix[0, 0], matrix[0, 2], matrix[2, 0]);
+
                 (matrix[1, 0], matrix[1, 2], matrix[0, 1], matrix[2, 1]) = (matrix[1, 2], matrix[1, 0], matrix[2, 1], matrix[0, 1]);
+                
                 break;
         }
     }
