@@ -110,9 +110,10 @@ public class Solver
 
     private bool HasDaisy()
     {
-        return _cube[Face.Down, 1, 0] == Colour.White
-               && _cube[Face.Down, 2, 1] == Colour.White
-               && _cube[Face.Down, 1, 2] == Colour.White
-               && _cube[Face.Down, 0, 1] == Colour.White;
+        return _cube[Face.Up, 1, 1] == Colour.Yellow
+               && _cube[Face.Up, 1, 0] == Colour.White
+               && _cube[Face.Up, 2, 1] == Colour.White
+               && _cube[Face.Up, 1, 2] == Colour.White
+               && _cube[Face.Up, 0, 1] == Colour.White;
     }
 }

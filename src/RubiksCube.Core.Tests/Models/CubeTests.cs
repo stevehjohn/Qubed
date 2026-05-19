@@ -45,6 +45,27 @@ public class CubeTests
 
         AssertCubeEqual(expected, cube);
     }
+
+    [Fact]
+    public void DownClockwiseCyclesBottomRowsInSingmasterOrder()
+    {
+        var cube = new Cube();
+
+        cube.ApplyMove(Face.Down, Direction.Clockwise);
+
+        AssertRow(cube, Face.Front, 2, Colour.Green);
+        AssertRow(cube, Face.Right, 2, Colour.Red);
+        AssertRow(cube, Face.Back, 2, Colour.Blue);
+        AssertRow(cube, Face.Left, 2, Colour.Orange);
+    }
+
+    private static void AssertRow(Cube cube, Face face, int y, Colour expected)
+    {
+        for (var x = 0; x < 3; x++)
+        {
+            Assert.Equal(expected, cube[face, x, y]);
+        }
+    }
     
     private static void AssertCubeEqual(Cube expected, Cube actual)
     {
