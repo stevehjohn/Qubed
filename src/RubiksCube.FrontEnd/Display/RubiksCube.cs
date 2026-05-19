@@ -436,8 +436,6 @@ public sealed class RubiksCube : Game
         }
         
         FindSolveMoves();
-        
-        _isSolving = true;
     }
 
     private void FindSolveMoves()
@@ -470,7 +468,9 @@ public sealed class RubiksCube : Game
             {
                 _solveQueue.Enqueue(move);
             }
-            
+                    
+            _isSolving = true;
+
             StartNextSolveRotation();
         }
         else
