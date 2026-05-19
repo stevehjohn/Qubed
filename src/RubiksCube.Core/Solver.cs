@@ -86,11 +86,11 @@ public class Solver
 
         Console.WriteLine("\nYellow Cross\n");
 
-        Console.WriteLine(BruteForce(HasYellowCross, Face.Up));
+        Console.WriteLine(BruteForce(HasYellowCross, true));
 
         Console.WriteLine("\nYellow Edges\n");
 
-        Console.WriteLine(BruteForce(HasAlignedYellowCross, Face.Up));
+        Console.WriteLine(BruteForce(HasAlignedYellowCross, true));
 
         Console.WriteLine("\nRemaining Corners\n");
 
@@ -113,7 +113,7 @@ public class Solver
         return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<Cube, bool> heuristic, params Face[] excludedFaces)
+    private bool BruteForce(Func<Cube, bool> heuristic, bool excludeUpFace = false)
     {
         var stopwatch = new Stopwatch();
 
@@ -133,7 +133,7 @@ public class Solver
 
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
-                if (excludedFaces.Contains(move.Face))
+                if (move.Face == Face.Up && excludeUpFace)
                 {
                     return;
                 }
@@ -144,7 +144,7 @@ public class Solver
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludedFaces))
+                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFace))
                 {
                     lock (state)
                     {
@@ -175,7 +175,7 @@ public class Solver
         return false;
     }
 
-    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, params Face[] excludedFaces)
+    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFace)
     {
         if (heuristic(cube))
         {
@@ -198,7 +198,7 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
-            if (excludedFaces.Contains(move.Face))
+            if (move.Face == Face.Up && excludeUpFace)
             {
                 continue;
             }
@@ -223,7 +223,7 @@ public class Solver
 
             moves.Add(move);
 
-            if (Search(heuristic, cube, moves, move, depth - 1, excludedFaces))
+            if (Search(heuristic, cube, moves, move, depth - 1, excludeUpFace))
             {
                 return true;
             }
