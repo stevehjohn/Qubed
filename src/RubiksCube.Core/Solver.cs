@@ -109,11 +109,9 @@ public class Solver
         return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<Cube, bool> heuristic, Move[] allowedMoves = null)
+    private bool BruteForce(Func<Cube, bool> heuristic)
     {
         var stopwatch = new Stopwatch();
-
-        allowedMoves ??= AllMoves;
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
@@ -137,7 +135,7 @@ public class Solver
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, allowedMoves, cubeCopy, newMoves, move, innerDepth - 1))
+                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1))
                 {
                     lock (state)
                     {
@@ -168,7 +166,7 @@ public class Solver
         return false;
     }
 
-    private bool Search(Func<Cube, bool> heuristic, Move[] allowedMoves, Cube cube, List<Move> moves, Move lastMove, int depth)
+    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth)
     {
         if (heuristic(cube))
         {
@@ -189,7 +187,7 @@ public class Solver
 
         _visitedDepths[key] = depth;
 
-        foreach (var move in allowedMoves)
+        foreach (var move in AllMoves)
         {
             if (moves.Count > 0)
             {
@@ -211,7 +209,7 @@ public class Solver
 
             moves.Add(move);
 
-            if (Search(heuristic, allowedMoves, cube, moves, lastMove, depth - 1))
+            if (Search(heuristic, cube, moves, lastMove, depth - 1))
             {
                 return true;
             }
