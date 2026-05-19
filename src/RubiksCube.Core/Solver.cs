@@ -338,7 +338,7 @@ public class Solver
 
     private bool HasBoyCorner()
     {
-        return HasGryCorner()
+        return HasGoyCorner()
                && _cube[Face.Back, 0, 2] == Colour.Orange
                && _cube[Face.Right, 2, 2] == Colour.Blue
                && _cube[Face.Down, 2, 2] == Colour.Yellow;
