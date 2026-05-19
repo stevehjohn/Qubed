@@ -82,8 +82,8 @@ public class Cube
                 this[Face.Down, x, y] = Colour.Yellow;
                 this[Face.Front, x, y] = Colour.Red;
                 this[Face.Back, x, y] = Colour.Orange;
-                this[Face.Left, x, y] = Colour.Blue;
-                this[Face.Right, x, y] = Colour.Green;
+                this[Face.Left, x, y] = Colour.Green;
+                this[Face.Right, x, y] = Colour.Blue;
             }
         }
     }

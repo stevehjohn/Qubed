@@ -69,8 +69,8 @@ public sealed class RubiksCube : Game
         Color.Yellow,
         Color.Red,
         Color.Orange,
-        Color.Blue,
-        Color.Green
+        Color.Green,
+        Color.Blue
     ];
 
     public RubiksCube()

@@ -18,8 +18,8 @@ White  | Up
 Yellow | Down
 Red    | Front
 Orange | Back
-Blue   | Left
-Green  | Right
+Blue   | Right
+Green  | Left
 
 ### Net Layout
 
