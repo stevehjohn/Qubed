@@ -193,6 +193,12 @@ public sealed class RubiksCube : Game
 
     private void UpdateMouseControls(MouseState mouse)
     {
+        if (! IsMouseInsideClientArea(mouse))
+        {
+            _mouseDragMode = MouseDragMode.None;
+            return;
+        }
+
         _mouseDragMode = mouse.LeftButton switch
         {
             ButtonState.Pressed when _previousMouse.LeftButton == ButtonState.Released => TryStartMouseFaceRotation(mouse) ? MouseDragMode.FaceTurn : MouseDragMode.Orbit,
@@ -216,6 +222,16 @@ public sealed class RubiksCube : Game
         _cameraDistance = MathHelper.Clamp(_cameraDistance - scrollDelta * MouseZoomScale, MinCameraDistance, MaxCameraDistance);
 
         UpdateView();
+    }
+
+    private bool IsMouseInsideClientArea(MouseState mouse)
+    {
+        var viewport = GraphicsDevice.Viewport;
+
+        return mouse.X >= 0
+               && mouse.Y >= 0
+               && mouse.X < viewport.Width
+               && mouse.Y < viewport.Height;
     }
 
     private bool TryStartMouseFaceRotation(MouseState mouse)
@@ -527,7 +543,7 @@ public sealed class RubiksCube : Game
     private void StartNextSolveRotation()
     {
         Move move;
-        
+
         lock (_solveLock)
         {
             if (! _solveQueue.TryDequeue(out move))
@@ -540,7 +556,7 @@ public sealed class RubiksCube : Game
         {
             _isSolving = false;
         }
-        
+
         StartFaceRotation(move);
     }
 
