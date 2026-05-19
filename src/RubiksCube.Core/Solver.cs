@@ -53,6 +53,14 @@ public class Solver
         Console.WriteLine();
         
         Console.WriteLine(_cube.ToString());
+        
+        Console.WriteLine();
+
+        Console.WriteLine(BruteForce(HasWhiteCross, MaxDepth));
+        
+        Console.WriteLine();
+        
+        Console.WriteLine(_cube.ToString());
 
         stopwatch.Stop();
 
@@ -122,5 +130,13 @@ public class Solver
                && _cube[Face.Down, 2, 1] == Colour.White
                && _cube[Face.Down, 1, 2] == Colour.White
                && _cube[Face.Down, 0, 1] == Colour.White;
+    }
+
+    private bool HasWhiteCross()
+    {
+        return _cube[Face.Up, 1, 0] == Colour.White
+               && _cube[Face.Up, 2, 1] == Colour.White
+               && _cube[Face.Up, 1, 2] == Colour.White
+               && _cube[Face.Up, 0, 1] == Colour.White;
     }
 }
