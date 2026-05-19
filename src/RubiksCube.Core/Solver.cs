@@ -42,15 +42,22 @@ public class Solver
 
         var stopwatch = Stopwatch.StartNew();
 
-        FindDaisyMoves();
+        BruteForce(HasDaisy);
         
         stopwatch.Stop();
 
         return (false, _moves, stopwatch.Elapsed);
     }
 
-    private void FindDaisyMoves()
+    private void BruteForce(Func<bool> heuristic)
     {
-        // TODO.
+    }
+
+    private bool HasDaisy()
+    {
+        return _cube[Face.Down, 1, 0] == Colour.Yellow
+               && _cube[Face.Down, 2, 1] == Colour.Yellow
+               && _cube[Face.Down, 1, 2] == Colour.Yellow
+               && _cube[Face.Down, 0, 1] == Colour.Yellow;
     }
 }
