@@ -82,22 +82,22 @@ public class Solver
 
         Console.WriteLine("\nMiddle\n");
 
-        // Console.WriteLine(BruteForce(HasRedGreenMiddle));
-        //
-        // Console.WriteLine(BruteForce(HasRedBlueMiddle));
-        //
-        // Console.WriteLine(BruteForce(HasOrangeGreenMiddle));
-        //
-        // Console.WriteLine(BruteForce(HasBlueOrangeMiddle));
-        //
-        // Console.WriteLine("\nYellow Cross\n");
-        //
-        // Console.WriteLine(BruteForce(HasYellowCross, true));
-        //
-        // Console.WriteLine("\nYellow Edges\n");
-        //
-        // Console.WriteLine(BruteForce(HasAlignedYellowCross, true));
-        //
+        Console.WriteLine(BruteForce(HasRedGreenMiddle));
+        
+        Console.WriteLine(BruteForce(HasRedBlueMiddle));
+        
+        Console.WriteLine(BruteForce(HasOrangeGreenMiddle));
+        
+        Console.WriteLine(BruteForce(HasBlueOrangeMiddle));
+        
+        Console.WriteLine("\nYellow Cross\n");
+        
+        Console.WriteLine(BruteForce(HasYellowCross, true));
+        
+        Console.WriteLine("\nYellow Edges\n");
+        
+        Console.WriteLine(BruteForce(HasAlignedYellowCross, true));
+        
         // Console.WriteLine("\nRemaining Corners\n");
 
         // Console.WriteLine(BruteForce(HasGryCorner));
