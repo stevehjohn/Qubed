@@ -289,6 +289,8 @@ public class Cube
             
             builder.AppendLine();
         }
+        
+        builder.AppendLine();
 
         for (var y = 0; y < 3; y++)
         {
@@ -300,6 +302,20 @@ public class Cube
                 }
 
                 builder.Append(' ');
+            }
+            
+            builder.AppendLine();
+        }
+        
+        builder.AppendLine();
+        
+        for (var y = 0; y < 3; y++)
+        {
+            builder.Append(new string(' ', 7));
+            
+            for (var x = 0; x < 3; x++)
+            {
+                builder.Append($"{this[Face.Down, x, x].ToInitial()} ");
             }
             
             builder.AppendLine();
