@@ -218,9 +218,13 @@ public sealed class RubiksCube : Game
 
         var keyboard = Keyboard.GetState();
 
-        var counterClockwise = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift);
+        var direction = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift)
+            ? Direction.AntiClockwise
+            : keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl)
+                ? Direction.HalfTurn
+                : Direction.Clockwise;
 
-        StartFaceRotation(new Move(face, counterClockwise ? Direction.AntiClockwise : Direction.Clockwise));
+        StartFaceRotation(new Move(face, direction));
 
         return true;
     }

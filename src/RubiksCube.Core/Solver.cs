@@ -17,7 +17,7 @@ public class Solver
     {
         var faces = Enum.GetValues<Face>();
 
-        AllMoves = new Move[faces.Length * 2];
+        AllMoves = new Move[faces.Length * 3];
 
         var index = 0;
 
@@ -27,7 +27,7 @@ public class Solver
             
             AllMoves[index++] = new Move(face, Direction.AntiClockwise);
 
-            //AllMoves[index++] = new Move(face, Direction.HalfTurn);
+            AllMoves[index++] = new Move(face, Direction.HalfTurn);
         }
     }
 
