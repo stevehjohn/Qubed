@@ -333,4 +333,12 @@ public class Solver
                && _cube[Face.Back, 2, 2] == Colour.Orange
                && _cube[Face.Down, 0, 2] == Colour.Yellow;
     }
+
+    private bool HasBoyCorner()
+    {
+        return HasRbyCorner()
+               && _cube[Face.Back, 2, 0] == Colour.Orange
+               && _cube[Face.Right, 2, 2] == Colour.Blue
+               && _cube[Face.Down, 2, 2] == Colour.Yellow;
+    }
 }
