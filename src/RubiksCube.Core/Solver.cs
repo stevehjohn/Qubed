@@ -223,7 +223,7 @@ public class Solver
 
             moves.Add(move);
 
-            if (Search(heuristic, cube, moves, lastMove, depth - 1))
+            if (Search(heuristic, cube, moves, move, depth - 1, excludedFaces))
             {
                 return true;
             }
