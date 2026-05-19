@@ -64,21 +64,21 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasRgwRbwBwoGwoCorners));
 
-        Console.WriteLine(BruteForce(HasLeftRedMiddle));
-
-        Console.WriteLine(BruteForce(HasRedMiddle));
-
-        Console.WriteLine(BruteForce(HasLeftGreenMiddle));
-
-        Console.WriteLine(BruteForce(HasGreenMiddle));
-
-        Console.WriteLine(BruteForce(HasLeftBlueMiddle));
-
-        Console.WriteLine(BruteForce(HasBlueMiddle));
-
-        Console.WriteLine(BruteForce(HasLeftOrangeMiddle));
-
-        Console.WriteLine(BruteForce(HasOrangeMiddle));
+        // Console.WriteLine(BruteForce(HasLeftRedMiddle));
+        //
+        // Console.WriteLine(BruteForce(HasRedMiddle));
+        //
+        // Console.WriteLine(BruteForce(HasLeftGreenMiddle));
+        //
+        // Console.WriteLine(BruteForce(HasGreenMiddle));
+        //
+        // Console.WriteLine(BruteForce(HasLeftBlueMiddle));
+        //
+        // Console.WriteLine(BruteForce(HasBlueMiddle));
+        //
+        // Console.WriteLine(BruteForce(HasLeftOrangeMiddle));
+        //
+        // Console.WriteLine(BruteForce(HasOrangeMiddle));
 
         Console.WriteLine(_cube.ToString());
 
