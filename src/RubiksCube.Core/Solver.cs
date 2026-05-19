@@ -53,21 +53,21 @@ public class Solver
         Console.WriteLine(_cube.ToString());
 
         Console.WriteLine(BruteForce(HasDaisy));
-        
+
         Console.WriteLine(BruteForce(HasWhiteCross));
-        
+
         Console.WriteLine(BruteForce(HasRgwCorner));
 
-        Console.WriteLine(BruteForce(HasRgwRbwCorners)); 
+        Console.WriteLine(BruteForce(HasRgwRbwCorners));
 
         Console.WriteLine(BruteForce(HasRgwRbwBwoCorners));
-        
+
         Console.WriteLine(BruteForce(HasRgwRbwBwoRgyCorners));
-        
+
         Console.WriteLine(BruteForce(HasLeftRedMiddle));
 
         Console.WriteLine(BruteForce(HasRedMiddle));
-        
+
         Console.WriteLine(BruteForce(HasLeftGreenMiddle));
 
         Console.WriteLine(BruteForce(HasGreenMiddle));
@@ -79,14 +79,14 @@ public class Solver
         return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<bool> heuristic)
+    private bool BruteForce(Func<bool> heuristic, int minDepth = MinDepth)
     {
-        for (var depth = MinDepth; depth <= MaxDepth; depth++)
+        for (var depth = minDepth; depth <= MaxDepth; depth++)
         {
             Console.WriteLine(depth);
-            
+
             _visited.Clear();
-            
+
             var result = Search(heuristic, depth);
 
             if (result)
@@ -109,11 +109,14 @@ public class Solver
         {
             return true;
         }
-        var key = _cube.ToString() + ":" + depth;
-        if (!_visited.Add(key))
-        {
-            return false;
-        }
+
+        // var key = _cube.ToString() + ":" + depth;
+        //
+        // if (! _visited.Add(key))
+        // {
+        //     return false;
+        // }
+
         foreach (var move in AllMoves)
         {
             if (_moves.Count > 0)
@@ -127,7 +130,7 @@ public class Solver
 
                 if (AxisOf(move.Face) == AxisOf(last.Face))
                 {
-                    if (move.Face < last.Face) 
+                    if (move.Face < last.Face)
                     {
                         continue;
                     }
@@ -212,7 +215,6 @@ public class Solver
                && _cube[Face.Up, 0, 0] == Colour.White
                && _cube[Face.Left, 2, 2] == Colour.Green
                && _cube[Face.Down, 0, 0] == Colour.Yellow;
-
     }
 
     private bool HasLeftRedMiddle()
