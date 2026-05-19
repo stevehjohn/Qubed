@@ -24,7 +24,7 @@ public class Solver
         foreach (var face in faces)
         {
             AllMoves[index++] = new Move(face, Direction.Clockwise);
-            
+
             AllMoves[index++] = new Move(face, Direction.AntiClockwise);
 
             AllMoves[index++] = new Move(face, Direction.HalfTurn);
@@ -43,15 +43,15 @@ public class Solver
         }
 
         var stopwatch = Stopwatch.StartNew();
-        
+
         Console.WriteLine(_cube.ToString());
-        
+
         Console.WriteLine(BruteForce(HasDaisy, MaxDepth));
 
         Console.WriteLine(BruteForce(HasWhiteCross, MaxDepth));
-        
+
         // Console.WriteLine(BruteForce(HasWhiteCorners, MaxDepth));
-        
+
         Console.WriteLine(_cube.ToString());
 
         stopwatch.Stop();
@@ -131,18 +131,14 @@ public class Solver
                && _cube[Face.Up, 1, 2] == Colour.White
                && _cube[Face.Up, 0, 1] == Colour.White
                && _cube[Face.Left, 1, 0] == Colour.Green
-               && _cube[Face.Front, 1, 0] ==Colour.Red
-               && _cube[Face.Right, 1, 0] ==Colour.Blue
-               && _cube[Face.Back, 1, 0] ==Colour.Orange;
+               && _cube[Face.Front, 1, 0] == Colour.Red
+               && _cube[Face.Right, 1, 0] == Colour.Blue
+               && _cube[Face.Back, 1, 0] == Colour.Orange;
     }
 
     private bool HasWhiteCorners()
     {
-        return _cube[Face.Up, 1, 0] == Colour.White
-               && _cube[Face.Up, 2, 1] == Colour.White
-               && _cube[Face.Up, 1, 2] == Colour.White
-               && _cube[Face.Up, 0, 1] == Colour.White
-               && _cube[Face.Up, 0, 0] == Colour.White
+        return _cube[Face.Up, 0, 0] == Colour.White
                && _cube[Face.Up, 2, 0] == Colour.White
                && _cube[Face.Up, 2, 2] == Colour.White
                && _cube[Face.Up, 0, 2] == Colour.White;
