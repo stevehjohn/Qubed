@@ -101,13 +101,19 @@ public class Solver
 
     private bool BruteForce(Func<bool> heuristic, int minDepth = MinDepth)
     {
+        var stopwatch = new Stopwatch();
+        
         for (var depth = minDepth; depth <= MaxDepth; depth++)
         {
-            Console.WriteLine(depth);
+            Console.Write(depth);
 
+            stopwatch.Restart();
+            
             _visited.Clear();
 
             var result = Search(heuristic, depth);
+            
+            Console.WriteLine($" {stopwatch.Elapsed}");
 
             if (result)
             {
