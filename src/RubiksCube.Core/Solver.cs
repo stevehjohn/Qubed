@@ -12,44 +12,32 @@ public class Solver
 
     private readonly Cube _cube;
 
-    private static readonly Move[] AllMoves;
+    private static readonly Move[] AllMoves =
+    [
+        new(Face.Down, Direction.Clockwise),
+        new(Face.Down, Direction.AntiClockwise),
+        new(Face.Down, Direction.HalfTurn),
 
-    private static readonly Move[] FinalMoves;
+        new(Face.Front, Direction.Clockwise),
+        new(Face.Front, Direction.AntiClockwise),
+        new(Face.Front, Direction.HalfTurn),
+
+        new(Face.Right, Direction.Clockwise),
+        new(Face.Right, Direction.AntiClockwise),
+        new(Face.Right, Direction.HalfTurn),
+
+        new(Face.Left, Direction.Clockwise),
+        new(Face.Left, Direction.AntiClockwise),
+        new(Face.Left, Direction.HalfTurn),
+
+        new(Face.Back, Direction.Clockwise),
+        new(Face.Back, Direction.AntiClockwise),
+        new(Face.Back, Direction.HalfTurn),
+    ];
 
     private readonly List<Move> _moves = [];
 
     private readonly ConcurrentDictionary<(ulong A, ulong B, ulong C), int> _visitedDepths = [];
-
-    static Solver()
-    {
-        var faces = Enum.GetValues<Face>();
-
-        AllMoves = new Move[faces.Length * 3];
-
-        FinalMoves = new Move[(faces.Length - 1) * 3];
-
-        var index1 = 0;
-        
-        var index2 = 0;
-
-        foreach (var face in faces)
-        {
-            AllMoves[index1++] = new Move(face, Direction.Clockwise);
-
-            AllMoves[index1++] = new Move(face, Direction.AntiClockwise);
-
-            AllMoves[index1++] = new Move(face, Direction.HalfTurn);
-
-            if (face != Face.Up)
-            {
-                FinalMoves[index2++] = new Move(face, Direction.Clockwise);
-
-                FinalMoves[index2++] = new Move(face, Direction.AntiClockwise);
-
-                FinalMoves[index2++] = new Move(face, Direction.HalfTurn);
-            }
-        }
-    }
 
     public Solver(Cube cube) => _cube = cube.Clone();
 
@@ -94,11 +82,11 @@ public class Solver
 
         Console.WriteLine("\nYellow Cross\n");
 
-        Console.WriteLine(BruteForce(HasYellowCross, FinalMoves));
+        Console.WriteLine(BruteForce(HasYellowCross));
 
         Console.WriteLine("\nYellow Edges\n");
 
-        Console.WriteLine(BruteForce(HasYellowCross, FinalMoves));
+        Console.WriteLine(BruteForce(HasYellowCross));
 
         Console.WriteLine("\nRemaining Corners\n");
 
