@@ -284,7 +284,7 @@ public class Cube
             
             for (var x = 0; x < 3; x++)
             {
-                builder.Append($"{this[Face.Up, x, x].ToInitial()} ");
+                builder.Append($"{this[Face.Up, x, y].ToInitial()} ");
             }
             
             builder.AppendLine();
@@ -298,7 +298,7 @@ public class Cube
             {
                 for (var x = 0; x < 3; x++)
                 {
-                    builder.Append($"{this[face, x, x].ToInitial()} ");
+                    builder.Append($"{this[face, x, y].ToInitial()} ");
                 }
 
                 builder.Append(' ');
@@ -315,7 +315,7 @@ public class Cube
             
             for (var x = 0; x < 3; x++)
             {
-                builder.Append($"{this[Face.Down, x, x].ToInitial()} ");
+                builder.Append($"{this[Face.Down, x, y].ToInitial()} ");
             }
             
             builder.AppendLine();

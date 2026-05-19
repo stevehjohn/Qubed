@@ -51,51 +51,6 @@ public class Solver
 
     private void FindWhiteCross()
     {
-        Console.WriteLine(SearchWhiteCross(40, null));
-    }
-
-    private bool SearchWhiteCross(int depth, Face? previousFace)
-    {
-        if (HasWhiteCross())
-        {
-            return true;
-        }
-
-        if (depth == 0)
-        {
-            return false;
-        }
-
-        foreach (var move in AllMoves)
-        {
-            if (move.Face == previousFace)
-            {
-                continue;
-            }
-
-            _cube.ApplyMove(move.Face, move.Direction);
-            
-            _moves.Add(move);
-
-            if (SearchWhiteCross(depth - 1, move.Face))
-            {
-                return true;
-            }
-
-            _moves.RemoveAt(_moves.Count - 1);
-            
-            _cube.UndoMove();
-        }
-
-        return false;
-    }
-
-    private bool HasWhiteCross()
-    {
-        return
-            _cube[Face.Up, 1, 0] == Colour.White &&
-            _cube[Face.Up, 0, 1] == Colour.White &&
-            _cube[Face.Up, 2, 1] == Colour.White &&
-            _cube[Face.Up, 1, 2] == Colour.White;
+        // TODO.
     }
 }
