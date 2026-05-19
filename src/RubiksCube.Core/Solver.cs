@@ -137,6 +137,10 @@ public class Solver
         return _cube[Face.Up, 1, 0] == Colour.White
                && _cube[Face.Up, 2, 1] == Colour.White
                && _cube[Face.Up, 1, 2] == Colour.White
-               && _cube[Face.Up, 0, 1] == Colour.White;
+               && _cube[Face.Up, 0, 1] == Colour.White
+               && _cube[Face.Left, 1, 0] == Colour.Green
+               && _cube[Face.Front, 1, 0] ==Colour.Red
+               && _cube[Face.Right, 1, 0] ==Colour.Blue
+               && _cube[Face.Back, 1, 0] ==Colour.Orange;
     }
 }
