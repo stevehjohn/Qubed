@@ -36,7 +36,7 @@ public class Solver
 
         new(Face.Up, Direction.Clockwise),
         new(Face.Up, Direction.AntiClockwise),
-        new(Face.Up, Direction.HalfTurn),
+        new(Face.Up, Direction.HalfTurn)
     ];
 
     private readonly List<Move> _moves = [];
@@ -51,7 +51,7 @@ public class Solver
             .ContinueWith(task => { callback(task.Result); }, TaskContinuationOptions.OnlyOnRanToCompletion);
     }
 
-    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
+    private (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
     {
         _moves.Clear();
 
