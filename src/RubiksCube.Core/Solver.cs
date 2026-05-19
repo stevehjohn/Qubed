@@ -47,12 +47,8 @@ public class Solver
         Console.WriteLine(BruteForce(HasDaisy, MaxDepth));
         
         stopwatch.Stop();
-
-        var moves = _moves.ToList();
-
-        moves.Reverse();
-            
-        return (_cube.IsSolved(), moves, stopwatch.Elapsed);
+        
+        return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
 
     private bool BruteForce(Func<bool> heuristic, int depth)
@@ -81,7 +77,7 @@ public class Solver
 
             _cube.ApplyMove(move);
             
-            _moves.Push(move);
+            _moves.Add(move);
 
             if (BruteForce(heuristic, depth - 1))
             {
