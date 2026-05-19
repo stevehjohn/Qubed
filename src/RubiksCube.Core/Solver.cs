@@ -96,6 +96,8 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasRbyCorner));
 
+        Console.WriteLine(BruteForce(HasGoyCorner));
+
         Console.WriteLine(_cube.ToString());
 
         stopwatch.Stop();
