@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Input;
 using RubiksCube.Core;
 using RubiksCube.Core.Models;
@@ -576,11 +577,32 @@ public sealed class RubiksCube : Game
         return CreateTurnMatrix(rotation.Face, rotation.Direction == Direction.Clockwise, easedProgress * QuarterTurn);
     }
 
-    private static Matrix CreateTurnMatrix(Face face, bool clockwise, float angle)
+    private static Matrix CreateTurnMatrix(Face face, Direction direction, float angle)
     {
         var outwardNormal = NormalForFace(face);
 
-        var signedAngle = (clockwise ? -angle : angle) * AxisSign(outwardNormal);
+        float signedAngle = 0;
+        
+        switch (direction)
+        {
+            case Direction.Clockwise:
+                signedAngle = -angle;
+                
+                break;
+            
+            case Direction.AntiClockwise:
+                signedAngle = angle;
+                
+                break;
+            
+            case Direction.HalfTurn:
+                signedAngle = angle * 2;
+                
+                break;
+                
+        }
+
+        signedAngle *= AxisSign(outwardNormal);
 
         return Matrix.CreateFromAxisAngle(AbsAxis(outwardNormal), signedAngle);
     }
