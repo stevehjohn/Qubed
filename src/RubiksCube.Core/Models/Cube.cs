@@ -1,5 +1,5 @@
 using System.Text;
-using RubiksCube.Core.Extension;
+using RubiksCube.Core.Extensions;
 
 namespace RubiksCube.Core.Models;
 
@@ -170,6 +170,7 @@ public class Cube
     {
         var matrix = this[face];
 
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (direction)
         {
             case Direction.Clockwise:
@@ -302,17 +303,17 @@ public class Cube
 
                     var bit = index * 3;
 
-                    if (bit < 64)
+                    switch (bit)
                     {
-                        a |= value << bit;
-                    }
-                    else if (bit < 128)
-                    {
-                        b |= value << (bit - 64);
-                    }
-                    else
-                    {
-                        c |= value << (bit - 128);
+                        case < 64:
+                            a |= value << bit;
+                            break;
+                        case < 128:
+                            b |= value << (bit - 64);
+                            break;
+                        default:
+                            c |= value << (bit - 128);
+                            break;
                     }
 
                     index++;

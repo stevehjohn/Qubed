@@ -1,6 +1,6 @@
 using RubiksCube.Core.Models;
 
-namespace RubiksCube.Core.Extension;
+namespace RubiksCube.Core.Extensions;
 
 public static class DirectionExtensions
 {

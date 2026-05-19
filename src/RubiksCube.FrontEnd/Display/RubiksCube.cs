@@ -580,26 +580,13 @@ public sealed class RubiksCube : Game
     {
         var outwardNormal = NormalForFace(face);
 
-        float signedAngle = 0;
-        
-        switch (direction)
+        var signedAngle = direction switch
         {
-            case Direction.Clockwise:
-                signedAngle = -angle;
-                
-                break;
-            
-            case Direction.AntiClockwise:
-                signedAngle = angle;
-                
-                break;
-            
-            case Direction.HalfTurn:
-                signedAngle = angle * 2;
-                
-                break;
-                
-        }
+            Direction.Clockwise => -angle,
+            Direction.AntiClockwise => angle,
+            Direction.HalfTurn => angle * 2,
+            _ => 0
+        };
 
         signedAngle *= AxisSign(outwardNormal);
 
