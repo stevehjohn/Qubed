@@ -535,7 +535,7 @@ public sealed class RubiksCube : Game
 
     private void CompleteFaceRotation(FaceRotation rotation)
     {
-        var turn = CreateTurnMatrix(rotation.Face, rotation.Direction == Direction.Clockwise, QuarterTurn);
+        var turn = CreateTurnMatrix(rotation.Face, rotation.Direction == Direction.AntiClockwise, QuarterTurn);
 
         foreach (var cubie in _cubies.Where(cubie => IsCubieOnFace(cubie, rotation.Face)))
         {
