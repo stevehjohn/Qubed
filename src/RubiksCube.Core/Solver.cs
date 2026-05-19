@@ -42,14 +42,14 @@ public class Solver
 
         var stopwatch = Stopwatch.StartNew();
 
-        FindWhiteCross();
+        FindDaisyMoves();
         
         stopwatch.Stop();
 
         return (false, _moves, stopwatch.Elapsed);
     }
 
-    private void FindWhiteCross()
+    private void FindDaisyMoves()
     {
         // TODO.
     }
