@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using RubiksCube.Core.Models;
 
 namespace RubiksCube.Core;
@@ -41,17 +40,15 @@ public class Solver
 
     private readonly List<Move> _moves = [];
 
-    private readonly ConcurrentDictionary<(ulong A, ulong B, ulong C), int> _visitedDepths = [];
-
     public Solver(Cube cube) => _cube = cube.Clone();
 
-    public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback)
+    public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback, Action<List<Move>> stepCallback = null)
     {
-        Task.Run(Solve)
+        Task.Run(() => Solve(stepCallback))
             .ContinueWith(task => { callback(task.Result); }, TaskContinuationOptions.OnlyOnRanToCompletion);
     }
 
-    private (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
+    private (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<List<Move>> stepCallback)
     {
         _moves.Clear();
 
@@ -66,47 +63,47 @@ public class Solver
 
         Console.WriteLine(_cube.ToString());
 
-        Console.WriteLine(BruteForce(HasDaisy));
+        Console.WriteLine(BruteForce(HasDaisy, stepCallback));
 
-        Console.WriteLine(BruteForce(HasWhiteCross));
+        Console.WriteLine(BruteForce(HasWhiteCross, stepCallback));
 
         Console.WriteLine("\nCorners\n");
 
-        Console.WriteLine(BruteForce(HasRgwCorner));
+        Console.WriteLine(BruteForce(HasRgwCorner, stepCallback));
 
-        Console.WriteLine(BruteForce(HasRbwCorners));
+        Console.WriteLine(BruteForce(HasRbwCorners, stepCallback));
 
-        Console.WriteLine(BruteForce(HasRgwWboCorners));
+        Console.WriteLine(BruteForce(HasRgwWboCorners, stepCallback));
 
-        Console.WriteLine(BruteForce(HasGwoCorners));
+        Console.WriteLine(BruteForce(HasGwoCorners, stepCallback));
 
         Console.WriteLine("\nMiddle\n");
 
-        Console.WriteLine(BruteForce(HasRedGreenMiddle));
-        
-        Console.WriteLine(BruteForce(HasRedBlueMiddle));
-        
-        Console.WriteLine(BruteForce(HasOrangeGreenMiddle));
-        
-        Console.WriteLine(BruteForce(HasBlueOrangeMiddle));
-        
+        Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback));
+
+        Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback));
+
+        Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback));
+
+        Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback));
+
         Console.WriteLine("\nYellow Cross\n");
-        
-        Console.WriteLine(BruteForce(HasYellowCross, true));
-        
+
+        Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
+
         Console.WriteLine("\nYellow Edges\n");
-        
-        Console.WriteLine(BruteForce(HasAlignedYellowCross, true));
-        
+
+        Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true));
+
         Console.WriteLine("\nRemaining Corners\n");
 
-        Console.WriteLine(BruteForce(HasGryCorner));
-        
-        Console.WriteLine(BruteForce(HasRbyCorner));
-        
-        Console.WriteLine(BruteForce(HasGoyCorner));
-        
-        Console.WriteLine(BruteForce(HasBoyCorner));
+        Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
+
+        Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
+
+        Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
+
+        Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
 
         Console.WriteLine(_cube.ToString());
 
@@ -119,7 +116,7 @@ public class Solver
         return (true, _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<Cube, bool> heuristic, bool excludeUpFace = false)
+    private bool BruteForce(Func<Cube, bool> heuristic, Action<List<Move>> stepCallback, bool excludeUpFace = false)
     {
         var stopwatch = new Stopwatch();
 
@@ -134,8 +131,6 @@ public class Solver
             List<Move> foundMoves = null;
 
             var innerDepth = depth;
-
-            _visitedDepths.Clear();
 
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
@@ -173,6 +168,8 @@ public class Solver
                 {
                     _cube.ApplyMove(move);
                 }
+                
+                stepCallback(foundMoves);
 
                 return true;
             }
@@ -192,15 +189,6 @@ public class Solver
         {
             return false;
         }
-
-        var key = cube.GetHash();
-
-        if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
-        {
-            return false;
-        }
-
-        _visitedDepths[key] = depth;
 
         foreach (var move in AllMoves)
         {

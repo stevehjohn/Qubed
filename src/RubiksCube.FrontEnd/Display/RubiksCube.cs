@@ -63,6 +63,8 @@ public sealed class RubiksCube : Game
 
     private const float CubePickHalfExtent = Spacing + CubieSize / 2f + 0.05f;
 
+    private readonly object _solveLock = new();
+
     private readonly Color[] _faceColors =
     [
         Color.White,
@@ -142,6 +144,11 @@ public sealed class RubiksCube : Game
         UpdateMouseControls(mouse);
 
         UpdateActiveRotation(gameTime);
+
+        if (_isSolving && _activeRotation is null)
+        {
+            StartNextSolveRotation();
+        }
 
         TryStartSolveAnimation(keyboard);
 
@@ -434,7 +441,7 @@ public sealed class RubiksCube : Game
         {
             return;
         }
-        
+
         FindSolveMoves();
     }
 
@@ -455,27 +462,23 @@ public sealed class RubiksCube : Game
 
         var solver = new Solver(cube);
 
-        solver.SolveAsync(SolvedCallback);
+        _solveQueue.Clear();
+
+        _isSolving = true;
+
+        solver.SolveAsync(SolvedCallback, StepCallback);
     }
 
     private void SolvedCallback((bool Solved, IReadOnlyList<Move> Moves, TimeSpan Elapsed) result)
     {
-        if (result.Solved)
-        {
-            _solveQueue.Clear();
-            
-            foreach (var move in result.Moves)
-            {
-                _solveQueue.Enqueue(move);
-            }
-                    
-            _isSolving = true;
+        _isSolving = false;
+    }
 
-            StartNextSolveRotation();
-        }
-        else
+    private void StepCallback(List<Move> moves)
+    {
+        foreach (var move in moves)
         {
-            _isSolving = false;
+            _solveQueue.Enqueue(move);
         }
     }
 
@@ -516,11 +519,14 @@ public sealed class RubiksCube : Game
 
     private void StartNextSolveRotation()
     {
-        if (! _solveQueue.TryDequeue(out var move))
+        Move move;
+        
+        lock (_solveLock)
         {
-            _isSolving = false;
-
-            return;
+            if (! _solveQueue.TryDequeue(out move))
+            {
+                return;
+            }
         }
 
         StartFaceRotation(move);

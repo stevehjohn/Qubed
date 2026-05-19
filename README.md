@@ -11,6 +11,13 @@
 - Press `Esc` to exit.
 - Press `S` to scramble.
 
+## Ideas
+
+- Replay last solve.
+  - Save scramble state.
+  - Reset cube to it.
+  - Play saved moves from solver.
+
 ## Notes
 
 ### Coordinates
