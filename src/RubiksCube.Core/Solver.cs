@@ -150,6 +150,7 @@ public class Solver
     {
         return HasWhiteCross()
                && HasRgwCorners()
+               && _cube[Face.Up, 0, 0] == Colour.White
                && _cube[Face.Right, 2, 0] == Colour.Blue;
     }
 }
