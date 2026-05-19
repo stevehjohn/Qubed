@@ -33,6 +33,10 @@ public class Solver
         new(Face.Back, Direction.Clockwise),
         new(Face.Back, Direction.AntiClockwise),
         new(Face.Back, Direction.HalfTurn),
+
+        new(Face.Up, Direction.Clockwise),
+        new(Face.Up, Direction.AntiClockwise),
+        new(Face.Up, Direction.HalfTurn),
     ];
 
     private readonly List<Move> _moves = [];
