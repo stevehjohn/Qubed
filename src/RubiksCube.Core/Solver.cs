@@ -78,7 +78,7 @@ public class Solver
             
             _moves.Push(move);
 
-            if (BruteForce(heuristic, --depth))
+            if (BruteForce(heuristic, depth - 1))
             {
                 return true;
             }
