@@ -58,6 +58,7 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
+            _cube.ApplyMove(move);
         }
     }
 

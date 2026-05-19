@@ -131,6 +131,15 @@ public class Cube
         _history.Push(new Move(face, direction));
     }
 
+    public void ApplyMove(Move move)
+    {
+        RotateFace(move.Face, move.Direction);
+
+        RotateEdges(move.Face, move.Direction);
+        
+        _history.Push(move);
+    }
+
     public Cube Clone()
     {
         return new Cube(this);
