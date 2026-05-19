@@ -33,7 +33,7 @@ public class Solver
 
     public Solver(Cube cube) => _cube = cube.Clone();
 
-    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<Move> callback = null)
+    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
     {
         _moves.Clear();
 
