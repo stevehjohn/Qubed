@@ -60,11 +60,11 @@ public class Solver
 
         Console.WriteLine(BruteForce(HasRgwCorner));
 
-        Console.WriteLine(BruteForce(HasRgwRbwCorners));
+        Console.WriteLine(BruteForce(HasRbwCorners));
 
-        Console.WriteLine(BruteForce(HasRgwRbwBwoCorners));
+        Console.WriteLine(BruteForce(HasRgwWboCorners));
 
-        Console.WriteLine(BruteForce(HasRgwRbwBwoGwoCorners));
+        Console.WriteLine(BruteForce(HasGwoCorners));
         
         Console.WriteLine("\nMiddle\n");
 
@@ -91,6 +91,8 @@ public class Solver
         Console.WriteLine(BruteForce(HasYellowGreenEdge));
         
         Console.WriteLine("\nRemaining Corners\n");
+        
+        Console.WriteLine(BruteForce(HasGryCorner));
 
         Console.WriteLine(_cube.ToString());
 
@@ -219,7 +221,7 @@ public class Solver
                && _cube[Face.Front, 0, 0] == Colour.Red;
     }
 
-    private bool HasRgwRbwCorners()
+    private bool HasRbwCorners()
     {
         return HasRgwCorner()
                && _cube[Face.Up, 2, 2] == Colour.White
@@ -227,17 +229,17 @@ public class Solver
                && _cube[Face.Right, 0, 0] == Colour.Blue;
     }
 
-    private bool HasRgwRbwBwoCorners()
+    private bool HasRgwWboCorners()
     {
-        return HasRgwRbwCorners()
+        return HasRbwCorners()
                && _cube[Face.Up, 2, 0] == Colour.White
                && _cube[Face.Right, 2, 0] == Colour.Blue
                && _cube[Face.Back, 0, 0] == Colour.Orange;
     }
 
-    private bool HasRgwRbwBwoGwoCorners()
+    private bool HasGwoCorners()
     {
-        return HasRgwRbwBwoCorners()
+        return HasRgwWboCorners()
                && _cube[Face.Up, 0, 0] == Colour.White
                && _cube[Face.Left, 0, 0] == Colour.Green
                && _cube[Face.Back, 2, 0] == Colour.Orange;
@@ -245,7 +247,7 @@ public class Solver
 
     private bool HasRedGreenMiddle()
     {
-        return HasRgwRbwBwoGwoCorners()
+        return HasGwoCorners()
                && _cube[Face.Front, 0, 1] == Colour.Red
                && _cube[Face.Left, 2, 1] == Colour.Green;
     }
@@ -302,5 +304,13 @@ public class Solver
     {
         return HasYellowOrangeEdge()
                && _cube[Face.Left, 1, 2] == Colour.Green;
+    }
+
+    private bool HasGryCorner()
+    {
+        return HasYellowOrangeEdge()
+               && _cube[Face.Left, 2, 2] == Colour.Green
+               && _cube[Face.Front, 0, 2] == Colour.Red
+               && _cube[Face.Down, 0, 0] == Colour.Yellow;
     }
 }
