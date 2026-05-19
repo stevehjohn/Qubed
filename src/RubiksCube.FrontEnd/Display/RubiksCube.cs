@@ -435,6 +435,8 @@ public sealed class RubiksCube : Game
             return;
         }
         
+        FindSolveMoves();
+        
         _isSolving = true;
     }
 
@@ -455,16 +457,16 @@ public sealed class RubiksCube : Game
 
         var solver = new Solver(cube);
 
-        var result = solver.SolveAsync(SolvedCallback);
+        solver.SolveAsync(SolvedCallback);
     }
 
-    private void SolvedCallback(bool solved, IReadOnlyList<Move> moves, TimeSpan elapsed)
+    private void SolvedCallback((bool Solved, IReadOnlyList<Move> Moves, TimeSpan Elapsed) result)
     {
-        if (solved)
+        if (result.Solved)
         {
             _solveQueue.Clear();
             
-            foreach (var move in moves)
+            foreach (var move in result.Moves)
             {
                 _solveQueue.Enqueue(move);
             }
