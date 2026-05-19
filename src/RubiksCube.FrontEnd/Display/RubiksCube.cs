@@ -406,7 +406,7 @@ public sealed class RubiksCube : Game
         {
             if (WasKeyPressed(keyboard, Keys.S))
             {
-                _scrambleTurns = Random.Shared.Next(40, 80);
+                _scrambleTurns = Random.Shared.Next(20, 50);
 
                 _rotationDuration = 0.1f;
             }
