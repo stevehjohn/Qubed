@@ -82,11 +82,11 @@ public class Solver
 
         Console.WriteLine("\nYellow Cross\n");
 
-        Console.WriteLine(BruteForce(HasYellowCross));
+        Console.WriteLine(BruteForce(HasYellowCross, Face.Up));
 
         Console.WriteLine("\nYellow Edges\n");
 
-        Console.WriteLine(BruteForce(HasYellowCross));
+        Console.WriteLine(BruteForce(HasAlignedYellowCross, Face.Up));
 
         Console.WriteLine("\nRemaining Corners\n");
 
@@ -109,7 +109,7 @@ public class Solver
         return (_cube.IsSolved(), _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<Cube, bool> heuristic)
+    private bool BruteForce(Func<Cube, bool> heuristic, params Face[] excludedFaces)
     {
         var stopwatch = new Stopwatch();
 
@@ -129,13 +129,18 @@ public class Solver
 
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
+                if (excludedFaces.Contains(move.Face))
+                {
+                    return;
+                }
+
                 var cubeCopy = _cube.Clone();
 
                 var newMoves = new List<Move> { move };
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1))
+                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludedFaces))
                 {
                     lock (state)
                     {
@@ -166,7 +171,7 @@ public class Solver
         return false;
     }
 
-    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth)
+    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, params Face[] excludedFaces)
     {
         if (heuristic(cube))
         {
@@ -189,6 +194,11 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
+            if (excludedFaces.Contains(move.Face))
+            {
+                continue;
+            }
+
             if (moves.Count > 0)
             {
                 if (move.Face == lastMove.Face)
