@@ -45,6 +45,12 @@ public class Solver
 
     public Solver(Cube cube) => _cube = cube.Clone();
 
+    public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback)
+    {
+        Task.Run(Solve)
+            .ContinueWith(task => { callback(task.Result); }, TaskContinuationOptions.OnlyOnRanToCompletion);
+    }
+
     public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve()
     {
         _moves.Clear();
@@ -94,14 +100,14 @@ public class Solver
 
         Console.WriteLine("\nRemaining Corners\n");
 
-        Console.WriteLine(BruteForce(HasGryCorner));
-        
-        Console.WriteLine(BruteForce(HasRbyCorner));
-        
-        Console.WriteLine(BruteForce(HasGoyCorner));
-        
-        Console.WriteLine(BruteForce(HasBoyCorner));
-        
+        // Console.WriteLine(BruteForce(HasGryCorner));
+        //
+        // Console.WriteLine(BruteForce(HasRbyCorner));
+        //
+        // Console.WriteLine(BruteForce(HasGoyCorner));
+        //
+        // Console.WriteLine(BruteForce(HasBoyCorner));
+
         Console.WriteLine(_cube.ToString());
 
         stopwatch.Stop();

@@ -434,27 +434,11 @@ public sealed class RubiksCube : Game
         {
             return;
         }
-
-        var solution = FindSolveMoves();
-
-        if (solution.Count == 0)
-        {
-            return;
-        }
-
-        _solveQueue.Clear();
-
-        foreach (var move in solution)
-        {
-            _solveQueue.Enqueue(move);
-        }
-
+        
         _isSolving = true;
-
-        StartNextSolveRotation();
     }
 
-    private IReadOnlyList<Move> FindSolveMoves()
+    private void FindSolveMoves()
     {
         var cube = new Cube();
 
@@ -471,9 +455,26 @@ public sealed class RubiksCube : Game
 
         var solver = new Solver(cube);
 
-        var result = solver.Solve();
-        
-        return result.Moves;
+        var result = solver.SolveAsync(SolvedCallback);
+    }
+
+    private void SolvedCallback(bool solved, IReadOnlyList<Move> moves, TimeSpan elapsed)
+    {
+        if (solved)
+        {
+            _solveQueue.Clear();
+            
+            foreach (var move in moves)
+            {
+                _solveQueue.Enqueue(move);
+            }
+            
+            StartNextSolveRotation();
+        }
+        else
+        {
+            _isSolving = false;
+        }
     }
 
     private Colour GetFaceColor(Face face, int x, int y)
