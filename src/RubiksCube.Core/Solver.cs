@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using RubiksCube.Core.Models;
 
 namespace RubiksCube.Core;
@@ -14,6 +15,8 @@ public class Solver
     private static readonly Move[] AllMoves;
 
     private readonly List<Move> _moves = [];
+
+    private readonly ConcurrentDictionary<(ulong A, ulong B, ulong C), int> _visitedDepths = [];
 
     static Solver()
     {
@@ -112,48 +115,46 @@ public class Solver
     private bool BruteForce(Func<Cube, bool> heuristic, int minDepth = MinDepth)
     {
         var stopwatch = new Stopwatch();
-        
+
         for (var depth = minDepth; depth <= MaxDepth; depth++)
         {
             Console.Write(depth);
 
             stopwatch.Restart();
-            
+
             var found = false;
-            
+
             List<Move> foundMoves = null;
 
             var innerDepth = depth;
-            
+
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
                 var cubeCopy = _cube.Clone();
-                
+
                 var newMoves = new List<Move> { move };
-                
-                var visited = new HashSet<(ulong, ulong, ulong, int)>();
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, cubeCopy, newMoves, move, visited, innerDepth - 1))
+                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1))
                 {
                     lock (state)
                     {
                         found = true;
-                        
+
                         foundMoves = newMoves;
                     }
 
                     state.Stop();
                 }
             });
-            
+
             Console.WriteLine($" {stopwatch.Elapsed}");
-            
+
             if (found)
             {
                 _moves.AddRange(foundMoves);
-                
+
                 return true;
             }
         }
@@ -161,7 +162,7 @@ public class Solver
         return false;
     }
 
-    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, HashSet<(ulong, ulong, ulong, int)> visited, int depth)
+    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth)
     {
         if (heuristic(cube))
         {
@@ -173,11 +174,7 @@ public class Solver
             return false;
         }
 
-        var hash = cube.GetHash();
-
-        var key = (hash.A, hash.B, hash.C, depth);
-
-        if (! visited.Add(key))
+        if (_visitedDepths.TryGetValue(cube.GetHash(), out var seenDepth) && seenDepth >= depth)
         {
             return false;
         }
@@ -204,7 +201,7 @@ public class Solver
 
             moves.Add(move);
 
-            if (Search(heuristic, cube, moves, move, visited, depth - 1))
+            if (Search(heuristic, cube, moves, move, depth - 1))
             {
                 return true;
             }
