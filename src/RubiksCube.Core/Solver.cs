@@ -204,7 +204,7 @@ public class Solver
 
             moves.Add(move);
 
-            if (Search(heuristic, cube, moves, lastMove, visited, depth - 1))
+            if (Search(heuristic, cube, moves, move, visited, depth - 1))
             {
                 return true;
             }
