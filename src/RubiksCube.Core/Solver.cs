@@ -70,9 +70,9 @@ public class Solver
         
         Console.WriteLine(BruteForce(HasRightBlueMiddle));
 
-        Console.WriteLine(BruteForce(HasGreenMiddle));
-
-        Console.WriteLine(BruteForce(HasLeftOrangeMiddle));
+        // Console.WriteLine(BruteForce(HasGreenMiddle));
+        //
+        // Console.WriteLine(BruteForce(HasLeftOrangeMiddle));
         
         // Console.WriteLine(BruteForce(HasBlueMiddle));
         //
@@ -242,30 +242,31 @@ public class Solver
     private bool HasRightBlueMiddle()
     {
         return HasRedMiddle()
-               && _cube[Face.Right, 2, 1] == Colour.Blue;
+               && _cube[Face.Right, 2, 1] == Colour.Blue
+               && _cube[Face.Back, 0, 1]== Colour.Orange;
     }
 
-    private bool HasGreenMiddle()
-    {
-        return HasRightBlueMiddle()
-               && _cube[Face.Left, 2, 1] == Colour.Green;
-    }
-
-    private bool HasLeftOrangeMiddle()
-    {
-        return HasGreenMiddle()
-               && _cube[Face.Left, 0, 1] == Colour.Green;
-    }
-
-    private bool HasBlueMiddle()
-    {
-        return HasGreenMiddle()
-               && _cube[Face.Right, 2, 1] == Colour.Blue;
-    }
-
-    private bool HasOrangeMiddle()
-    {
-        return HasLeftOrangeMiddle()
-               && _cube[Face.Back, 2, 1] == Colour.Orange;
-    }
+    // private bool HasGreenMiddle()
+    // {
+    //     return HasRightBlueMiddle()
+    //            && _cube[Face.Left, 2, 1] == Colour.Green;
+    // }
+    //
+    // private bool HasLeftOrangeMiddle()
+    // {
+    //     return HasGreenMiddle()
+    //            && _cube[Face.Left, 0, 1] == Colour.Green;
+    // }
+    //
+    // private bool HasOrangeMiddle()
+    // {
+    //     return HasLeftOrangeMiddle()
+    //            && _cube[Face.Back, 2, 1] == Colour.Orange;
+    // }
+    //
+    // private bool HasBlueMiddle()
+    // {
+    //     return HasGreenMiddle()
+    //            && _cube[Face.Right, 2, 1] == Colour.Blue;
+    // }
 }
