@@ -55,3 +55,24 @@ Green  | Left
                     (0,2) (1,2) (2,2)
 ```
 
+### Colours
+
+```
+         U 
+
+       W W W
+       W W W
+       W W W
+
+  L      F      R      B
+
+G G G  R R R  B B B  O O O
+G G G  R R R  B B B  O O O
+G G G  R R R  B B B  O O O
+
+         D
+
+       Y Y Y
+       Y Y Y
+       Y Y Y
+```
