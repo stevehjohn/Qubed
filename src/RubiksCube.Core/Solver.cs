@@ -178,7 +178,7 @@ public class Solver
         return false;
     }
 
-    private bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFace)
+    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFace)
     {
         if (heuristic(cube))
         {

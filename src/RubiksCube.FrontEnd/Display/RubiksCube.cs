@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -65,7 +66,7 @@ public sealed class RubiksCube : Game
 
     private const float CubePickHalfExtent = Spacing + CubieSize / 2f + 0.05f;
 
-    private readonly object _solveLock = new();
+    private readonly Lock _solveLock = new();
 
     private readonly Color[] _faceColors =
     [
@@ -480,7 +481,10 @@ public sealed class RubiksCube : Game
 
         var solver = new Solver(cube);
 
-        _solveQueue.Clear();
+        lock (_solveLock)
+        {
+            _solveQueue.Clear();
+        }
 
         _isSolving = true;
 
@@ -550,11 +554,11 @@ public sealed class RubiksCube : Game
             {
                 return;
             }
-        }
 
-        if (_solverFinished && _solveQueue.Count == 0)
-        {
-            _isSolving = false;
+            if (_solverFinished && _solveQueue.Count == 0)
+            {
+                _isSolving = false;
+            }
         }
 
         StartFaceRotation(move);
