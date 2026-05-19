@@ -470,6 +470,8 @@ public sealed class RubiksCube : Game
         var solver = new Solver(cube);
 
         var result = solver.Solve();
+        
+        Console.WriteLine(result.Solved);
 
         return result.Moves;
     }

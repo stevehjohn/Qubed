@@ -35,22 +35,22 @@ public class Solver
     {
         _moves.Clear();
 
+        if (_cube.IsSolved())
+        {
+            return (true, null, TimeSpan.Zero);
+        }
+
         var stopwatch = Stopwatch.StartNew();
 
         BruteForce(HasDaisy);
         
         stopwatch.Stop();
 
-        if (_cube.IsSolved())
-        {
-            var moves = _moves.ToList();
+        var moves = _moves.ToList();
 
-            moves.Reverse();
+        moves.Reverse();
             
-            return (true, moves, TimeSpan.Zero);
-        }
-
-        return (false, moves, stopwatch.Elapsed);
+        return (_cube.IsSolved(), moves, stopwatch.Elapsed);
     }
 
     private bool BruteForce(Func<bool> heuristic)
