@@ -134,7 +134,7 @@ public class Solver
 
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
-                if ((move.Face == Face.Up || move.Direction == Direction.HalfTurn) && excludeUpFaceAndHalfTurns)
+                if (excludeUpFaceAndHalfTurns && (move.Face == Face.Up || move.Direction == Direction.HalfTurn))
                 {
                     return;
                 }
@@ -178,7 +178,7 @@ public class Solver
         return false;
     }
 
-    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFace)
+    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFaceAndHalfTurns)
     {
         if (heuristic(cube))
         {
@@ -192,7 +192,7 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
-            if (move.Face == Face.Up && excludeUpFace)
+            if (excludeUpFace && (move.Face == Face.Up || move.Direction == Direction.HalfTurn))
             {
                 continue;
             }
