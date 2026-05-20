@@ -116,7 +116,7 @@ public class Solver
         return (true, _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<Cube, bool> heuristic, Action<List<Move>> stepCallback, bool excludeUpFaceAndHalfTurns = false)
+    private bool BruteForce(Func<Cube, bool> heuristic, Action<List<Move>> stepCallback, bool excludeUpFace = false, bool excludeHalfTurns = false)
     {
         var stopwatch = new Stopwatch();
 
@@ -134,7 +134,12 @@ public class Solver
 
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
-                if (excludeUpFaceAndHalfTurns && (move.Face == Face.Up || move.Direction == Direction.HalfTurn))
+                if (excludeUpFace && move.Face == Face.Up)
+                {
+                    return;
+                }
+
+                if (excludeHalfTurns && move.Direction == Direction.HalfTurn)
                 {
                     return;
                 }
@@ -145,7 +150,7 @@ public class Solver
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFaceAndHalfTurns))
+                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFace))
                 {
                     lock (state)
                     {
@@ -178,7 +183,7 @@ public class Solver
         return false;
     }
 
-    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFaceAndHalfTurns)
+    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFace = false, bool excludeHalfTurns = false)
     {
         if (heuristic(cube))
         {
@@ -192,7 +197,12 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
-            if (excludeUpFaceAndHalfTurns && (move.Face == Face.Up || move.Direction == Direction.HalfTurn))
+            if (excludeUpFace && move.Face == Face.Up)
+            {
+                continue;
+            }
+
+            if (excludeHalfTurns && move.Direction == Direction.HalfTurn)
             {
                 continue;
             }
