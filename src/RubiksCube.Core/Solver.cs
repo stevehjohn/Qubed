@@ -79,13 +79,13 @@ public class Solver
 
         Console.WriteLine("\nMiddle\n");
 
-        Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback, true));
+        Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback, true, true));
         
-        Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback, true));
+        Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback, true, true));
         
-        Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback, true));
+        Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback, true, true));
         
-        Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback, true));
+        Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback, true, true));
         
         Console.WriteLine("\nYellow Cross\n");
         
@@ -93,7 +93,7 @@ public class Solver
         
         Console.WriteLine("\nYellow Edges\n");
         
-        Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true));
+        Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true, true));
         
         // Console.WriteLine("\nRemaining Corners\n");
         //
