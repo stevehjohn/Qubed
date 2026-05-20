@@ -8,6 +8,8 @@ public abstract class AlgorithmLibrary
 
     private static readonly List<List<Move>> YellowCrossMovesInternal = [];
 
+    private static readonly List<List<Move>> YellowEdgesMovesInternal = [];
+
     private static readonly string[] LayerTwoAlgorithms =
     [
         "D* R D' R' D' F' D F",
@@ -33,10 +35,17 @@ public abstract class AlgorithmLibrary
         "B L D L' D' B'",
         "L F D F' D' L'"
     ];
+    
+    private static readonly string[] YellowEdgesAlgorithms =
+    [
+        "D R D R' D R D2 R'"
+    ];
 
     public static IReadOnlyList<IReadOnlyList<Move>> LayerTwoMoves => LayerTwoMovesInternal;
 
     public static IReadOnlyList<IReadOnlyList<Move>> YellowCrossMoves => YellowCrossMovesInternal;
+
+    public static IReadOnlyList<IReadOnlyList<Move>> YellowEdgesMoves => YellowEdgesMovesInternal;
 
     static AlgorithmLibrary()
     {

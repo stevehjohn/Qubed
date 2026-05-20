@@ -94,7 +94,7 @@ public class Solver
 
         Console.WriteLine("\nYellow Edges\n");
         
-        Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true, true));
+        Console.WriteLine(BruteForceAlgorithm(HasAlignedYellowCross, AlgorithmLibrary.YellowEdgesMoves, stepCallback));
 
         // Console.WriteLine("\nRemaining Corners\n");
         //
