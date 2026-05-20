@@ -79,31 +79,31 @@ public class Solver
 
         Console.WriteLine("\nMiddle\n");
 
-        Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback));
-
-        Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback));
-
-        Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback));
-
-        Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback));
-
+        Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback, true));
+        
+        Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback, true));
+        
+        Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback, true));
+        
+        Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback, true));
+        
         Console.WriteLine("\nYellow Cross\n");
-
+        
         Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
-
+        
         Console.WriteLine("\nYellow Edges\n");
-
+        
         Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true));
-
-        Console.WriteLine("\nRemaining Corners\n");
-
-        Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
         
-        Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
-        
-        Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
-        
-        Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
+        // Console.WriteLine("\nRemaining Corners\n");
+        //
+        // Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
+        //
+        // Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
+        //
+        // Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
+        //
+        // Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
 
         Console.WriteLine(_cube.ToString());
 
