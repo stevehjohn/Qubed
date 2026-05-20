@@ -78,31 +78,31 @@ public class Solver
         Console.WriteLine(BruteForce(HasGwoCorners, stepCallback));
 
         Console.WriteLine("\nMiddle\n");
-        
+
         Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback, true, true));
-        
+
         Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback, true, true));
-        
+
         Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback, true, true));
-        
+
         Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback, true, true));
-        
+
         Console.WriteLine("\nYellow Cross\n");
-        
+
         Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
-        
+
         Console.WriteLine("\nYellow Edges\n");
-        
+
         Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true, true));
-        
+
         Console.WriteLine("\nRemaining Corners\n");
-        
+
         Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
-        
+
         Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
-        
+
         Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
-        
+
         Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
 
         Console.WriteLine(_cube.ToString());
@@ -173,7 +173,7 @@ public class Solver
                 {
                     _cube.ApplyMove(move);
                 }
-                
+
                 stepCallback(foundMoves);
 
                 return true;
@@ -207,20 +207,9 @@ public class Solver
                 continue;
             }
 
-            if (moves.Count > 0)
+            if (IsRedundant(moves, move))
             {
-                if (move.Face == lastMove.Face)
-                {
-                    continue;
-                }
-
-                if (AxisOf(move.Face) == AxisOf(lastMove.Face))
-                {
-                    if (move.Face < lastMove.Face)
-                    {
-                        continue;
-                    }
-                }
+                continue;
             }
 
             cube.ApplyMove(move);
@@ -237,6 +226,31 @@ public class Solver
             moves.RemoveAt(moves.Count - 1);
         }
 
+        return false;
+    }
+
+    private static bool IsRedundant(List<Move> moves, Move move)
+    {
+        if (moves.Count == 0)
+        {
+            return false;
+        }
+
+        var lastMove = moves[^1];
+
+        if (move.Face == lastMove.Face)
+        {
+            return true;
+        }
+
+        if (AxisOf(move.Face) == AxisOf(lastMove.Face))
+        {
+            if (move.Face < lastMove.Face)
+            {
+                return true;
+            }
+        }
+        
         return false;
     }
 
