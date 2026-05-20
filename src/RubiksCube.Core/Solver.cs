@@ -263,9 +263,9 @@ public class Solver
 
                 var newMoves = ParseAlgorithmMoves(algorithm);
 
-                foreach (var move in algorithm)
+                foreach (var move in newMoves)
                 {
-                    cubeCopy.ApplyMove(ParseAlgorithmMove(move));
+                    cubeCopy.ApplyMove(move);
                 }
 
                 if (SearchAlgorithm(heuristic, algorithms, cubeCopy, newMoves, innerDepth - 1))
