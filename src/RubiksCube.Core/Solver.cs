@@ -79,8 +79,6 @@ public class Solver
 
         Console.WriteLine("\nMiddle\n");
         
-        // TODO: Upsidedown T.
-
         Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback, true, true));
         
         Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback, true, true));
@@ -97,15 +95,15 @@ public class Solver
         
         Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true, true));
         
-        // Console.WriteLine("\nRemaining Corners\n");
-        //
-        // Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
-        //
-        // Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
-        //
-        // Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
-        //
-        // Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
+        Console.WriteLine("\nRemaining Corners\n");
+        
+        Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
+        
+        Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
+        
+        Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
+        
+        Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
 
         Console.WriteLine(_cube.ToString());
 
