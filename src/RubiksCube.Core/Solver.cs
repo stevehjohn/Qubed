@@ -268,11 +268,6 @@ public class Solver
                     cubeCopy.ApplyMove(move);
                 }
 
-                if (! previousHeuristic(cubeCopy))
-                {
-                    return;
-                }
-
                 if (SearchAlgorithm(heuristic, algorithms, cubeCopy, newMoves, innerDepth - 1))
                 {
                     lock (state)
@@ -327,7 +322,7 @@ public class Solver
                 moves.Add(move);
             }
 
-            if (SearchAlgorithm(heuristic, previousHeuristic, algorithms, cube, moves, depth))
+            if (SearchAlgorithm(heuristic, algorithms, cube, moves, depth))
             {
                 return true;
             }
