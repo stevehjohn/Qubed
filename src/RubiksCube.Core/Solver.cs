@@ -192,7 +192,7 @@ public class Solver
 
         foreach (var move in AllMoves)
         {
-            if (excludeUpFace && (move.Face == Face.Up || move.Direction == Direction.HalfTurn))
+            if (excludeUpFaceAndHalfTurns && (move.Face == Face.Up || move.Direction == Direction.HalfTurn))
             {
                 continue;
             }
@@ -217,7 +217,7 @@ public class Solver
 
             moves.Add(move);
 
-            if (Search(heuristic, cube, moves, move, depth - 1, excludeUpFace))
+            if (Search(heuristic, cube, moves, move, depth - 1, excludeUpFaceAndHalfTurns))
             {
                 return true;
             }
