@@ -150,7 +150,7 @@ public class Solver
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFace))
+                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFace, excludeHalfTurns))
                 {
                     lock (state)
                     {
