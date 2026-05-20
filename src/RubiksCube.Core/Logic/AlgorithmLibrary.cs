@@ -11,7 +11,7 @@ public class AlgorithmLibrary
         "D R D' R' D' F' D F",
         "D B D' B' D' R' D R",
         "D L D' L' D' B' D B",
-        "D F D' D' D' L' D L",
+        "D F D' F' D' L' D L",
         
         "D' L' D L D F D' F'",
         "D' F' D F D R D' R'",
