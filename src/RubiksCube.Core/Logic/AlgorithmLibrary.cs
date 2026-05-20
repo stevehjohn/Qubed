@@ -2,7 +2,7 @@ using RubiksCube.Core.Models;
 
 namespace RubiksCube.Core.Logic;
 
-public class AlgorithmLibrary
+public abstract class AlgorithmLibrary
 {
     private static readonly List<List<Move>> LayerTwoMovesInternal = [];
 

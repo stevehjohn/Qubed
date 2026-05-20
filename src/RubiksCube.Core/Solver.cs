@@ -8,7 +8,7 @@ public class Solver
 {
     private const int MinDepth = 1;
 
-    private const int MaxDepth = 20;
+    private const int MaxDepth = 15;
 
     private readonly Cube _cube;
 
@@ -322,7 +322,7 @@ public class Solver
                 moves.Add(move);
             }
 
-            if (SearchAlgorithm(heuristic, algorithms, cube, moves, depth))
+            if (SearchAlgorithm(heuristic, algorithms, cube, moves, depth - 1))
             {
                 return true;
             }
