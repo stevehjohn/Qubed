@@ -1,5 +1,7 @@
 # Rubik's Cube Simulator and Solver
 
+![Game Screenshot](screenshots/cube-1.png)
+
 ## Controls
 
 - Use the arrow keys or drag empty space with the left mouse button to orbit the cube.
