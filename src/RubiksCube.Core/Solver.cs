@@ -78,6 +78,8 @@ public class Solver
         Console.WriteLine(BruteForce(HasGwoCorners, stepCallback));
 
         Console.WriteLine("\nMiddle\n");
+        
+        // TODO: Upsidedown T.
 
         Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback, true, true));
         
