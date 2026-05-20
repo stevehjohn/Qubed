@@ -326,7 +326,7 @@ public class Solver
                 return true;
             }
 
-            for (var i = 0; i < algorithm.Count - 1; i++)
+            for (var i = 0; i < algorithm.Count; i++)
             {
                 cube.UndoMove();
 
