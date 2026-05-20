@@ -239,6 +239,103 @@ public class Solver
 
         return false;
     }
+    
+    private bool BruteForceAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Action<List<Move>> stepCallback)
+    {
+        var stopwatch = new Stopwatch();
+
+        for (var depth = MinDepth; depth <= MaxDepth; depth++)
+        {
+            Console.Write(depth);
+
+            stopwatch.Restart();
+
+            var found = false;
+
+            List<Move> foundMoves = null;
+
+            var innerDepth = depth;
+
+            Parallel.ForEach(algorithms, new ParallelOptions(), (algorithm, state) =>
+            {
+                var cubeCopy = _cube.Clone();
+
+                var newMoves = new List<Move>(algorithm);
+
+                foreach (var move in algorithm)
+                {
+                    cubeCopy.ApplyMove(move);
+                }
+
+                if (SearchAlgorithm(heuristic, algorithms, cubeCopy, newMoves, innerDepth - 1))
+                {
+                    lock (state)
+                    {
+                        found = true;
+
+                        foundMoves = newMoves;
+                    }
+
+                    state.Stop();
+                }
+            });
+
+            Console.WriteLine($" {stopwatch.Elapsed}");
+
+            if (found)
+            {
+                _moves.AddRange(foundMoves);
+
+                foreach (var move in foundMoves)
+                {
+                    _cube.ApplyMove(move);
+                }
+                
+                stepCallback(foundMoves);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool SearchAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Cube cube, List<Move> moves, int depth)
+    {
+        if (heuristic(cube))
+        {
+            return true;
+        }
+
+        if (depth == 0)
+        {
+            return false;
+        }
+
+        foreach (var algorithm in algorithms)
+        {
+            foreach (var move in algorithm)
+            {
+                cube.ApplyMove(move);
+
+                moves.Add(move);
+            }
+
+            if (SearchAlgorithm(heuristic, algorithms, cube, moves, depth - 1))
+            {
+                return true;
+            }
+
+            for (var i = 0; i < algorithm.Count - 1; i++)
+            {
+                cube.UndoMove();
+
+                moves.RemoveAt(moves.Count - 1);
+            }
+        }
+
+        return false;
+    }
 
     private static int AxisOf(Face face)
     {
