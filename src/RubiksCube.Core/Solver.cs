@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using RubiksCube.Core.Logic;
 using RubiksCube.Core.Models;
 
 namespace RubiksCube.Core;
@@ -79,31 +80,31 @@ public class Solver
 
         Console.WriteLine("\nMiddle\n");
         
-        Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback, true, true));
+        Console.WriteLine(BruteForceAlgorithm(HasRedGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
         
-        Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback, true, true));
+        Console.WriteLine(BruteForceAlgorithm(HasRedBlueMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+                
+        Console.WriteLine(BruteForceAlgorithm(HasOrangeGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
         
-        Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback, true, true));
+        Console.WriteLine(BruteForceAlgorithm(HasBlueOrangeMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
         
-        Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback, true, true));
-        
-        Console.WriteLine("\nYellow Cross\n");
-        
-        Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
-        
-        Console.WriteLine("\nYellow Edges\n");
-        
-        Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true, true));
-        
-        Console.WriteLine("\nRemaining Corners\n");
-        
-        Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
-        
-        Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
-        
-        Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
-        
-        Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
+        // Console.WriteLine("\nYellow Cross\n");
+        //
+        // Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
+        //
+        // Console.WriteLine("\nYellow Edges\n");
+        //
+        // Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true, true));
+        //
+        // Console.WriteLine("\nRemaining Corners\n");
+        //
+        // Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
+        //
+        // Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
+        //
+        // Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
+        //
+        // Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
 
         Console.WriteLine(_cube.ToString());
 
