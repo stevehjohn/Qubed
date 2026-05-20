@@ -124,6 +124,11 @@ public class Solver
 
     private bool BruteForce(Func<Cube, bool> heuristic, Action<List<Move>> stepCallback, bool excludeUpFace = false, bool excludeHalfTurns = false)
     {
+        if (heuristic(_cube))
+        {
+            return true;
+        }
+        
         var stopwatch = new Stopwatch();
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
