@@ -9,16 +9,14 @@ public class AlgorithmLibrary
     private static readonly string[] LayerTwoAlgorithms =
     [
         "D R D' R' D' F' D F",
-        "D' L' D L D F D' F'",
-        
         "D B D' B' D' R' D R",
-        "D' L' D L D R D' R'",
-        
         "D L D' L' D' B' D B",
-        "D' L' D L D B D' B'",
-
-        "D F D' F' D' L' D L",
-        "D' L' D L D L D' L'"
+        "D F D 'D' D' L' D L",
+        
+        "D' L' U L U F U' F'",
+        "D' F' U F U R U' R'",
+        "D' R' U R U B U' B'",
+        "D' B' U B U L U' L'"
     ];
 
     public static IReadOnlyList<IReadOnlyList<Move>> LayerTwoMoves => LayerTwoMovesInternal;
