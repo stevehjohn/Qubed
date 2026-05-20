@@ -38,7 +38,10 @@ public abstract class AlgorithmLibrary
     
     private static readonly string[] YellowEdgesAlgorithms =
     [
-        "D R D R' D R D2 R'"
+        "D R D R' D R D2 R'",
+        "D B D B' D B D2 B'",
+        "D L D L' D L D2 L'",
+        "D F D F' D F D2 F'"
     ];
 
     public static IReadOnlyList<IReadOnlyList<Move>> LayerTwoMoves => LayerTwoMovesInternal;
@@ -55,6 +58,11 @@ public abstract class AlgorithmLibrary
         }
         
         foreach (var algorithm in YellowCrossAlgorithms)
+        {
+            YellowCrossMovesInternal.Add(ParseAlgorithm(algorithm));
+        }
+        
+        foreach (var algorithm in YellowEdgesAlgorithms)
         {
             YellowCrossMovesInternal.Add(ParseAlgorithm(algorithm));
         }
