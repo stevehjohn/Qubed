@@ -15,23 +15,18 @@ public class Solver
     [
         new(Face.Down, Direction.Clockwise),
         new(Face.Down, Direction.AntiClockwise),
-        new(Face.Down, Direction.HalfTurn),
 
         new(Face.Front, Direction.Clockwise),
         new(Face.Front, Direction.AntiClockwise),
-        new(Face.Front, Direction.HalfTurn),
 
         new(Face.Right, Direction.Clockwise),
         new(Face.Right, Direction.AntiClockwise),
-        new(Face.Right, Direction.HalfTurn),
 
         new(Face.Left, Direction.Clockwise),
         new(Face.Left, Direction.AntiClockwise),
-        new(Face.Left, Direction.HalfTurn),
 
         new(Face.Back, Direction.Clockwise),
         new(Face.Back, Direction.AntiClockwise),
-        new(Face.Back, Direction.HalfTurn),
 
         new(Face.Up, Direction.Clockwise),
         new(Face.Up, Direction.AntiClockwise),
