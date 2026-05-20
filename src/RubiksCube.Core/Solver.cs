@@ -8,7 +8,7 @@ public class Solver
 {
     private const int MinDepth = 1;
 
-    private const int MaxDepth = 15;
+    private const int MaxDepth = 20;
 
     private readonly Cube _cube;
 
