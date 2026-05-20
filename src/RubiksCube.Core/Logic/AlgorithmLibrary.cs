@@ -8,15 +8,15 @@ public abstract class AlgorithmLibrary
 
     private static readonly string[] LayerTwoAlgorithms =
     [
-        "D R D' R' D' F' D F",
-        "D B D' B' D' R' D R",
-        "D L D' L' D' B' D B",
-        "D F D' F' D' L' D L",
+        "D* R D' R' D' F' D F",
+        "D* B D' B' D' R' D R",
+        "D* L D' L' D' B' D B",
+        "D* F D' F' D' L' D L",
         
-        "D' L' D L D F D' F'",
-        "D' F' D F D R D' R'",
-        "D' R' D R D B D' B'",
-        "D' B' D B D L D' L'"
+        "D* L' D L D F D' F'",
+        "D* F' D F D R D' R'",
+        "D* R' D R D B D' B'",
+        "D* B' D B D L D' L'"
     ];
 
     public static IReadOnlyList<IReadOnlyList<Move>> LayerTwoMoves => LayerTwoMovesInternal;
@@ -91,6 +91,7 @@ public abstract class AlgorithmLibrary
             {
                 '\'' => Direction.AntiClockwise,
                 '2' => Direction.HalfTurn,
+                '*' => Direction.Any,
                 _ => throw new ParseException($"Unknown modifier {move[1]}")
             };
         }
