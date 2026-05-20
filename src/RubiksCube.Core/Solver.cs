@@ -80,13 +80,13 @@ public class Solver
 
         Console.WriteLine("\nMiddle\n");
 
-        // Console.WriteLine(BruteForceAlgorithm(HasRedGreenMiddle, HasGwoCorners, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-        //
-        // Console.WriteLine(BruteForceAlgorithm(HasRedBlueMiddle, HasGwoCorners, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-        //
-        // Console.WriteLine(BruteForceAlgorithm(HasOrangeGreenMiddle, HasGwoCorners, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+        Console.WriteLine(BruteForceAlgorithm(HasRedGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+        
+        Console.WriteLine(BruteForceAlgorithm(HasRedBlueMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+        
+        Console.WriteLine(BruteForceAlgorithm(HasOrangeGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
 
-        Console.WriteLine(BruteForceAlgorithm(HasBlueOrangeMiddle, HasGwoCorners, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+        Console.WriteLine(BruteForceAlgorithm(HasBlueOrangeMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
 
         // Console.WriteLine("\nYellow Cross\n");
         //
@@ -241,7 +241,7 @@ public class Solver
         return false;
     }
 
-    private bool BruteForceAlgorithm(Func<Cube, bool> heuristic, Func<Cube, bool> previousHeuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Action<List<Move>> stepCallback)
+    private bool BruteForceAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Action<List<Move>> stepCallback)
     {
         var stopwatch = new Stopwatch();
 
@@ -273,7 +273,7 @@ public class Solver
                     return;
                 }
 
-                if (SearchAlgorithm(heuristic, previousHeuristic, algorithms, cubeCopy, newMoves, innerDepth - 1))
+                if (SearchAlgorithm(heuristic, algorithms, cubeCopy, newMoves, innerDepth - 1))
                 {
                     lock (state)
                     {
@@ -306,7 +306,7 @@ public class Solver
         return false;
     }
 
-    private static bool SearchAlgorithm(Func<Cube, bool> heuristic, Func<Cube, bool> previousHeuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Cube cube, List<Move> moves, int depth)
+    private static bool SearchAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Cube cube, List<Move> moves, int depth)
     {
         if (heuristic(cube))
         {
@@ -325,11 +325,6 @@ public class Solver
                 cube.ApplyMove(move);
 
                 moves.Add(move);
-            }
-
-            if (! previousHeuristic(cube))
-            {
-                continue;
             }
 
             if (SearchAlgorithm(heuristic, previousHeuristic, algorithms, cube, moves, depth))
