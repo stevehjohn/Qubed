@@ -85,7 +85,7 @@ public class AlgorithmLibrary
 
         var direction = Direction.Clockwise;
 
-        if (move.Length > 0)
+        if (move.Length > 1)
         {
             direction = move[1] switch
             {
