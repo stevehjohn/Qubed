@@ -6,6 +6,8 @@ public abstract class AlgorithmLibrary
 {
     private static readonly List<List<Move>> LayerTwoMovesInternal = [];
 
+    private static readonly List<List<Move>> YellowCrossMovesInternal = [];
+
     private static readonly string[] LayerTwoAlgorithms =
     [
         "D* R D' R' D' F' D F",
@@ -19,13 +21,33 @@ public abstract class AlgorithmLibrary
         "D* B' D B D L D' L'"
     ];
 
+    private static readonly string[] YellowCrossAlgorithms =
+    [
+        "F D R D' R' F'",
+        "R D B D' B' R'",
+        "B D L D' L' B'",
+        "L D F D' F' L'",
+        
+        "F R D R' D' F'",
+        "R B D B' D' R'",
+        "B L D L' D' B'",
+        "L F D F' D' L'"
+    ];
+
     public static IReadOnlyList<IReadOnlyList<Move>> LayerTwoMoves => LayerTwoMovesInternal;
+
+    public static IReadOnlyList<IReadOnlyList<Move>> YellowCrossMoves => YellowCrossMovesInternal;
 
     static AlgorithmLibrary()
     {
         foreach (var algorithm in LayerTwoAlgorithms)
         {
             LayerTwoMovesInternal.Add(ParseAlgorithm(algorithm));
+        }
+        
+        foreach (var algorithm in YellowCrossAlgorithms)
+        {
+            YellowCrossMovesInternal.Add(ParseAlgorithm(algorithm));
         }
     }
 
