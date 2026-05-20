@@ -80,13 +80,13 @@ public class Solver
 
         Console.WriteLine("\nMiddle\n");
 
-        Console.WriteLine(BruteForceAlgorithm(HasRedGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+        // Console.WriteLine(BruteForceAlgorithm(HasRedGreenMiddle, HasGwoCorners, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+        //
+        // Console.WriteLine(BruteForceAlgorithm(HasRedBlueMiddle, HasGwoCorners, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+        //
+        // Console.WriteLine(BruteForceAlgorithm(HasOrangeGreenMiddle, HasGwoCorners, AlgorithmLibrary.LayerTwoMoves, stepCallback));
 
-        Console.WriteLine(BruteForceAlgorithm(HasRedBlueMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-
-        Console.WriteLine(BruteForceAlgorithm(HasOrangeGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-
-        Console.WriteLine(BruteForceAlgorithm(HasBlueOrangeMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
+        Console.WriteLine(BruteForceAlgorithm(HasBlueOrangeMiddle, HasGwoCorners, AlgorithmLibrary.LayerTwoMoves, stepCallback));
 
         // Console.WriteLine("\nYellow Cross\n");
         //
