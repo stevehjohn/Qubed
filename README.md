@@ -28,12 +28,14 @@ All coordinates are (x, y) or (column, row).
 
 ### Faces
 
+```
 White  | Up
 Yellow | Down
 Red    | Front
 Orange | Back
 Blue   | Right
 Green  | Left
+```
 
 ### Net Layout
 
