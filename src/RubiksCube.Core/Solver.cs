@@ -81,9 +81,9 @@ public class Solver
         Console.WriteLine("\nMiddle\n");
 
         Console.WriteLine(BruteForceAlgorithm(HasRedGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-        
+
         Console.WriteLine(BruteForceAlgorithm(HasRedBlueMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-        
+
         Console.WriteLine(BruteForceAlgorithm(HasOrangeGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
 
         Console.WriteLine(BruteForceAlgorithm(HasBlueOrangeMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
@@ -261,11 +261,11 @@ public class Solver
             {
                 var cubeCopy = _cube.Clone();
 
-                var newMoves = new List<Move>(algorithm);
+                var newMoves = ParseAlgorithmMoves(algorithm);
 
                 foreach (var move in algorithm)
                 {
-                    cubeCopy.ApplyMove(move);
+                    cubeCopy.ApplyMove(ParseAlgorithmMove(move));
                 }
 
                 if (SearchAlgorithm(heuristic, algorithms, cubeCopy, newMoves, innerDepth - 1))
@@ -301,7 +301,7 @@ public class Solver
         return false;
     }
 
-    private static bool SearchAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Cube cube, List<Move> moves, int depth)
+    private bool SearchAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Cube cube, List<Move> moves, int depth)
     {
         if (heuristic(cube))
         {
@@ -315,7 +315,7 @@ public class Solver
 
         foreach (var algorithm in algorithms)
         {
-            foreach (var move in algorithm)
+            foreach (var move in ParseAlgorithmMoves(algorithm))
             {
                 cube.ApplyMove(move);
 
@@ -336,6 +336,37 @@ public class Solver
         }
 
         return false;
+    }
+
+    private List<Move> ParseAlgorithmMoves(IReadOnlyList<Move> moves)
+    {
+        var newMoves = new List<Move>();
+
+        foreach (var move in moves)
+        {
+            newMoves.Add(ParseAlgorithmMove(move));
+        }
+
+        return newMoves;
+    }
+
+    private Move ParseAlgorithmMove(Move move)
+    {
+        if (move.Direction != Direction.Any)
+        {
+            return move;
+        }
+
+        return move with
+        {
+            Direction = Random.Shared.Next(3) switch
+            {
+                0 => Direction.Clockwise,
+                1 => Direction.AntiClockwise,
+                2 => Direction.HalfTurn,
+                _ => throw new ArgumentOutOfRangeException()
+            }
+        };
     }
 
     private static int AxisOf(Face face)
