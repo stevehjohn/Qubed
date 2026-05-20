@@ -88,10 +88,10 @@ public class Solver
 
         Console.WriteLine(BruteForceAlgorithm(HasBlueOrangeMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
 
-        // Console.WriteLine("\nYellow Cross\n");
-        //
-        // Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
-        //
+        Console.WriteLine("\nYellow Cross\n");
+        
+        Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
+
         // Console.WriteLine("\nYellow Edges\n");
         //
         // Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true, true));
@@ -107,6 +107,11 @@ public class Solver
         // Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
 
         Console.WriteLine(_cube.ToString());
+
+        foreach (var move in _moves)
+        {
+            Console.WriteLine(move.ToString());
+        }
 
         stopwatch.Stop();
 
