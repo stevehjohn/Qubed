@@ -64,7 +64,7 @@ public abstract class AlgorithmLibrary
         
         foreach (var algorithm in YellowEdgesAlgorithms)
         {
-            YellowCrossMovesInternal.Add(ParseAlgorithm(algorithm));
+            YellowEdgesMovesInternal.Add(ParseAlgorithm(algorithm));
         }
     }
 
