@@ -90,7 +90,7 @@ public class Solver
 
         Console.WriteLine("\nYellow Cross\n");
         
-        Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
+        Console.WriteLine(BruteForceAlgorithm(HasYellowCross, AlgorithmLibrary.YellowCrossMoves, stepCallback));
 
         // Console.WriteLine("\nYellow Edges\n");
         //
