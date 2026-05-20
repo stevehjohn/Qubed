@@ -15,18 +15,23 @@ public class Solver
     [
         new(Face.Down, Direction.Clockwise),
         new(Face.Down, Direction.AntiClockwise),
+        new(Face.Down, Direction.HalfTurn),
 
         new(Face.Front, Direction.Clockwise),
         new(Face.Front, Direction.AntiClockwise),
+        new(Face.Front, Direction.HalfTurn),
 
         new(Face.Right, Direction.Clockwise),
         new(Face.Right, Direction.AntiClockwise),
+        new(Face.Right, Direction.HalfTurn),
 
         new(Face.Left, Direction.Clockwise),
         new(Face.Left, Direction.AntiClockwise),
+        new(Face.Left, Direction.HalfTurn),
 
         new(Face.Back, Direction.Clockwise),
         new(Face.Back, Direction.AntiClockwise),
+        new(Face.Back, Direction.HalfTurn),
 
         new(Face.Up, Direction.Clockwise),
         new(Face.Up, Direction.AntiClockwise),
@@ -111,7 +116,7 @@ public class Solver
         return (true, _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<Cube, bool> heuristic, Action<List<Move>> stepCallback, bool excludeUpFace = false)
+    private bool BruteForce(Func<Cube, bool> heuristic, Action<List<Move>> stepCallback, bool excludeUpFaceAndHalfTurns = false)
     {
         var stopwatch = new Stopwatch();
 
@@ -129,7 +134,7 @@ public class Solver
 
             Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
             {
-                if (move.Face == Face.Up && excludeUpFace)
+                if ((move.Face == Face.Up || move.Direction == Direction.HalfTurn) && excludeUpFaceAndHalfTurns)
                 {
                     return;
                 }
@@ -140,7 +145,7 @@ public class Solver
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFace))
+                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFaceAndHalfTurns))
                 {
                     lock (state)
                     {
