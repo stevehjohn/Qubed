@@ -37,16 +37,17 @@ public class Solver
 
         Console.WriteLine(_cube.ToString());
 
+        var checks = new List<Func<Cube, bool>>();
+
         foreach (var algorithm in AlgorithmLibrary.Algorithms)
         {
             Console.WriteLine($"{algorithm.Name}");
+            
+            checks.AddRange(algorithm.IsCompleteChecks);
 
-            foreach (var check in algorithm.IsCompleteChecks)
-            {
-                Console.WriteLine(BruteForceAlgorithm(check, algorithm.MoveSets, stepCallback));
-            }
+            Console.WriteLine(BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback));
         }
-        
+
         Console.WriteLine(_cube.ToString());
 
         foreach (var move in _moves)
@@ -63,7 +64,7 @@ public class Solver
         return (true, _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForceAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
+    private bool BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
     {
         var stopwatch = new Stopwatch();
 
@@ -84,13 +85,13 @@ public class Solver
                 var cubeCopy = _cube.Clone();
 
                 var newMoves = new List<Move>(moveSet);
-                
+
                 foreach (var move in moveSet)
                 {
                     cubeCopy.ApplyMove(move);
                 }
 
-                if (SearchAlgorithm(heuristic, moveSets, cubeCopy, newMoves, innerDepth - 1))
+                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, innerDepth - 1))
                 {
                     lock (state)
                     {
@@ -123,10 +124,15 @@ public class Solver
         return false;
     }
 
-    private static bool SearchAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
+    private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
     {
-        if (heuristic(cube))
+        foreach (var heuristic in heuristics)
         {
+            if (! heuristic(cube))
+            {
+                break;
+            }
+
             return true;
         }
 
@@ -144,7 +150,7 @@ public class Solver
                 moves.Add(move);
             }
 
-            if (SearchAlgorithm(heuristic, moveSet, cube, moves, depth - 1))
+            if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
             {
                 return true;
             }
