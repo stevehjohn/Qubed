@@ -35,14 +35,14 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Up, 0, 0] == Colour.White
                         && cube[Face.Left, 0, 0] == Colour.Green
-                        && cube[Face.Back, 2, 0] == Colour.Orange
-                        && cube[Face.Up, 2, 0] == Colour.White
+                        && cube[Face.Back, 2, 0] == Colour.Orange,
+                cube => cube[Face.Up, 2, 0] == Colour.White
                         && cube[Face.Right, 2, 0] == Colour.Blue
-                        && cube[Face.Back, 0, 0] == Colour.Orange
-                        && cube[Face.Up, 2, 2] == Colour.White
+                        && cube[Face.Back, 0, 0] == Colour.Orange,
+                cube => cube[Face.Up, 2, 2] == Colour.White
                         && cube[Face.Front, 2, 0] == Colour.Red
-                        && cube[Face.Right, 0, 0] == Colour.Blue
-                        && cube[Face.Up, 0, 2] == Colour.White
+                        && cube[Face.Right, 0, 0] == Colour.Blue,
+                cube => cube[Face.Up, 0, 2] == Colour.White
                         && cube[Face.Left, 2, 0] == Colour.Green
                         && cube[Face.Front, 0, 0] == Colour.Red
             ]
