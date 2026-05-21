@@ -5,7 +5,7 @@ namespace RubiksCube.Core.Logic;
 
 public abstract class AlgorithmLibrary
 {
-    private static readonly List<(string Description, string[] Moves)> AlgorithmMacros =
+    private static readonly List<(string Description, string[] MoveSets)> AlgorithmMacros =
     [
         ("Step 1 - White Cross",
         [
@@ -25,15 +25,49 @@ public abstract class AlgorithmLibrary
         {
             var moveSet = new List<List<Move>>();
             
-            foreach (var move in macro.Moves)   
+            foreach (var set in macro.MoveSets)   
             {
-                moveSet.Add(ParseMacro(move));
+                foreach (var sequence in ExpandMacro(set))
+                {
+                    moveSet.Add(ParseMacro(sequence));
+                }
             }
             
             var algorithm = new Algorithm(macro.Description, moveSet);
             
             Algorithms.Add(algorithm);
         }
+    }
+
+    private static List<string> ExpandMacro(string macro)
+    {
+        var expandedMacro = new List<string> { macro };
+
+        // ReSharper disable once StringLiteralTypo
+        const string faces = "LFRB";
+        
+        var newSet = new char[macro.Length];
+
+        for (var i = 1; i < 4; i++)
+        {
+            for (var c = 0; c < macro.Length; c++)
+            {
+                if (macro[c] is 'L' or 'F' or 'R' or 'B')
+                {
+                    var newCharacterIndex = (faces.IndexOf(macro[c]) + i) % 4;
+                    
+                    newSet[c] = faces[newCharacterIndex];
+                    
+                    continue;
+                }
+                
+                newSet[c] = macro[c];
+            }
+            
+            expandedMacro.Add(new string(newSet));
+        }
+        
+        return expandedMacro;
     }
 
     private static List<Move> ParseMacro(string macro)
