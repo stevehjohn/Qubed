@@ -41,7 +41,7 @@ public class Solver
 
         foreach (var algorithm in AlgorithmLibrary.Algorithms)
         {
-            Console.WriteLine($"{algorithm.Name}");
+            Console.WriteLine($"{algorithm.Name}\n");
             
             checks.AddRange(algorithm.IsCompleteChecks);
 
