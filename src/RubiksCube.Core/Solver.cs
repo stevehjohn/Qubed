@@ -70,42 +70,72 @@ public class Solver
         Console.WriteLine(BruteForce(HasWhiteCross, stepCallback));
 
         Console.WriteLine("\nCorners\n");
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasRgwCorner, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasRbwCorners, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasRgwWboCorners, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasGwoCorners, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine("\nMiddle\n");
 
         Console.WriteLine(BruteForce(HasRedGreenMiddle, stepCallback, true, true));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasRedBlueMiddle, stepCallback, true, true));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasOrangeGreenMiddle, stepCallback, true, true));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasBlueOrangeMiddle, stepCallback, true, true));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine("\nYellow Cross\n");
 
         Console.WriteLine(BruteForce(HasYellowCross, stepCallback, true));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine("\nYellow Edges\n");
 
         Console.WriteLine(BruteForce(HasAlignedYellowCross, stepCallback, true, true));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine("\nRemaining Corners\n");
 
         Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(_cube.ToString());
 
