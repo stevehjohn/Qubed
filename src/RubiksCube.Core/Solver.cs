@@ -64,6 +64,8 @@ public class Solver
         Console.WriteLine(_cube.ToString());
 
         Console.WriteLine(BruteForce(HasDaisy, stepCallback));
+        
+        Console.WriteLine($"Moves: {_moves.Count}");
 
         Console.WriteLine(BruteForce(HasWhiteCross, stepCallback));
 
