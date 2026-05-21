@@ -155,7 +155,7 @@ public class Solver
 
                 cubeCopy.ApplyMove(move);
 
-                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFace, excludeHalfTurns))
+                if (Search(heuristic, cubeCopy, newMoves, innerDepth - 1, excludeUpFace, excludeHalfTurns))
                 {
                     lock (state)
                     {
@@ -188,7 +188,7 @@ public class Solver
         return false;
     }
 
-    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFace = false, bool excludeHalfTurns = false)
+    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, int depth, bool excludeUpFace = false, bool excludeHalfTurns = false)
     {
         if (heuristic(cube))
         {
@@ -221,7 +221,7 @@ public class Solver
 
             moves.Add(move);
 
-            if (Search(heuristic, cube, moves, move, depth - 1, excludeUpFace, excludeHalfTurns))
+            if (Search(heuristic, cube, moves, depth - 1, excludeUpFace, excludeHalfTurns))
             {
                 return true;
             }
