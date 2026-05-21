@@ -45,7 +45,7 @@ public class Solver
             
             checks.AddRange(algorithm.IsCompleteChecks);
 
-            Console.WriteLine(BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback));
+            BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
         }
 
         Console.WriteLine(_cube.ToString());
@@ -64,7 +64,7 @@ public class Solver
         return (true, _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
+    private void BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
     {
         var stopwatch = new Stopwatch();
 
@@ -117,11 +117,9 @@ public class Solver
 
                 stepCallback(foundMoves);
 
-                return true;
+                return;
             }
         }
-
-        return false;
     }
 
     private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
