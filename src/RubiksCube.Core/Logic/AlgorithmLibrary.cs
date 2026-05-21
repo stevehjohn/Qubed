@@ -48,7 +48,7 @@ public abstract class AlgorithmLibrary
             ]
         ),
         (
-            "Step 3.1 - Middle Layer Edges Red & Green",
+            "Step 3.1 - Middle Layer Edges",
             [
                 "D' L' D L D F D' F'",
                 "D R D' R' D' F' D F"
@@ -56,7 +56,14 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Front, 0, 1] == Colour.Red
                         && cube[Face.Left, 2, 1] == Colour.Green
-            ])
+                        && cube[Face.Front, 2, 1] == Colour.Red
+                        && cube[Face.Right, 0, 1] == Colour.Blue
+                        && cube[Face.Back, 2, 1] == Colour.Orange
+                        && cube[Face.Left, 0, 1] == Colour.Green
+                        && cube[Face.Right, 2, 1] == Colour.Blue
+                        && cube[Face.Back, 0, 1] == Colour.Orange
+            ]
+        )
     ];
 
     public static readonly List<Algorithm> Algorithms;
