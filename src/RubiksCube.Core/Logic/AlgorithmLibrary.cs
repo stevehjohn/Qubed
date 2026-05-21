@@ -50,8 +50,8 @@ public abstract class AlgorithmLibrary
         (
             "Step 3.1 - Middle Layer Edges Red & Green",
             [
-                "U' L' U L U F U' F'",
-                "U R U' R' U' F' U F"
+                "D' L' D L D F D' F'",
+                "D R D' R' D' F' D F"
             ],
             [
                 cube => cube[Face.Front, 0, 1] == Colour.Red
