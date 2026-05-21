@@ -12,6 +12,12 @@ public abstract class AlgorithmLibrary
             "F2",
             "U' R U",
             "F' U' R U"
+        ]),
+        ("Step 2 - Top Corners",
+        [
+            "F D F'",
+            "R' D' R",
+            "R' D2 R D R' D' R"
         ])
     ];
 
