@@ -129,19 +129,7 @@ public class Solver
 
     private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
     {
-        var checksPass = true;
-        
-        foreach (var heuristic in heuristics)
-        {
-            checksPass &= heuristic(cube);
-
-            if (! checksPass)
-            {
-                break;
-            }
-        }
-
-        if (checksPass)
+        if (ChecksPass(heuristics, cube))
         {
             return true;
         }
@@ -174,6 +162,19 @@ public class Solver
         }
 
         return false;
+    }
+
+    private static bool ChecksPass(List<Func<Cube, bool>> heuristics, Cube cube)
+    {
+        foreach (var heuristic in heuristics)
+        {
+            if (! heuristic(cube))
+            {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     // private static bool HasGryCorner(Cube cube)
