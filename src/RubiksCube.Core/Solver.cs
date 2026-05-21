@@ -58,7 +58,7 @@ public class Solver
 
         Console.WriteLine();
 
-        Console.WriteLine(stopwatch.Elapsed);
+        Console.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed}");
 
         return (true, _moves, stopwatch.Elapsed);
     }
