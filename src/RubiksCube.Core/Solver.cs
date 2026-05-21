@@ -131,6 +131,11 @@ public class Solver
         foreach (var heuristic in heuristics)
         {
             checksPass &= heuristic(cube);
+
+            if (! checksPass)
+            {
+                break;
+            }
         }
 
         if (checksPass)
