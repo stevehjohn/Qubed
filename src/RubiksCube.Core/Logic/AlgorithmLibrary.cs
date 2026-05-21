@@ -5,20 +5,41 @@ namespace RubiksCube.Core.Logic;
 
 public abstract class AlgorithmLibrary
 {
-    private static readonly List<(string Description, string[] MoveSets)> AlgorithmMacros =
+    private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool> IsComplete)> AlgorithmMacros =
     [
-        ("Step 1 - White Cross",
-        [
-            "F2",
-            "U' R U",
-            "F' U' R U"
-        ]),
+        (
+            "Step 1 - White Cross",
+            [
+                "F2",
+                "U' R U",
+                "F' U' R U"
+            ],
+            cube => cube[Face.Up, 1, 0] == Colour.White
+                    && cube[Face.Up, 2, 1] == Colour.White
+                    && cube[Face.Up, 1, 2] == Colour.White
+                    && cube[Face.Up, 0, 1] == Colour.White
+                    && cube[Face.Left, 1, 0] == Colour.Green
+                    && cube[Face.Front, 1, 0] == Colour.Red
+                    && cube[Face.Right, 1, 0] == Colour.Blue
+                    && cube[Face.Back, 1, 0] == Colour.Orange),
         ("Step 2 - Top Corners",
-        [
-            "F D F'",
-            "R' D' R",
-            "R' D2 R D R' D' R"
-        ])
+            [
+                "F D F'",
+                "R' D' R",
+                "R' D2 R D R' D' R"
+            ],
+            cube => cube[Face.Up, 0, 0] == Colour.White
+                    && cube[Face.Left, 0, 0] == Colour.Green
+                    && cube[Face.Back, 2, 0] == Colour.Orange
+                    && cube[Face.Up, 2, 0] == Colour.White
+                    && cube[Face.Right, 2, 0] == Colour.Blue
+                    && cube[Face.Back, 0, 0] == Colour.Orange
+                    && cube[Face.Up, 2, 2] == Colour.White
+                    && cube[Face.Front, 2, 0] == Colour.Red
+                    && cube[Face.Right, 0, 0] == Colour.Blue
+                    && cube[Face.Up, 0, 2] == Colour.White
+                    && cube[Face.Left, 2, 0] == Colour.Green
+                    && cube[Face.Front, 0, 0] == Colour.Red)
     ];
 
     public static readonly List<Algorithm> Algorithms;
@@ -30,17 +51,17 @@ public abstract class AlgorithmLibrary
         foreach (var macro in AlgorithmMacros)
         {
             var moveSet = new List<List<Move>>();
-            
-            foreach (var set in macro.MoveSets)   
+
+            foreach (var set in macro.MoveSets)
             {
                 foreach (var sequence in ExpandMacro(set))
                 {
                     moveSet.Add(ParseMacro(sequence));
                 }
             }
-            
+
             var algorithm = new Algorithm(macro.Description, moveSet);
-            
+
             Algorithms.Add(algorithm);
         }
     }
@@ -51,7 +72,7 @@ public abstract class AlgorithmLibrary
 
         // ReSharper disable once StringLiteralTypo
         const string faces = "LFRB";
-        
+
         var newSet = new char[macro.Length];
 
         for (var i = 1; i < 4; i++)
@@ -61,18 +82,18 @@ public abstract class AlgorithmLibrary
                 if (macro[c] is 'L' or 'F' or 'R' or 'B')
                 {
                     var newCharacterIndex = (faces.IndexOf(macro[c]) + i) % 4;
-                    
+
                     newSet[c] = faces[newCharacterIndex];
-                    
+
                     continue;
                 }
-                
+
                 newSet[c] = macro[c];
             }
-            
+
             expandedMacro.Add(new string(newSet));
         }
-        
+
         return expandedMacro;
     }
 
