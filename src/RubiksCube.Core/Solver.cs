@@ -126,13 +126,15 @@ public class Solver
 
     private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
     {
+        var checksPass = true;
+        
         foreach (var heuristic in heuristics)
         {
-            if (! heuristic(cube))
-            {
-                break;
-            }
+            checksPass &= heuristic(cube);
+        }
 
+        if (checksPass)
+        {
             return true;
         }
 
