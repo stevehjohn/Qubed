@@ -5,7 +5,7 @@ namespace RubiksCube.Core.Logic;
 
 public abstract class AlgorithmLibrary
 {
-    private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool> IsComplete)> AlgorithmMacros =
+    private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool>[] IsCompleteChecks)> AlgorithmMacros =
     [
         (
             "Step 1 - White Cross",
@@ -14,32 +14,49 @@ public abstract class AlgorithmLibrary
                 "U' R U",
                 "F' U' R U"
             ],
-            cube => cube[Face.Up, 1, 0] == Colour.White
-                    && cube[Face.Up, 2, 1] == Colour.White
-                    && cube[Face.Up, 1, 2] == Colour.White
-                    && cube[Face.Up, 0, 1] == Colour.White
-                    && cube[Face.Left, 1, 0] == Colour.Green
-                    && cube[Face.Front, 1, 0] == Colour.Red
-                    && cube[Face.Right, 1, 0] == Colour.Blue
-                    && cube[Face.Back, 1, 0] == Colour.Orange),
-        ("Step 2 - Top Corners",
+            [
+                cube => cube[Face.Up, 1, 0] == Colour.White
+                        && cube[Face.Up, 2, 1] == Colour.White
+                        && cube[Face.Up, 1, 2] == Colour.White
+                        && cube[Face.Up, 0, 1] == Colour.White
+                        && cube[Face.Left, 1, 0] == Colour.Green
+                        && cube[Face.Front, 1, 0] == Colour.Red
+                        && cube[Face.Right, 1, 0] == Colour.Blue
+                        && cube[Face.Back, 1, 0] == Colour.Orange
+            ]
+        ),
+        (
+            "Step 2 - Top Corners",
             [
                 "F D F'",
                 "R' D' R",
                 "R' D2 R D R' D' R"
             ],
-            cube => cube[Face.Up, 0, 0] == Colour.White
-                    && cube[Face.Left, 0, 0] == Colour.Green
-                    && cube[Face.Back, 2, 0] == Colour.Orange
-                    && cube[Face.Up, 2, 0] == Colour.White
-                    && cube[Face.Right, 2, 0] == Colour.Blue
-                    && cube[Face.Back, 0, 0] == Colour.Orange
-                    && cube[Face.Up, 2, 2] == Colour.White
-                    && cube[Face.Front, 2, 0] == Colour.Red
-                    && cube[Face.Right, 0, 0] == Colour.Blue
-                    && cube[Face.Up, 0, 2] == Colour.White
-                    && cube[Face.Left, 2, 0] == Colour.Green
-                    && cube[Face.Front, 0, 0] == Colour.Red)
+            [
+                cube => cube[Face.Up, 0, 0] == Colour.White
+                        && cube[Face.Left, 0, 0] == Colour.Green
+                        && cube[Face.Back, 2, 0] == Colour.Orange
+                        && cube[Face.Up, 2, 0] == Colour.White
+                        && cube[Face.Right, 2, 0] == Colour.Blue
+                        && cube[Face.Back, 0, 0] == Colour.Orange
+                        && cube[Face.Up, 2, 2] == Colour.White
+                        && cube[Face.Front, 2, 0] == Colour.Red
+                        && cube[Face.Right, 0, 0] == Colour.Blue
+                        && cube[Face.Up, 0, 2] == Colour.White
+                        && cube[Face.Left, 2, 0] == Colour.Green
+                        && cube[Face.Front, 0, 0] == Colour.Red
+            ]
+        ),
+        (
+            "Step 3.1 - Middle Layer Edges Red & Green",
+            [
+                "U' L' U L U F U' F'",
+                "U R U' R' U' F' U F"
+            ],
+            [
+                cube => cube[Face.Front, 0, 1] == Colour.Red
+                        && cube[Face.Left, 2, 1] == Colour.Green
+            ])
     ];
 
     public static readonly List<Algorithm> Algorithms;
@@ -60,7 +77,7 @@ public abstract class AlgorithmLibrary
                 }
             }
 
-            var algorithm = new Algorithm(macro.Description, moveSet, macro.IsComplete);
+            var algorithm = new Algorithm(macro.Description, moveSet, macro.IsCompleteChecks);
 
             Algorithms.Add(algorithm);
         }
