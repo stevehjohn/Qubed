@@ -90,6 +90,18 @@ public abstract class AlgorithmLibrary
                 cube => cube[Face.Right, 2, 1] == Colour.Blue
                         && cube[Face.Back, 0, 1] == Colour.Orange
             ]
+        ),
+        (
+            "Step 4 - Yellow Cross",
+            [
+                "R' U' F' U F R"
+            ],
+            [
+                cube => cube[Face.Down, 1, 0] == Colour.Yellow
+                        && cube[Face.Down, 2, 1] == Colour.Yellow
+                        && cube[Face.Down, 1, 2] == Colour.Yellow
+                        && cube[Face.Down, 0, 1] == Colour.Yellow
+            ]
         )
     ];
 

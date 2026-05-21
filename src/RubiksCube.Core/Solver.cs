@@ -173,34 +173,6 @@ public class Solver
         return false;
     }
 
-    // private static bool HasRedGreenMiddle(Cube cube)
-    // {
-    //     return HasGwoCorners(cube)
-    //            && cube[Face.Front, 0, 1] == Colour.Red
-    //            && cube[Face.Left, 2, 1] == Colour.Green;
-    // }
-    //
-    // private static bool HasRedBlueMiddle(Cube cube)
-    // {
-    //     return HasRedGreenMiddle(cube)
-    //            && cube[Face.Front, 2, 1] == Colour.Red
-    //            && cube[Face.Right, 0, 1] == Colour.Blue;
-    // }
-    //
-    // private static bool HasOrangeGreenMiddle(Cube cube)
-    // {
-    //     return HasRedBlueMiddle(cube)
-    //            && cube[Face.Back, 2, 1] == Colour.Orange
-    //            && cube[Face.Left, 0, 1] == Colour.Green;
-    // }
-    //
-    // private static bool HasBlueOrangeMiddle(Cube cube)
-    // {
-    //     return HasOrangeGreenMiddle(cube)
-    //            && cube[Face.Right, 2, 1] == Colour.Blue
-    //            && cube[Face.Back, 0, 1] == Colour.Orange;
-    // }
-
     // private static bool HasYellowCross(Cube cube)
     // {
     //     return HasBlueOrangeMiddle(cube)
