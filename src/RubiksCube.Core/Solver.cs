@@ -39,13 +39,15 @@ public class Solver
 
         var checks = new List<Func<Cube, bool>>();
 
+        var solved = true;
+
         foreach (var algorithm in AlgorithmLibrary.Algorithms)
         {
             Console.WriteLine($"{algorithm.Name}\n");
             
             checks.AddRange(algorithm.IsCompleteChecks);
 
-            BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
+            solved &= BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
             
             Console.WriteLine();
         }
@@ -63,10 +65,10 @@ public class Solver
 
         Console.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed}");
 
-        return (true, _moves, stopwatch.Elapsed);
+        return (solved, _moves, stopwatch.Elapsed);
     }
 
-    private void BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
+    private bool BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
     {
         var stopwatch = new Stopwatch();
 
@@ -119,9 +121,10 @@ public class Solver
 
                 stepCallback(foundMoves);
 
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
