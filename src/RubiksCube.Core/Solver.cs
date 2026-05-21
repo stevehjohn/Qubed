@@ -46,6 +46,8 @@ public class Solver
             checks.AddRange(algorithm.IsCompleteChecks);
 
             BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
+            
+            Console.WriteLine();
         }
 
         Console.WriteLine(_cube.ToString());
