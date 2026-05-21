@@ -106,7 +106,7 @@ public abstract class AlgorithmLibrary
         (
             "Step 4 - Align Yellow Cross",
             [
-                "D R D R' D R D2 R'"
+                "L R' D' R D L' D' R' D R"
             ],
             [
                 cube => cube[Face.Front, 1, 2] == Colour.Red
