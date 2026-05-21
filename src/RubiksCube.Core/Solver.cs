@@ -12,33 +12,6 @@ public class Solver
 
     private readonly Cube _cube;
 
-    private static readonly Move[] AllMoves =
-    [
-        new(Face.Down, Direction.Clockwise),
-        new(Face.Down, Direction.AntiClockwise),
-        new(Face.Down, Direction.HalfTurn),
-
-        new(Face.Front, Direction.Clockwise),
-        new(Face.Front, Direction.AntiClockwise),
-        new(Face.Front, Direction.HalfTurn),
-
-        new(Face.Right, Direction.Clockwise),
-        new(Face.Right, Direction.AntiClockwise),
-        new(Face.Right, Direction.HalfTurn),
-
-        new(Face.Left, Direction.Clockwise),
-        new(Face.Left, Direction.AntiClockwise),
-        new(Face.Left, Direction.HalfTurn),
-
-        new(Face.Back, Direction.Clockwise),
-        new(Face.Back, Direction.AntiClockwise),
-        new(Face.Back, Direction.HalfTurn),
-
-        new(Face.Up, Direction.Clockwise),
-        new(Face.Up, Direction.AntiClockwise),
-        new(Face.Up, Direction.HalfTurn)
-    ];
-
     private readonly List<Move> _moves = [];
 
     public Solver(Cube cube) => _cube = cube.Clone();
@@ -64,48 +37,13 @@ public class Solver
 
         Console.WriteLine(_cube.ToString());
 
-        Console.WriteLine(BruteForce(HasDaisy, stepCallback));
-
-        Console.WriteLine(BruteForce(HasWhiteCross, stepCallback));
-
-        Console.WriteLine("\nCorners\n");
-
-        Console.WriteLine(BruteForce(HasRgwCorner, stepCallback));
-
-        Console.WriteLine(BruteForce(HasRbwCorners, stepCallback));
-
-        Console.WriteLine(BruteForce(HasRgwWboCorners, stepCallback));
-
-        Console.WriteLine(BruteForce(HasGwoCorners, stepCallback));
-
-        Console.WriteLine("\nMiddle\n");
-
-        Console.WriteLine(BruteForceAlgorithm(HasRedGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-
-        Console.WriteLine(BruteForceAlgorithm(HasRedBlueMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-
-        Console.WriteLine(BruteForceAlgorithm(HasOrangeGreenMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-
-        Console.WriteLine(BruteForceAlgorithm(HasBlueOrangeMiddle, AlgorithmLibrary.LayerTwoMoves, stepCallback));
-
-        Console.WriteLine("\nYellow Cross\n");
+        foreach (var algorithm in AlgorithmLibrary.Algorithms)
+        {
+            Console.WriteLine($"{algorithm.Name}");
         
-        Console.WriteLine(BruteForceAlgorithm(HasYellowCross, AlgorithmLibrary.YellowCrossMoves, stepCallback));
-
-        Console.WriteLine("\nYellow Edges\n");
+            Console.WriteLine(BruteForceAlgorithm(HasWhiteCross, algorithm.MoveSets, stepCallback));
+        }
         
-        Console.WriteLine(BruteForceAlgorithm(HasAlignedYellowCross, AlgorithmLibrary.YellowEdgesMoves, stepCallback));
-
-        // Console.WriteLine("\nRemaining Corners\n");
-        //
-        // Console.WriteLine(BruteForce(HasGryCorner, stepCallback));
-        //
-        // Console.WriteLine(BruteForce(HasRbyCorner, stepCallback));
-        //
-        // Console.WriteLine(BruteForce(HasGoyCorner, stepCallback));
-        //
-        // Console.WriteLine(BruteForce(HasBoyCorner, stepCallback));
-
         Console.WriteLine(_cube.ToString());
 
         foreach (var move in _moves)
@@ -122,136 +60,7 @@ public class Solver
         return (true, _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForce(Func<Cube, bool> heuristic, Action<List<Move>> stepCallback, bool excludeUpFace = false, bool excludeHalfTurns = false)
-    {
-        if (heuristic(_cube))
-        {
-            return true;
-        }
-        
-        var stopwatch = new Stopwatch();
-
-        for (var depth = MinDepth; depth <= MaxDepth; depth++)
-        {
-            Console.Write(depth);
-
-            stopwatch.Restart();
-
-            var found = false;
-
-            List<Move> foundMoves = null;
-
-            var innerDepth = depth;
-
-            Parallel.ForEach(AllMoves, new ParallelOptions(), (move, state) =>
-            {
-                if (excludeUpFace && move.Face == Face.Up)
-                {
-                    return;
-                }
-
-                if (excludeHalfTurns && move.Direction == Direction.HalfTurn)
-                {
-                    return;
-                }
-
-                var cubeCopy = _cube.Clone();
-
-                var newMoves = new List<Move> { move };
-
-                cubeCopy.ApplyMove(move);
-
-                if (Search(heuristic, cubeCopy, newMoves, move, innerDepth - 1, excludeUpFace, excludeHalfTurns))
-                {
-                    lock (state)
-                    {
-                        found = true;
-
-                        foundMoves = newMoves;
-                    }
-
-                    state.Stop();
-                }
-            });
-
-            Console.WriteLine($" {stopwatch.Elapsed}");
-
-            if (found)
-            {
-                _moves.AddRange(foundMoves);
-
-                foreach (var move in foundMoves)
-                {
-                    _cube.ApplyMove(move);
-                }
-
-                stepCallback(foundMoves);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool Search(Func<Cube, bool> heuristic, Cube cube, List<Move> moves, Move lastMove, int depth, bool excludeUpFace = false, bool excludeHalfTurns = false)
-    {
-        if (heuristic(cube))
-        {
-            return true;
-        }
-
-        if (depth == 0)
-        {
-            return false;
-        }
-
-        foreach (var move in AllMoves)
-        {
-            if (excludeUpFace && move.Face == Face.Up)
-            {
-                continue;
-            }
-
-            if (excludeHalfTurns && move.Direction == Direction.HalfTurn)
-            {
-                continue;
-            }
-
-            if (moves.Count > 0)
-            {
-                if (move.Face == lastMove.Face)
-                {
-                    continue;
-                }
-
-                if (AxisOf(move.Face) == AxisOf(lastMove.Face))
-                {
-                    if (move.Face < lastMove.Face)
-                    {
-                        continue;
-                    }
-                }
-            }
-
-            cube.ApplyMove(move);
-
-            moves.Add(move);
-
-            if (Search(heuristic, cube, moves, move, depth - 1, excludeUpFace, excludeHalfTurns))
-            {
-                return true;
-            }
-
-            cube.UndoMove();
-
-            moves.RemoveAt(moves.Count - 1);
-        }
-
-        return false;
-    }
-
-    private bool BruteForceAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Action<List<Move>> stepCallback)
+    private bool BruteForceAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
     {
         var stopwatch = new Stopwatch();
 
@@ -267,18 +76,18 @@ public class Solver
 
             var innerDepth = depth;
 
-            Parallel.ForEach(algorithms, new ParallelOptions(), (algorithm, state) =>
+            Parallel.ForEach(moveSets, new ParallelOptions(), (moveSet, state) =>
             {
                 var cubeCopy = _cube.Clone();
 
-                var newMoves = ParseAlgorithmMoves(algorithm);
-
-                foreach (var move in newMoves)
+                var newMoves = new List<Move>(moveSet);
+                
+                foreach (var move in moveSet)
                 {
                     cubeCopy.ApplyMove(move);
                 }
 
-                if (SearchAlgorithm(heuristic, algorithms, cubeCopy, newMoves, innerDepth - 1))
+                if (SearchAlgorithm(heuristic, moveSets, cubeCopy, newMoves, innerDepth - 1))
                 {
                     lock (state)
                     {
@@ -311,7 +120,7 @@ public class Solver
         return false;
     }
 
-    private bool SearchAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> algorithms, Cube cube, List<Move> moves, int depth)
+    private static bool SearchAlgorithm(Func<Cube, bool> heuristic, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
     {
         if (heuristic(cube))
         {
@@ -323,21 +132,21 @@ public class Solver
             return false;
         }
 
-        foreach (var algorithm in algorithms)
+        foreach (var set in moveSet)
         {
-            foreach (var move in ParseAlgorithmMoves(algorithm))
+            foreach (var move in set)
             {
                 cube.ApplyMove(move);
 
                 moves.Add(move);
             }
 
-            if (SearchAlgorithm(heuristic, algorithms, cube, moves, depth - 1))
+            if (SearchAlgorithm(heuristic, moveSet, cube, moves, depth - 1))
             {
                 return true;
             }
 
-            for (var i = 0; i < algorithm.Count; i++)
+            for (var i = 0; i < set.Count; i++)
             {
                 cube.UndoMove();
 
@@ -346,48 +155,6 @@ public class Solver
         }
 
         return false;
-    }
-
-    private List<Move> ParseAlgorithmMoves(IReadOnlyList<Move> moves)
-    {
-        var newMoves = new List<Move>();
-
-        foreach (var move in moves)
-        {
-            newMoves.Add(ParseAlgorithmMove(move));
-        }
-
-        return newMoves;
-    }
-
-    private Move ParseAlgorithmMove(Move move)
-    {
-        if (move.Direction != Direction.Any)
-        {
-            return move;
-        }
-
-        return move with
-        {
-            Direction = Random.Shared.Next(3) switch
-            {
-                0 => Direction.Clockwise,
-                1 => Direction.AntiClockwise,
-                2 => Direction.HalfTurn,
-                _ => throw new ArgumentOutOfRangeException()
-            }
-        };
-    }
-
-    private static int AxisOf(Face face)
-    {
-        return face switch
-        {
-            Face.Left or Face.Right => 0,
-            Face.Up or Face.Down => 1,
-            Face.Front or Face.Back => 2,
-            _ => throw new ArgumentOutOfRangeException(nameof(face))
-        };
     }
 
     private static bool HasDaisy(Cube cube)

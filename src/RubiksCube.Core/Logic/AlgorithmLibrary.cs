@@ -1,76 +1,44 @@
+using RubiksCube.Core.Exceptions;
 using RubiksCube.Core.Models;
 
 namespace RubiksCube.Core.Logic;
 
 public abstract class AlgorithmLibrary
 {
-    private static readonly List<List<Move>> LayerTwoMovesInternal = [];
-
-    private static readonly List<List<Move>> YellowCrossMovesInternal = [];
-
-    private static readonly List<List<Move>> YellowEdgesMovesInternal = [];
-
-    private static readonly string[] LayerTwoAlgorithms =
+    private static readonly List<(string Description, string[] Moves)> AlgorithmMacros =
     [
-        "D* R D' R' D' F' D F",
-        "D* B D' B' D' R' D R",
-        "D* L D' L' D' B' D B",
-        "D* F D' F' D' L' D L",
-        
-        "D* L' D L D F D' F'",
-        "D* F' D F D R D' R'",
-        "D* R' D R D B D' B'",
-        "D* B' D B D L D' L'"
+        ("Step 1 - White Cross",
+        [
+            "F2",
+            "U' R U",
+            "F' U' R U"
+        ])
     ];
 
-    private static readonly string[] YellowCrossAlgorithms =
-    [
-        "F D R D' R' F'",
-        "R D B D' B' R'",
-        "B D L D' L' B'",
-        "L D F D' F' L'",
-        
-        "F R D R' D' F'",
-        "R B D B' D' R'",
-        "B L D L' D' B'",
-        "L F D F' D' L'"
-    ];
-    
-    private static readonly string[] YellowEdgesAlgorithms =
-    [
-        "D R D R' D R D2 R'",
-        "D B D B' D B D2 B'",
-        "D L D L' D L D2 L'",
-        "D F D F' D F D2 F'"
-    ];
-
-    public static IReadOnlyList<IReadOnlyList<Move>> LayerTwoMoves => LayerTwoMovesInternal;
-
-    public static IReadOnlyList<IReadOnlyList<Move>> YellowCrossMoves => YellowCrossMovesInternal;
-
-    public static IReadOnlyList<IReadOnlyList<Move>> YellowEdgesMoves => YellowEdgesMovesInternal;
+    public static readonly List<Algorithm> Algorithms;
 
     static AlgorithmLibrary()
     {
-        foreach (var algorithm in LayerTwoAlgorithms)
+        Algorithms = [];
+
+        foreach (var macro in AlgorithmMacros)
         {
-            LayerTwoMovesInternal.Add(ParseAlgorithm(algorithm));
-        }
-        
-        foreach (var algorithm in YellowCrossAlgorithms)
-        {
-            YellowCrossMovesInternal.Add(ParseAlgorithm(algorithm));
-        }
-        
-        foreach (var algorithm in YellowEdgesAlgorithms)
-        {
-            YellowEdgesMovesInternal.Add(ParseAlgorithm(algorithm));
+            var moveSet = new List<List<Move>>();
+            
+            foreach (var move in macro.Moves)   
+            {
+                moveSet.Add(ParseMacro(move));
+            }
+            
+            var algorithm = new Algorithm(macro.Description, moveSet);
+            
+            Algorithms.Add(algorithm);
         }
     }
 
-    private static List<Move> ParseAlgorithm(string algorithm)
+    private static List<Move> ParseMacro(string macro)
     {
-        var steps = algorithm.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var steps = macro.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         var moves = new List<Move>();
 
@@ -84,43 +52,16 @@ public abstract class AlgorithmLibrary
 
     private static Move ParseMove(string move)
     {
-        Face face;
-        
-        switch (move[0])
+        var face = move[0] switch
         {
-            case 'U':
-                face = Face.Up;
-                
-                break;
-
-            case 'D':
-                face = Face.Down;
-                
-                break;
-            
-            case 'L':
-                face = Face.Left;
-                
-                break;
-            
-            case 'R':
-                face = Face.Right;
-                
-                break;
-            
-            case 'F':
-                face = Face.Front;
-                
-                break;
-            
-            case 'B':
-                face = Face.Back;
-                
-                break;
-            
-            default:
-                throw new ParseException($"Unknown move {move[0]}");
-        }
+            'U' => Face.Up,
+            'D' => Face.Down,
+            'L' => Face.Left,
+            'R' => Face.Right,
+            'F' => Face.Front,
+            'B' => Face.Back,
+            _ => throw new ParseException($"Unknown move {move[0]}")
+        };
 
         var direction = Direction.Clockwise;
 
@@ -130,7 +71,6 @@ public abstract class AlgorithmLibrary
             {
                 '\'' => Direction.AntiClockwise,
                 '2' => Direction.HalfTurn,
-                '*' => Direction.Any,
                 _ => throw new ParseException($"Unknown modifier {move[1]}")
             };
         }

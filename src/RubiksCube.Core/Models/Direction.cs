@@ -4,6 +4,5 @@ public enum Direction
 {
     Clockwise,
     AntiClockwise,
-    HalfTurn,
-    Any
+    HalfTurn
 }
