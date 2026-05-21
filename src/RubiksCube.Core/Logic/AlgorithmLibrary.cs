@@ -59,7 +59,7 @@ public abstract class AlgorithmLibrary
             ]
         ),
         (
-            "Step 3.1 - Middle Layer Edges Red & Blue",
+            "Step 3.2 - Middle Layer Edges Red & Blue",
             [
                 "D' L' D L D F D' F'",
                 "D R D' R' D' F' D F"
