@@ -88,7 +88,7 @@ public abstract class AlgorithmLibrary
             ],
             [
                 cube => cube[Face.Right, 2, 1] == Colour.Blue
-                        && cube[Face.Back, 0, 1] == Colour.Orange;
+                        && cube[Face.Back, 0, 1] == Colour.Orange
             ]
         )
     ];
