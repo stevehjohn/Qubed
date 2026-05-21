@@ -41,7 +41,7 @@ public class Solver
         {
             Console.WriteLine($"{algorithm.Name}");
         
-            Console.WriteLine(BruteForceAlgorithm(HasWhiteCross, algorithm.MoveSets, stepCallback));
+            Console.WriteLine(BruteForceAlgorithm(algorithm.IsComplete, algorithm.MoveSets, stepCallback));
         }
         
         Console.WriteLine(_cube.ToString());

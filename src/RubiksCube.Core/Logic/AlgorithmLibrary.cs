@@ -60,7 +60,7 @@ public abstract class AlgorithmLibrary
                 }
             }
 
-            var algorithm = new Algorithm(macro.Description, moveSet);
+            var algorithm = new Algorithm(macro.Description, moveSet, macro.IsComplete);
 
             Algorithms.Add(algorithm);
         }
