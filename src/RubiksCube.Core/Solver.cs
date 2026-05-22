@@ -203,7 +203,7 @@ public class Solver
             {
                 continue;
             }
-
+            
             foreach (var move in set)
             {
                 cube.ApplyMove(move);
