@@ -102,10 +102,6 @@ public class Solver
                     cubeCopy.ApplyMove(move);
                 }
 
-                var hash = cubeCopy.GetHash();
-                
-                _visitedDepths.TryAdd((hash.A, hash.B, hash.C), innerDepth);
-
                 if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, innerDepth - 1))
                 {
                     lock (state)
