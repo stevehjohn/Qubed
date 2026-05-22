@@ -496,6 +496,8 @@ public sealed class RubiksCube : Game
     private void SolvedCallback((bool Solved, IReadOnlyList<Move> Moves, TimeSpan Elapsed) result)
     {
         _solverFinished = true;
+
+        _rotationDuration = 30f / _solveQueue.Count;
     }
 
     private void StepCallback(List<Move> moves)
@@ -558,6 +560,8 @@ public sealed class RubiksCube : Game
             if (_solverFinished && _solveQueue.Count == 0)
             {
                 _isSolving = false;
+                
+                _rotationDuration = 0.25f;
             }
         }
 
