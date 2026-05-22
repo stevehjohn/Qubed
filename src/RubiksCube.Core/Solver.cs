@@ -209,17 +209,6 @@ public class Solver
         return false;
     }
 
-    private static int Axis(Face face) =>
-        face switch
-        {
-            Face.Up or Face.Down => 0,
-            Face.Left or Face.Right => 1,
-            Face.Front or Face.Back => 2,
-            _ => throw new ArgumentOutOfRangeException(nameof(face))
-        };
-
-    private static bool SameAxis(Face a, Face b) => Axis(a) == Axis(b);
-
     private static bool ChecksPass(List<Func<Cube, bool>> heuristics, Cube cube)
     {
         foreach (var heuristic in heuristics)
