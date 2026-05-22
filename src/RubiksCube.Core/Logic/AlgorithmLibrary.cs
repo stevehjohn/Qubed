@@ -117,7 +117,7 @@ public abstract class AlgorithmLibrary
             ]
         ),
         (
-            "Step 5.1 - Yellow Corners 1",
+            "Step 5 - Yellow Corners",
             [
                 "L D' R' D L' D' R D"
             ],
@@ -126,6 +126,15 @@ public abstract class AlgorithmLibrary
                         cube[Face.Down, 2, 0] == Colour.Yellow &&
                         cube[Face.Down, 2, 2] == Colour.Yellow &&
                         cube[Face.Down, 0, 2] == Colour.Yellow
+            ]
+        ),
+        (
+            "Step 6 - Completion",
+            [
+                "U R U' R' U R U' R'"
+            ],
+            [
+                cube => cube.IsSolved()
             ]
         )
     ];
