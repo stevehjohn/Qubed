@@ -148,14 +148,14 @@ public class Solver
             return false;
         }
         
-        // var key = cube.GetHash();
-        //
-        // if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
-        // {
-        //     return false;
-        // }
-        //
-        // _visitedDepths[key] = depth;
+        var key = cube.GetHash();
+        
+        if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
+        {
+            return false;
+        }
+        
+        _visitedDepths[key] = depth;
         
         foreach (var set in moveSet)
         {
