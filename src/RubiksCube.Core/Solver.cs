@@ -146,10 +146,12 @@ public class Solver
         foreach (var set in moveSet)
         {
             var skipSet = false;
+
+            var index = 0;
             
             foreach (var move in set)
             {
-                if (moves.Count > 0)
+                if (index == 0 && moves.Count > 0)
                 {
                     var lastMove = moves[^1];
 
@@ -160,6 +162,8 @@ public class Solver
                         break;
                     }
                 }
+
+                index++;
 
                 cube.ApplyMove(move);
 
