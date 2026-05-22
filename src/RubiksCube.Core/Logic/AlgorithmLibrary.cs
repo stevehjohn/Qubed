@@ -5,6 +5,9 @@ namespace RubiksCube.Core.Logic;
 
 public abstract class AlgorithmLibrary
 {
+    // ReSharper disable once StringLiteralTypo
+    private static readonly string[] Faces = [ "LFRB", "BRFL" ];
+
     private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool>[] IsCompleteChecks)> AlgorithmMacros =
     [
         (
@@ -146,28 +149,28 @@ public abstract class AlgorithmLibrary
     {
         var expandedMacro = new List<string> { macro };
 
-        // ReSharper disable once StringLiteralTypo
-        const string faces = "LFRB";
-
         var newSet = new char[macro.Length];
 
-        for (var i = 1; i < 4; i++)
+        for (var f = 0; f < Faces.Length; f++)
         {
-            for (var c = 0; c < macro.Length; c++)
+            for (var i = 1; i < 4; i++)
             {
-                if (macro[c] is 'L' or 'F' or 'R' or 'B')
+                for (var c = 0; c < macro.Length; c++)
                 {
-                    var newCharacterIndex = (faces.IndexOf(macro[c]) + i) % 4;
+                    if (macro[c] is 'L' or 'F' or 'R' or 'B')
+                    {
+                        var newCharacterIndex = (Faces[f].IndexOf(macro[c]) + i) % 4;
 
-                    newSet[c] = faces[newCharacterIndex];
+                        newSet[c] = Faces[f][newCharacterIndex];
 
-                    continue;
+                        continue;
+                    }
+
+                    newSet[c] = macro[c];
                 }
 
-                newSet[c] = macro[c];
+                expandedMacro.Add(new string(newSet));
             }
-
-            expandedMacro.Add(new string(newSet));
         }
 
         return expandedMacro;
