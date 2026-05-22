@@ -94,8 +94,8 @@ public abstract class AlgorithmLibrary
         (
             "Step 4 - Yellow Cross",
             [
-                "F D R D' R' F'",
-                "F R D R' D' F'"
+                "F' R' D' R D F",
+                "F' D' R' D R F"
             ],
             [
                 cube => cube[Face.Down, 1, 0] == Colour.Yellow
@@ -107,13 +107,25 @@ public abstract class AlgorithmLibrary
         (
             "Step 4 - Align Yellow Cross",
             [
-                "D R D R' D R D2 R'"
+                "R' D2 R D R' D R D"
             ],
             [
                 cube => cube[Face.Front, 1, 2] == Colour.Red
                         && cube[Face.Right, 1, 2] == Colour.Blue
                         && cube[Face.Back, 1, 2] == Colour.Orange
                         && cube[Face.Left, 1, 2] == Colour.Green
+            ]
+        ),
+        (
+            "Step 5.1 - Yellow Corners 1",
+            [
+                "L D' R' D L' D' R D"
+            ],
+            [
+                cube => cube[Face.Down, 0, 0] == Colour.Yellow &&
+                        cube[Face.Down, 2, 0] == Colour.Yellow &&
+                        cube[Face.Down, 2, 2] == Colour.Yellow &&
+                        cube[Face.Down, 0, 2] == Colour.Yellow
             ]
         )
     ];
