@@ -17,7 +17,7 @@ public abstract class AlgorithmLibrary
                 "R",
                 "F R",
                 "F R U",
-                "U' R U",
+                "R U",
                 "F' U' R U",
                 "R' U' R U R'"
             ],
@@ -61,8 +61,8 @@ public abstract class AlgorithmLibrary
                 "D",
                 "D'",
                 "D2",
-                "D' L' D L D F D' F'",
-                "D R D' R' D' F' D F",
+                "L' D L D F D' F'",
+                "R D' R' D' F' D F",
                 "R D' R' D F' D2 F D F' D2 F"
             ],
             [
@@ -76,8 +76,8 @@ public abstract class AlgorithmLibrary
                 "D",
                 "D'",
                 "D2",
-                "D' L' D L D F D' F'",
-                "D R D' R' D' F' D F",
+                "L' D L D F D' F'",
+                "R D' R' D' F' D F",
                 "R D' R' D F' D2 F D F' D2 F"
             ],
             [
@@ -91,8 +91,8 @@ public abstract class AlgorithmLibrary
                 "D",
                 "D'",
                 "D2",
-                "D' L' D L D F D' F'",
-                "D R D' R' D' F' D F",
+                "L' D L D F D' F'",
+                "R D' R' D' F' D F",
                 "R D' R' D F' D2 F D F' D2 F"
             ],
             [
@@ -106,8 +106,8 @@ public abstract class AlgorithmLibrary
                 "D",
                 "D'",
                 "D2",
-                "D' L' D L D F D' F'",
-                "D R D' R' D' F' D F",
+                "L' D L D F D' F'",
+                "R D' R' D' F' D F",
                 "R D' R' D F' D2 F D F' D2 F"
             ],
             [
