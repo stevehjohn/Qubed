@@ -9,7 +9,7 @@ public class Solver
 {
     private const int MinDepth = 1;
 
-    private const int MaxDepth = 15;
+    private const int MaxDepth = 20;
 
     private readonly Cube _cube;
 
@@ -154,8 +154,8 @@ public class Solver
         {
             return false;
         }
-        
-        _visitedDepths[key] = depth;
+
+        _visitedDepths.AddOrUpdate(key, depth, (_, oldDepth) => Math.Max(oldDepth, depth));
         
         foreach (var set in moveSet)
         {
