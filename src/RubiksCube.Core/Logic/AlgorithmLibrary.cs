@@ -94,8 +94,8 @@ public abstract class AlgorithmLibrary
         (
             "Step 4 - Yellow Cross",
             [
-                "F U R U' R' F'",
-                "F R U R' U' F'"
+                "F D R D' R' F'",
+                "F R D R' D' F'"
             ],
             [
                 cube => cube[Face.Down, 1, 0] == Colour.Yellow
