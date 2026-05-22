@@ -20,6 +20,8 @@ public sealed class RubiksCube : Game
 
     private readonly Queue<Move> _solveQueue = [];
 
+    private readonly Random _random = new();
+    
     private BasicEffect _effect;
 
     private Matrix _view;
@@ -420,7 +422,7 @@ public sealed class RubiksCube : Game
             StartFaceRotation(new Move(Face.Right, direction));
         }
     }
-
+    
     private void TryScramble(KeyboardState keyboard)
     {
         if (_activeRotation is not null || _isSolving)
@@ -432,7 +434,7 @@ public sealed class RubiksCube : Game
         {
             if (WasKeyPressed(keyboard, Keys.S))
             {
-                _scrambleTurns = Random.Shared.Next(20, 50);
+                _scrambleTurns = _random.Next(20, 50);
 
                 _rotationDuration = 0.1f;
             }
@@ -442,9 +444,9 @@ public sealed class RubiksCube : Game
             }
         }
 
-        var face = (Face) Random.Shared.Next(6);
+        var face = (Face) _random.Next(6);
 
-        StartFaceRotation(new Move(face, Random.Shared.Next(2) == 1 ? Direction.Clockwise : Direction.AntiClockwise));
+        StartFaceRotation(new Move(face, _random.Next(2) == 1 ? Direction.Clockwise : Direction.AntiClockwise));
 
         _scrambleTurns--;
 
