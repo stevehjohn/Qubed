@@ -6,9 +6,9 @@ namespace RubiksCube.Core.Logic;
 public abstract class AlgorithmLibrary
 {
     // ReSharper disable once StringLiteralTypo
-    private static readonly string[] Faces = [ "LFRB", "BRFL" ];
+    private static readonly string[] Faces = [ "LFRB", "LBRF" ];
 
-    private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool>[] IsCompleteChecks)> AlgorithmMacros =
+    private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool>[] IsCompleteChecks, int FaceCount)> AlgorithmMacros =
     [
         (
             "Step 1 - White Cross",
@@ -26,7 +26,8 @@ public abstract class AlgorithmLibrary
                         && cube[Face.Front, 1, 0] == Colour.Red
                         && cube[Face.Right, 1, 0] == Colour.Blue
                         && cube[Face.Back, 1, 0] == Colour.Orange
-            ]
+            ],
+            1
         ),
         (
             "Step 2 - Top Corners",
@@ -48,7 +49,8 @@ public abstract class AlgorithmLibrary
                 cube => cube[Face.Up, 0, 2] == Colour.White
                         && cube[Face.Left, 2, 0] == Colour.Green
                         && cube[Face.Front, 0, 0] == Colour.Red
-            ]
+            ],
+            1
         ),
         (
             "Step 3.1 - Middle Layer Edges Red & Green",
@@ -59,7 +61,8 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Front, 0, 1] == Colour.Red
                         && cube[Face.Left, 2, 1] == Colour.Green
-            ]
+            ],
+            1
         ),
         (
             "Step 3.2 - Middle Layer Edges Red & Blue",
@@ -70,7 +73,8 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Front, 2, 1] == Colour.Red
                         && cube[Face.Right, 0, 1] == Colour.Blue
-            ]
+            ],
+            1
         ),
         (
             "Step 3.3 - Middle Layer Edges Orange & Green",
@@ -81,7 +85,8 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Back, 2, 1] == Colour.Orange
                         && cube[Face.Left, 0, 1] == Colour.Green
-            ]
+            ],
+            1
         ),
         (
             "Step 3.4 - Middle Layer Edges Blue & Orange",
@@ -92,7 +97,8 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Right, 2, 1] == Colour.Blue
                         && cube[Face.Back, 0, 1] == Colour.Orange
-            ]
+            ],
+            1
         ),
         (
             "Step 4 - Yellow Cross",
@@ -105,7 +111,8 @@ public abstract class AlgorithmLibrary
                         && cube[Face.Down, 2, 1] == Colour.Yellow
                         && cube[Face.Down, 1, 2] == Colour.Yellow
                         && cube[Face.Down, 0, 1] == Colour.Yellow
-            ]
+            ],
+            2
         ),
         (
             "Step 4 - Align Yellow Cross",
@@ -117,7 +124,8 @@ public abstract class AlgorithmLibrary
                         && cube[Face.Right, 1, 2] == Colour.Blue
                         && cube[Face.Back, 1, 2] == Colour.Orange
                         && cube[Face.Left, 1, 2] == Colour.Green
-            ]
+            ],
+            2
         )
     ];
 
@@ -133,7 +141,7 @@ public abstract class AlgorithmLibrary
 
             foreach (var set in macro.MoveSets)
             {
-                foreach (var sequence in ExpandMacro(set))
+                foreach (var sequence in ExpandMacro(set, macro.FaceCount))
                 {
                     moveSet.Add(ParseMacro(sequence));
                 }
@@ -145,13 +153,13 @@ public abstract class AlgorithmLibrary
         }
     }
 
-    private static List<string> ExpandMacro(string macro)
+    private static List<string> ExpandMacro(string macro, int faceCount)
     {
         var expandedMacro = new List<string> { macro };
 
         var newSet = new char[macro.Length];
 
-        for (var f = 0; f < Faces.Length; f++)
+        for (var f = 0; f < faceCount; f++)
         {
             for (var i = 1; i < 4; i++)
             {
