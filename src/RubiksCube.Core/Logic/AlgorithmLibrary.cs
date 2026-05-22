@@ -37,8 +37,8 @@ public abstract class AlgorithmLibrary
             [
                 "F D F'",
                 "R' D' R",
-                "R' D R F D2 F'",
-                "R' D R F D F'"
+                "R' D R F D F'",
+                "R' D R F D2 F'"
             ],
             [
                 cube => cube[Face.Up, 0, 0] == Colour.White
