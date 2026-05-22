@@ -145,11 +145,30 @@ public class Solver
 
         foreach (var set in moveSet)
         {
+            var skipSet = false;
+            
             foreach (var move in set)
             {
+                if (moves.Count > 0)
+                {
+                    var lastMove = moves[^1];
+
+                    if (move.Face == lastMove.Face)
+                    {
+                        skipSet = true;
+                        
+                        break;
+                    }
+                }
+
                 cube.ApplyMove(move);
 
                 moves.Add(move);
+            }
+
+            if (skipSet)
+            {
+                continue;
             }
 
             if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
