@@ -274,10 +274,6 @@ public abstract class AlgorithmLibrary
                && actual2 != actual3;
     }
 
-    private static bool Contains(
-        Colour actual,
-        Colour colour1,
-        Colour colour2,
-        Colour colour3) =>
+    private static bool Contains(Colour actual, Colour colour1, Colour colour2, Colour colour3) =>
         actual == colour1 || actual == colour2 || actual == colour3;
 }
