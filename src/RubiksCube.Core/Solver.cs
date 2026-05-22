@@ -15,7 +15,7 @@ public class Solver
 
     private readonly List<Move> _moves = [];
 
-    private readonly ConcurrentDictionary<(ulong A, ulong B, ulong C, int Depth), int> _visited = [];
+    private readonly ConcurrentDictionary<(ulong A, ulong B, ulong C), int> _visitedDepths = [];
 
     public Solver(Cube cube) => _cube = cube.Clone();
 
@@ -83,7 +83,7 @@ public class Solver
 
             branchStopwatch.Restart();
 
-            _visited.Clear();
+            _visitedDepths.Clear();
 
             var found = false;
 
@@ -104,7 +104,7 @@ public class Solver
 
                 var hash = cubeCopy.GetHash();
                 
-                _visited.TryAdd((hash.A, hash.B, hash.C, innerDepth), innerDepth);
+                _visitedDepths.TryAdd((hash.A, hash.B, hash.C), innerDepth);
 
                 if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, innerDepth - 1))
                 {
@@ -151,7 +151,16 @@ public class Solver
         {
             return false;
         }
+        
+        var key = cube.GetHash();
 
+        if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
+        {
+            return false;
+        }
+
+        _visitedDepths[key] = depth;
+        
         foreach (var set in moveSet)
         {
             var skipSet = false;
@@ -186,14 +195,9 @@ public class Solver
 
             var hash = cube.GetHash();
 
-            var key = (hash.A, hash.B, hash.C, depth);
-            
-            if (_visited.TryAdd(key, depth))
+            if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
             {
-                if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
-                {
-                    return true;
-                }
+                return true;
             }
 
             for (var i = 0; i < set.Count; i++)
