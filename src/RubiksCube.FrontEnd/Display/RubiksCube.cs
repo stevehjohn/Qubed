@@ -497,7 +497,7 @@ public sealed class RubiksCube : Game
     {
         _solverFinished = true;
 
-        _rotationDuration = 30f / _solveQueue.Count;
+        _rotationDuration = 20f / _solveQueue.Count;
     }
 
     private void StepCallback(List<Move> moves)
