@@ -70,13 +70,15 @@ public class Solver
 
     private bool BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
     {
-        var stopwatch = new Stopwatch();
+        var totalStopwatch = Stopwatch.StartNew();
+
+        var branchStopwatch = new Stopwatch();
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
             Console.Write(depth);
 
-            stopwatch.Restart();
+            branchStopwatch.Restart();
 
             var found = false;
 
@@ -108,7 +110,7 @@ public class Solver
                 }
             });
 
-            Console.WriteLine($" {stopwatch.Elapsed}");
+            Console.WriteLine($" {branchStopwatch.Elapsed}");
 
             if (found)
             {
@@ -118,6 +120,8 @@ public class Solver
                 {
                     _cube.ApplyMove(move);
                 }
+                
+                Console.WriteLine($"\nNew moves: {foundMoves.Count}, duration: {totalStopwatch.Elapsed}");
 
                 stepCallback(foundMoves);
 
