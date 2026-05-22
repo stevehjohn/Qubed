@@ -189,8 +189,6 @@ public class Solver
                 continue;
             }
 
-            var hash = cube.GetHash();
-
             if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
             {
                 return true;
