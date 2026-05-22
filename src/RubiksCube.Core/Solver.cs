@@ -187,6 +187,11 @@ public class Solver
                 cube.ApplyMove(move);
 
                 moves.Add(move);
+
+                if (ChecksPass(heuristics, cube))
+                {
+                    return true;
+                }
             }
 
             algorithmIndices.Add(s);
