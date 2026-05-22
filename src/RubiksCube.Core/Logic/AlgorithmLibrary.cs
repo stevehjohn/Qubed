@@ -10,6 +10,9 @@ public abstract class AlgorithmLibrary
         (
             "Step 1 - White Cross",
             [
+                "U",
+                "U'",
+                "U2",
                 "F2",
                 "U' R U",
                 "F' U' R U"
