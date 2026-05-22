@@ -199,7 +199,7 @@ public class Solver
                 }
             }
 
-            if (occurrences > 1)
+            if (occurrences > 0)
             {
                 continue;
             }
