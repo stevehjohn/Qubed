@@ -68,25 +68,23 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Front, 0, 1] == Colour.Red
                         && cube[Face.Left, 2, 1] == Colour.Green
-                        && cube[Face.Front, 2, 1] == Colour.Red
+            ]
+        ),
+        (
+            "Step 3.2 - Middle Layer Edges Red & Blue",
+            [
+                "D",
+                "D'",
+                "D2",
+                "D' L' D L D F D' F'",
+                "D R D' R' D' F' D F",
+                "R D' R' D F' D2 F D F' D2 F"
+            ],
+            [
+                cube => cube[Face.Front, 2, 1] == Colour.Red
                         && cube[Face.Right, 0, 1] == Colour.Blue
             ]
         ),
-        // (
-        //     "Step 3.2 - Middle Layer Edges Red & Blue",
-        //     [
-        //         "D",
-        //         "D'",
-        //         "D2",
-        //         "D' L' D L D F D' F'",
-        //         "D R D' R' D' F' D F",
-        //         "R D' R' D F' D2 F D F' D2 F"
-        //     ],
-        //     [
-        //         cube => cube[Face.Front, 2, 1] == Colour.Red
-        //                 && cube[Face.Right, 0, 1] == Colour.Blue
-        //     ]
-        // ),
         (
             "Step 3.3 - Middle Layer Edges Orange & Green",
             [
