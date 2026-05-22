@@ -108,12 +108,13 @@ public class Solver
                 {
                     lock (state)
                     {
-                        found = true;
-
-                        foundMoves = newMoves;
+                        if (foundMoves == null || newMoves.Count < foundMoves.Count)
+                        {
+                            found = true;
+                            
+                            foundMoves = new List<Move>(newMoves);
+                        }
                     }
-
-                    state.Stop();
                 }
             });
 
