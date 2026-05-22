@@ -148,45 +148,22 @@ public class Solver
             return false;
         }
         
-        var key = cube.GetHash();
-
-        if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
-        {
-            return false;
-        }
-
-        _visitedDepths[key] = depth;
+        // var key = cube.GetHash();
+        //
+        // if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
+        // {
+        //     return false;
+        // }
+        //
+        // _visitedDepths[key] = depth;
         
         foreach (var set in moveSet)
         {
-            var skipSet = false;
-
-            var index = 0;
-            
             foreach (var move in set)
             {
-                if (index == 0 && moves.Count > 0)
-                {
-                    var lastMove = moves[^1];
-
-                    if (move.Face == lastMove.Face)
-                    {
-                        skipSet = true;
-                        
-                        break;
-                    }
-                }
-
-                index++;
-
                 cube.ApplyMove(move);
-
+            
                 moves.Add(move);
-            }
-
-            if (skipSet)
-            {
-                continue;
             }
 
             if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
