@@ -47,11 +47,11 @@ public class Solver
         foreach (var algorithm in AlgorithmLibrary.Algorithms)
         {
             Console.WriteLine($"{algorithm.Name}\n");
-            
+
             checks.AddRange(algorithm.IsCompleteChecks);
 
             solved &= BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
-            
+
             Console.WriteLine();
         }
 
@@ -76,7 +76,7 @@ public class Solver
         var totalStopwatch = Stopwatch.StartNew();
 
         var branchStopwatch = new Stopwatch();
-        
+
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
             Console.Write(depth);
@@ -91,18 +91,20 @@ public class Solver
 
             var innerDepth = depth;
 
-            Parallel.ForEach(moveSets, new ParallelOptions(), (moveSet, state) =>
+            Parallel.ForEach(moveSets, new ParallelOptions(), (moveSet, state, index) =>
             {
                 var cubeCopy = _cube.Clone();
 
                 var newMoves = new List<Move>(moveSet);
+
+                var algorithmIndices = new List<int> { (int) index };
 
                 foreach (var move in moveSet)
                 {
                     cubeCopy.ApplyMove(move);
                 }
 
-                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, innerDepth - 1))
+                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, innerDepth - 1))
                 {
                     lock (state)
                     {
@@ -125,7 +127,7 @@ public class Solver
                 {
                     _cube.ApplyMove(move);
                 }
-                
+
                 Console.WriteLine($"\nNew moves: {foundMoves.Count}, duration: {totalStopwatch.Elapsed}");
 
                 stepCallback(foundMoves);
@@ -133,10 +135,11 @@ public class Solver
                 return true;
             }
         }
+
         return false;
     }
 
-    private bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
+    private bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<int> algorithmIndices, int depth)
     {
         if (ChecksPass(heuristics, cube))
         {
@@ -147,26 +150,53 @@ public class Solver
         {
             return false;
         }
-        
+
         var key = cube.GetHash();
-        
+
         if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
         {
             return false;
         }
 
         _visitedDepths.AddOrUpdate(key, depth, (_, oldDepth) => Math.Max(oldDepth, depth));
-        
-        foreach (var set in moveSet)
+
+        for (var s = 0; s < moveSet.Count; s++)
         {
+            var set = moveSet[s];
+
+            if (set.Count > depth)
+            {
+                continue;
+            }
+
+            var occurrences = 0;
+            
+            if (algorithmIndices.Count > 1)
+            {
+                for (var o = 0; o < algorithmIndices.Count; o++)
+                {
+                    if (algorithmIndices[o] == s)
+                    {
+                        occurrences++;
+                    }
+                }
+            }
+
+            if (occurrences > 2)
+            {
+                continue;
+            }
+
             foreach (var move in set)
             {
                 cube.ApplyMove(move);
-            
+
                 moves.Add(move);
             }
 
-            if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
+            algorithmIndices.Add(s);
+
+            if (SearchAlgorithm(heuristics, moveSet, cube, moves, algorithmIndices, depth - 1))
             {
                 return true;
             }
@@ -177,6 +207,8 @@ public class Solver
 
                 moves.RemoveAt(moves.Count - 1);
             }
+
+            algorithmIndices.RemoveAt(algorithmIndices.Count - 1);
         }
 
         return false;
@@ -191,7 +223,7 @@ public class Solver
                 return false;
             }
         }
-        
+
         return true;
     }
 }
