@@ -186,7 +186,9 @@ public class Solver
 
             var hash = cube.GetHash();
 
-            if (_visited.TryAdd((hash.A, hash.B, hash.C, depth), depth))
+            var key = (hash.A, hash.B, hash.C, depth);
+            
+            if (_visited.TryAdd(key, depth))
             {
                 if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
                 {
