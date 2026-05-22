@@ -173,6 +173,7 @@ public class Solver
 
                 if (lastMove.Face == move.Face)
                 {
+                    // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                     switch (lastMove.Direction)
                     {
                         case Direction.HalfTurn when move.Direction == Direction.HalfTurn:
