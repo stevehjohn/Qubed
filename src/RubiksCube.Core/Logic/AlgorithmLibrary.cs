@@ -129,7 +129,7 @@ public abstract class AlgorithmLibrary
                         (Face.Back, 2, 2),
                         Colour.Yellow, Colour.Green, Colour.Orange)
                     && CornerHasAnyOrientation(cube,
-                        (Face.Down, 2, 0),
+                        (Face.Down, 0, 2),
                         (Face.Back, 0, 2),
                         (Face.Right, 2, 2),
                         Colour.Yellow, Colour.Orange, Colour.Blue)
@@ -139,21 +139,21 @@ public abstract class AlgorithmLibrary
                         (Face.Front, 2, 2),
                         Colour.Yellow, Colour.Blue, Colour.Red)
                     && CornerHasAnyOrientation(cube,
-                        (Face.Down, 0, 2),
+                        (Face.Down, 2, 0),
                         (Face.Front, 0, 2),
                         (Face.Left, 2, 2),
                         Colour.Yellow, Colour.Red, Colour.Green)
             ]
         ),
-        // (
-        //     "Step 6 - Completion",
-        //     [
-        //         "R' D' R D R' D' R D"
-        //     ],
-        //     [
-        //         cube => cube.IsSolved()
-        //     ]
-        // )
+        (
+            "Step 6 - Completion",
+            [
+                "R' D' R D R' D' R D"
+            ],
+            [
+                cube => cube.IsSolved()
+            ]
+        )
     ];
 
     public static readonly List<Algorithm> Algorithms;
