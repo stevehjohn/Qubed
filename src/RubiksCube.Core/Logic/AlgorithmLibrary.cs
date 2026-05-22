@@ -14,8 +14,12 @@ public abstract class AlgorithmLibrary
                 "U'",
                 "U2",
                 "F2",
+                "R",
+                "F R",
+                "F R U",
                 "U' R U",
-                "F' U' R U"
+                "F' U' R U",
+                "R' U' R U R'"
             ],
             [
                 cube => cube[Face.Up, 1, 0] == Colour.White
@@ -33,7 +37,8 @@ public abstract class AlgorithmLibrary
             [
                 "F D F'",
                 "R' D' R",
-                "R' D2 R D R' D' R"
+                "R' D R F D2 F'",
+                "R' D R F D F'"
             ],
             [
                 cube => cube[Face.Up, 0, 0] == Colour.White
