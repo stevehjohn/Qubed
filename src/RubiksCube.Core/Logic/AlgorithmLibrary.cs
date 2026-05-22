@@ -123,37 +123,37 @@ public abstract class AlgorithmLibrary
             ],
             [
                 cube =>
-                    CornerHas(cube,
+                    CornerHasAnyOrientation(cube,
                         (Face.Down, 0, 0),
                         (Face.Left, 0, 2),
                         (Face.Back, 2, 2),
                         Colour.Yellow, Colour.Green, Colour.Orange)
-                    && CornerHas(cube,
+                    && CornerHasAnyOrientation(cube,
                         (Face.Down, 2, 0),
                         (Face.Back, 0, 2),
                         (Face.Right, 2, 2),
                         Colour.Yellow, Colour.Orange, Colour.Blue)
-                    && CornerHas(cube,
+                    && CornerHasAnyOrientation(cube,
                         (Face.Down, 2, 2),
                         (Face.Right, 0, 2),
                         (Face.Front, 2, 2),
                         Colour.Yellow, Colour.Blue, Colour.Red)
-                    && CornerHas(cube,
+                    && CornerHasAnyOrientation(cube,
                         (Face.Down, 0, 2),
                         (Face.Front, 0, 2),
                         (Face.Left, 2, 2),
                         Colour.Yellow, Colour.Red, Colour.Green)
             ]
         ),
-        (
-            "Step 6 - Completion",
-            [
-                "R' D' R D R' D' R D"
-            ],
-            [
-                cube => cube.IsSolved()
-            ]
-        )
+        // (
+        //     "Step 6 - Completion",
+        //     [
+        //         "R' D' R D R' D' R D"
+        //     ],
+        //     [
+        //         cube => cube.IsSolved()
+        //     ]
+        // )
     ];
 
     public static readonly List<Algorithm> Algorithms;
@@ -253,24 +253,31 @@ public abstract class AlgorithmLibrary
         return new Move(face, direction);
     }
 
-    private static bool CornerHas(
+    private static bool CornerHasAnyOrientation(
         Cube cube,
-        (Face Face, int X, int Y) a,
-        (Face Face, int X, int Y) b,
-        (Face Face, int X, int Y) c,
-        Colour x,
-        Colour y,
-        Colour z)
+        (Face Face, int Row, int Col) a,
+        (Face Face, int Row, int Col) b,
+        (Face Face, int Row, int Col) c,
+        Colour colour1,
+        Colour colour2,
+        Colour colour3)
     {
-        Span<Colour> actual =
-        [
-            cube[a.Face, a.X, a.Y],
-            cube[b.Face, b.X, b.Y],
-            cube[c.Face, c.X, c.Y]
-        ];
+        var actual1 = cube[a.Face, a.Row, a.Col];
+        var actual2 = cube[b.Face, b.Row, b.Col];
+        var actual3 = cube[c.Face, c.Row, c.Col];
 
-        return actual.Contains(x)
-               && actual.Contains(y)
-               && actual.Contains(z);
+        return Contains(actual1, colour1, colour2, colour3)
+               && Contains(actual2, colour1, colour2, colour3)
+               && Contains(actual3, colour1, colour2, colour3)
+               && actual1 != actual2
+               && actual1 != actual3
+               && actual2 != actual3;
     }
+
+    private static bool Contains(
+        Colour actual,
+        Colour colour1,
+        Colour colour2,
+        Colour colour3) =>
+        actual == colour1 || actual == colour2 || actual == colour3;
 }
