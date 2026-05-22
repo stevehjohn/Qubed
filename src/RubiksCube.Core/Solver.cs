@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using RubiksCube.Core.Logic;
 using RubiksCube.Core.Models;
 
@@ -13,6 +14,8 @@ public class Solver
     private readonly Cube _cube;
 
     private readonly List<Move> _moves = [];
+
+    private readonly ConcurrentDictionary<(ulong A, ulong B, ulong C, int Depth), int> _visited = [];
 
     public Solver(Cube cube) => _cube = cube.Clone();
 
@@ -73,12 +76,14 @@ public class Solver
         var totalStopwatch = Stopwatch.StartNew();
 
         var branchStopwatch = new Stopwatch();
-
+        
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
             Console.Write(depth);
 
             branchStopwatch.Restart();
+
+            _visited.Clear();
 
             var found = false;
 
@@ -96,6 +101,10 @@ public class Solver
                 {
                     cubeCopy.ApplyMove(move);
                 }
+
+                var hash = cubeCopy.GetHash();
+                
+                _visited.TryAdd((hash.A, hash.B, hash.C, innerDepth), innerDepth);
 
                 if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, innerDepth - 1))
                 {
@@ -131,7 +140,7 @@ public class Solver
         return false;
     }
 
-    private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
+    private bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, int depth)
     {
         if (ChecksPass(heuristics, cube))
         {
@@ -175,9 +184,15 @@ public class Solver
                 continue;
             }
 
-            if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
+            var hash = cube.GetHash();
+
+            if (_visited.TryAdd((hash.A, hash.B, hash.C, depth), depth))
             {
-                return true;
+                if (SearchAlgorithm(heuristics, moveSet, cube, moves, depth - 1))
+                {
+                    return true;
+                }
+
             }
 
             for (var i = 0; i < set.Count; i++)

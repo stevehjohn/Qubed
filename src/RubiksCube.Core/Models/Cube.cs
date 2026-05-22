@@ -166,6 +166,43 @@ public class Cube
         return true;
     }
 
+    public (ulong A, ulong B, ulong C) GetHash()
+    {
+        ulong a = 0, b = 0, c = 0;
+
+        var i = 0;
+
+        foreach (var face in Enum.GetValues<Face>())
+        {
+            for (var x = 0; x < 3; x++)
+            {
+                for (var y = 0; y < 3; y++)
+                {
+                    var colour = (ulong) this[face, x, y];
+
+                    switch (i)
+                    {
+                        case < 21:
+                            a |= colour << (i * 3);
+                            break;
+
+                        case < 42:
+                            b |= colour << ((i - 21) * 3);
+                            break;
+
+                        default:
+                            c |= colour << ((i - 42) * 3);
+                            break;
+                    }
+
+                    i++;
+                }
+            }
+        }
+
+        return new(a, b, c);
+    }
+
     private void RotateFace(Face face, Direction direction)
     {
         var matrix = this[face];
