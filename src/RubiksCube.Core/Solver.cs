@@ -192,7 +192,6 @@ public class Solver
                 {
                     return true;
                 }
-
             }
 
             for (var i = 0; i < set.Count; i++)
