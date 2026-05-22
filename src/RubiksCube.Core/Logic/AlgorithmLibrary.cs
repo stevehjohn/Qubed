@@ -62,7 +62,8 @@ public abstract class AlgorithmLibrary
                 "D'",
                 "D2",
                 "D' L' D L D F D' F'",
-                "D R D' R' D' F' D F"
+                "D R D' R' D' F' D F",
+                "R D' R' D F' D2 F U F' D2 F"
             ],
             [
                 cube => cube[Face.Front, 0, 1] == Colour.Red
@@ -76,7 +77,8 @@ public abstract class AlgorithmLibrary
                 "D'",
                 "D2",
                 "D' L' D L D F D' F'",
-                "D R D' R' D' F' D F"
+                "D R D' R' D' F' D F",
+                "R D' R' D F' D2 F U F' D2 F"
             ],
             [
                 cube => cube[Face.Front, 2, 1] == Colour.Red
@@ -90,7 +92,8 @@ public abstract class AlgorithmLibrary
                 "D'",
                 "D2",
                 "D' L' D L D F D' F'",
-                "D R D' R' D' F' D F"
+                "D R D' R' D' F' D F",
+                "R D' R' D F' D2 F U F' D2 F"
             ],
             [
                 cube => cube[Face.Back, 2, 1] == Colour.Orange
@@ -104,7 +107,8 @@ public abstract class AlgorithmLibrary
                 "D'",
                 "D2",
                 "D' L' D L D F D' F'",
-                "D R D' R' D' F' D F"
+                "D R D' R' D' F' D F",
+                "R D' R' D F' D2 F U F' D2 F"
             ],
             [
                 cube => cube[Face.Right, 2, 1] == Colour.Blue
