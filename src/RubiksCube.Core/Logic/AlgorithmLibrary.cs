@@ -131,7 +131,7 @@ public abstract class AlgorithmLibrary
         (
             "Step 6 - Completion",
             [
-                "U R U' R' U R U' R'"
+                "R' D' R D R' D' R D"
             ],
             [
                 cube => cube.IsSolved()
