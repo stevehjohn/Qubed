@@ -164,13 +164,28 @@ public class Solver
         {
             var set = moveSet[s];
 
-            if (set.Count > depth)
+            if (moves.Count > 0)
             {
-                continue;
+                if (set.Count > 0 && moves.Count > 0)
+                {
+                    var previousFace = moves[^1].Face;
+                    
+                    var nextFace = set[0].Face;
+
+                    if (nextFace == previousFace)
+                    {
+                        continue;
+                    }
+
+                    if (SameAxis(previousFace, nextFace) && nextFace < previousFace)
+                    {
+                        continue;
+                    }
+                }
             }
 
             var occurrences = 0;
-            
+
             if (algorithmIndices.Count > 1)
             {
                 for (var o = 0; o < algorithmIndices.Count; o++)
@@ -213,6 +228,17 @@ public class Solver
 
         return false;
     }
+
+    private static int Axis(Face face) =>
+        face switch
+        {
+            Face.Up or Face.Down => 0,
+            Face.Left or Face.Right => 1,
+            Face.Front or Face.Back => 2,
+            _ => throw new ArgumentOutOfRangeException(nameof(face))
+        };
+
+    private static bool SameAxis(Face a, Face b) => Axis(a) == Axis(b);
 
     private static bool ChecksPass(List<Func<Cube, bool>> heuristics, Cube cube)
     {
