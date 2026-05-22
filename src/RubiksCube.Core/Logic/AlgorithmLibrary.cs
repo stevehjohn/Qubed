@@ -5,10 +5,7 @@ namespace RubiksCube.Core.Logic;
 
 public abstract class AlgorithmLibrary
 {
-    // ReSharper disable once StringLiteralTypo
-    private static readonly string[] Faces = [ "LFRB", "LBRF" ];
-
-    private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool>[] IsCompleteChecks, int FaceCount)> AlgorithmMacros =
+    private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool>[] IsCompleteChecks)> AlgorithmMacros =
     [
         (
             "Step 1 - White Cross",
@@ -26,8 +23,7 @@ public abstract class AlgorithmLibrary
                         && cube[Face.Front, 1, 0] == Colour.Red
                         && cube[Face.Right, 1, 0] == Colour.Blue
                         && cube[Face.Back, 1, 0] == Colour.Orange
-            ],
-            1
+            ]
         ),
         (
             "Step 2 - Top Corners",
@@ -49,8 +45,7 @@ public abstract class AlgorithmLibrary
                 cube => cube[Face.Up, 0, 2] == Colour.White
                         && cube[Face.Left, 2, 0] == Colour.Green
                         && cube[Face.Front, 0, 0] == Colour.Red
-            ],
-            1
+            ]
         ),
         (
             "Step 3.1 - Middle Layer Edges Red & Green",
@@ -61,8 +56,7 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Front, 0, 1] == Colour.Red
                         && cube[Face.Left, 2, 1] == Colour.Green
-            ],
-            1
+            ]
         ),
         (
             "Step 3.2 - Middle Layer Edges Red & Blue",
@@ -73,8 +67,7 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Front, 2, 1] == Colour.Red
                         && cube[Face.Right, 0, 1] == Colour.Blue
-            ],
-            1
+            ]
         ),
         (
             "Step 3.3 - Middle Layer Edges Orange & Green",
@@ -85,8 +78,7 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Back, 2, 1] == Colour.Orange
                         && cube[Face.Left, 0, 1] == Colour.Green
-            ],
-            1
+            ]
         ),
         (
             "Step 3.4 - Middle Layer Edges Blue & Orange",
@@ -97,22 +89,19 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Right, 2, 1] == Colour.Blue
                         && cube[Face.Back, 0, 1] == Colour.Orange
-            ],
-            1
+            ]
         ),
         (
             "Step 4 - Yellow Cross",
             [
-                "F D R D' R' F'",
-                "F R D R' D' F'"
+                "R' D' F' D F R"
             ],
             [
                 cube => cube[Face.Down, 1, 0] == Colour.Yellow
                         && cube[Face.Down, 2, 1] == Colour.Yellow
                         && cube[Face.Down, 1, 2] == Colour.Yellow
                         && cube[Face.Down, 0, 1] == Colour.Yellow
-            ],
-            2
+            ]
         ),
         (
             "Step 4 - Align Yellow Cross",
@@ -124,8 +113,7 @@ public abstract class AlgorithmLibrary
                         && cube[Face.Right, 1, 2] == Colour.Blue
                         && cube[Face.Back, 1, 2] == Colour.Orange
                         && cube[Face.Left, 1, 2] == Colour.Green
-            ],
-            2
+            ]
         )
     ];
 
@@ -141,7 +129,7 @@ public abstract class AlgorithmLibrary
 
             foreach (var set in macro.MoveSets)
             {
-                foreach (var sequence in ExpandMacro(set, macro.FaceCount))
+                foreach (var sequence in ExpandMacro(set))
                 {
                     moveSet.Add(ParseMacro(sequence));
                 }
@@ -153,32 +141,32 @@ public abstract class AlgorithmLibrary
         }
     }
 
-    private static List<string> ExpandMacro(string macro, int faceCount)
+    private static List<string> ExpandMacro(string macro)
     {
         var expandedMacro = new List<string> { macro };
 
+        // ReSharper disable once StringLiteralTypo
+        const string faces = "LFRB";
+
         var newSet = new char[macro.Length];
 
-        for (var f = 0; f < faceCount; f++)
+        for (var i = 1; i < 4; i++)
         {
-            for (var i = 1; i < 4; i++)
+            for (var c = 0; c < macro.Length; c++)
             {
-                for (var c = 0; c < macro.Length; c++)
+                if (macro[c] is 'L' or 'F' or 'R' or 'B')
                 {
-                    if (macro[c] is 'L' or 'F' or 'R' or 'B')
-                    {
-                        var newCharacterIndex = (Faces[f].IndexOf(macro[c]) + i) % 4;
+                    var newCharacterIndex = (faces.IndexOf(macro[c]) + i) % 4;
 
-                        newSet[c] = Faces[f][newCharacterIndex];
+                    newSet[c] = faces[newCharacterIndex];
 
-                        continue;
-                    }
-
-                    newSet[c] = macro[c];
+                    continue;
                 }
 
-                expandedMacro.Add(new string(newSet));
+                newSet[c] = macro[c];
             }
+
+            expandedMacro.Add(new string(newSet));
         }
 
         return expandedMacro;
