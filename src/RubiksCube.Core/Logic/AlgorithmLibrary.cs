@@ -122,10 +122,27 @@ public abstract class AlgorithmLibrary
                 "L D' R' D L' D' R D"
             ],
             [
-                cube => cube[Face.Down, 0, 0] == Colour.Yellow &&
-                        cube[Face.Down, 2, 0] == Colour.Yellow &&
-                        cube[Face.Down, 2, 2] == Colour.Yellow &&
-                        cube[Face.Down, 0, 2] == Colour.Yellow
+                cube =>
+                    CornerHas(cube,
+                        (Face.Down, 0, 0),
+                        (Face.Left, 0, 2),
+                        (Face.Back, 2, 2),
+                        Colour.Yellow, Colour.Green, Colour.Orange)
+                    && CornerHas(cube,
+                        (Face.Down, 2, 0),
+                        (Face.Back, 0, 2),
+                        (Face.Right, 2, 2),
+                        Colour.Yellow, Colour.Orange, Colour.Blue)
+                    && CornerHas(cube,
+                        (Face.Down, 2, 2),
+                        (Face.Right, 0, 2),
+                        (Face.Front, 2, 2),
+                        Colour.Yellow, Colour.Blue, Colour.Red)
+                    && CornerHas(cube,
+                        (Face.Down, 0, 2),
+                        (Face.Front, 0, 2),
+                        (Face.Left, 2, 2),
+                        Colour.Yellow, Colour.Red, Colour.Green)
             ]
         ),
         (
@@ -234,5 +251,26 @@ public abstract class AlgorithmLibrary
         }
 
         return new Move(face, direction);
+    }
+
+    private static bool CornerHas(
+        Cube cube,
+        (Face Face, int X, int Y) a,
+        (Face Face, int X, int Y) b,
+        (Face Face, int X, int Y) c,
+        Colour x,
+        Colour y,
+        Colour z)
+    {
+        Span<Colour> actual =
+        [
+            cube[a.Face, a.X, a.Y],
+            cube[b.Face, b.X, b.Y],
+            cube[c.Face, c.X, c.Y]
+        ];
+
+        return actual.Contains(x)
+               && actual.Contains(y)
+               && actual.Contains(z);
     }
 }
