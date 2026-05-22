@@ -165,6 +165,24 @@ public class Solver
         {
             var set = moveSet[s];
 
+            if (moves.Count > 0)
+            {
+                var lastMove = moves[^1];
+
+                var move = set[0];
+
+                if (lastMove.Face == move.Face)
+                {
+                    switch (lastMove.Direction)
+                    {
+                        case Direction.HalfTurn when move.Direction == Direction.HalfTurn:
+                        case Direction.Clockwise when move.Direction == Direction.AntiClockwise:
+                        case Direction.AntiClockwise when move.Direction == Direction.Clockwise:
+                            continue;
+                    }
+                }
+            }
+
             var occurrences = 0;
 
             if (algorithmIndices.Count > 1)
