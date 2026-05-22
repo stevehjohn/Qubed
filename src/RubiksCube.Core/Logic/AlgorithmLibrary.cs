@@ -50,6 +50,9 @@ public abstract class AlgorithmLibrary
         (
             "Step 3.1 - Middle Layer Edges Red & Green",
             [
+                "D",
+                "D'",
+                "D2",
                 "D' L' D L D F D' F'",
                 "D R D' R' D' F' D F"
             ],
@@ -61,6 +64,9 @@ public abstract class AlgorithmLibrary
         (
             "Step 3.2 - Middle Layer Edges Red & Blue",
             [
+                "D",
+                "D'",
+                "D2",
                 "D' L' D L D F D' F'",
                 "D R D' R' D' F' D F"
             ],
@@ -72,6 +78,9 @@ public abstract class AlgorithmLibrary
         (
             "Step 3.3 - Middle Layer Edges Orange & Green",
             [
+                "D",
+                "D'",
+                "D2",
                 "D' L' D L D F D' F'",
                 "D R D' R' D' F' D F"
             ],
@@ -83,6 +92,9 @@ public abstract class AlgorithmLibrary
         (
             "Step 3.4 - Middle Layer Edges Blue & Orange",
             [
+                "D",
+                "D'",
+                "D2",
                 "D' L' D L D F D' F'",
                 "D R D' R' D' F' D F"
             ],

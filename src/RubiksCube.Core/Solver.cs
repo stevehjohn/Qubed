@@ -164,26 +164,6 @@ public class Solver
         {
             var set = moveSet[s];
 
-            if (moves.Count > 0)
-            {
-                if (set.Count > 0 && moves.Count > 0)
-                {
-                    var previousFace = moves[^1].Face;
-                    
-                    var nextFace = set[0].Face;
-
-                    if (nextFace == previousFace)
-                    {
-                        continue;
-                    }
-
-                    if (SameAxis(previousFace, nextFace) && nextFace < previousFace)
-                    {
-                        continue;
-                    }
-                }
-            }
-
             var occurrences = 0;
 
             if (algorithmIndices.Count > 1)
