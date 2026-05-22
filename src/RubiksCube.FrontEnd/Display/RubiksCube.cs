@@ -479,6 +479,11 @@ public sealed class RubiksCube : Game
             }
         }
 
+        if (cube.IsSolved())
+        {
+            return;
+        }
+
         var solver = new Solver(cube);
 
         lock (_solveLock)
@@ -497,7 +502,9 @@ public sealed class RubiksCube : Game
     {
         _solverFinished = true;
 
-        _rotationDuration = 20f / _solveQueue.Count;
+        _rotationDuration = _solveQueue.Count > 0
+            ? 20f / _solveQueue.Count
+            : 0.25f;
     }
 
     private void StepCallback(List<Move> moves)

@@ -32,6 +32,8 @@ public class Solver
         if (_cube.IsSolved())
         {
             Console.WriteLine(_cube.ToString());
+            
+            stepCallback?.Invoke(_moves);
 
             return (true, _moves, TimeSpan.Zero);
         }
