@@ -176,36 +176,4 @@ public class Solver
         
         return true;
     }
-
-    // private static bool HasGryCorner(Cube cube)
-    // {
-    //     return HasAlignedYellowCross(cube)
-    //            && cube[Face.Left, 2, 2] == Colour.Green
-    //            && cube[Face.Front, 0, 2] == Colour.Red
-    //            && cube[Face.Down, 0, 0] == Colour.Yellow;
-    // }
-    //
-    // private static bool HasRbyCorner(Cube cube)
-    // {
-    //     return HasGryCorner(cube)
-    //            && cube[Face.Front, 2, 2] == Colour.Red
-    //            && cube[Face.Right, 0, 2] == Colour.Blue
-    //            && cube[Face.Down, 2, 0] == Colour.Yellow;
-    // }
-    //
-    // private static bool HasGoyCorner(Cube cube)
-    // {
-    //     return HasRbyCorner(cube)
-    //            && cube[Face.Left, 0, 2] == Colour.Green
-    //            && cube[Face.Back, 2, 2] == Colour.Orange
-    //            && cube[Face.Down, 0, 2] == Colour.Yellow;
-    // }
-    //
-    // private static bool HasBoyCorner(Cube cube)
-    // {
-    //     return HasGoyCorner(cube)
-    //            && cube[Face.Back, 0, 2] == Colour.Orange
-    //            && cube[Face.Right, 2, 2] == Colour.Blue
-    //            && cube[Face.Down, 2, 2] == Colour.Yellow;
-    // }
 }
