@@ -150,7 +150,11 @@ public class Solver
         {
             if (bestMoves.Count == 0 || moves.Count < bestMoves.Count)
             {
-                bestMoves = new List<Move>(moves);
+                bestMoves.Clear();
+                
+                bestMoves.AddRange(moves);
+
+                Console.WriteLine("Found");
             }
         }
 
