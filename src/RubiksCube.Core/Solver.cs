@@ -15,8 +15,6 @@ public class Solver
 
     private readonly List<Move> _moves = [];
 
-    private readonly ConcurrentDictionary<(ulong A, ulong B, ulong C), int> _visitedDepths = [];
-
     public Solver(Cube cube) => _cube = cube.Clone();
 
     public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback, Action<List<Move>> stepCallback = null)
@@ -85,8 +83,6 @@ public class Solver
 
             branchStopwatch.Restart();
 
-            _visitedDepths.Clear();
-
             var found = false;
 
             List<Move> foundMoves = null;
@@ -106,7 +102,9 @@ public class Solver
                     cubeCopy.ApplyMove(move);
                 }
 
-                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, innerDepth - 1))
+                var visitedDepths = new Dictionary<(ulong A, ulong B, ulong C), int>();
+
+                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, visitedDepths, innerDepth - 1))
                 {
                     lock (state)
                     {
@@ -142,7 +140,7 @@ public class Solver
         return false;
     }
 
-    private bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<int> algorithmIndices, int depth)
+    private bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<int> algorithmIndices, Dictionary<(ulong A, ulong B, ulong C), int> visitedDepths, int depth)
     {
         if (ChecksPass(heuristics, cube))
         {
@@ -156,13 +154,20 @@ public class Solver
 
         var key = cube.GetHash();
 
-        if (_visitedDepths.TryGetValue(key, out var seenDepth) && seenDepth >= depth)
+        if (visitedDepths.TryGetValue(key, out var seenDepth))
         {
-            return false;
+            if (seenDepth >= depth)
+            {
+                return false;
+            }
+
+            visitedDepths[key] = depth;
         }
-
-        _visitedDepths.AddOrUpdate(key, depth, (_, oldDepth) => Math.Max(oldDepth, depth));
-
+        else
+        {
+            visitedDepths.Add(key, depth);
+        }
+        
         for (var s = 0; s < moveSet.Count; s++)
         {
             var set = moveSet[s];
@@ -218,7 +223,7 @@ public class Solver
 
             algorithmIndices.Add(s);
 
-            if (SearchAlgorithm(heuristics, moveSet, cube, moves, algorithmIndices, depth - 1))
+            if (SearchAlgorithm(heuristics, moveSet, cube, moves, algorithmIndices, visitedDepths, depth - 1))
             {
                 return true;
             }
