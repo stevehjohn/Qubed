@@ -229,28 +229,4 @@ public abstract class AlgorithmLibrary
 
         return new Move(face, direction);
     }
-
-    private static bool CornerHasAnyOrientation(
-        Cube cube,
-        (Face Face, int Row, int Col) a,
-        (Face Face, int Row, int Col) b,
-        (Face Face, int Row, int Col) c,
-        Colour colour1,
-        Colour colour2,
-        Colour colour3)
-    {
-        var actual1 = cube[a.Face, a.Row, a.Col];
-        var actual2 = cube[b.Face, b.Row, b.Col];
-        var actual3 = cube[c.Face, c.Row, c.Col];
-
-        return Contains(actual1, colour1, colour2, colour3)
-               && Contains(actual2, colour1, colour2, colour3)
-               && Contains(actual3, colour1, colour2, colour3)
-               && actual1 != actual2
-               && actual1 != actual3
-               && actual2 != actual3;
-    }
-
-    private static bool Contains(Colour actual, Colour colour1, Colour colour2, Colour colour3) =>
-        actual == colour1 || actual == colour2 || actual == colour3;
 }
