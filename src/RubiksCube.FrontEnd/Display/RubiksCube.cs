@@ -54,7 +54,7 @@ public sealed class RubiksCube : Game
 
     private const float CubieSize = 0.92f;
 
-    private const float Spacing = 1.05f;
+    private const float Spacing = 1.15f;
 
     private const float QuarterTurn = MathHelper.PiOver2;
 
