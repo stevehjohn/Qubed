@@ -292,9 +292,19 @@ public class Solver
 
     private static Direction? GetCompressedDirection(Direction first, Direction second)
     {
-        var val1 = first == Direction.Clockwise ? 1 : first == Direction.HalfTurn ? 2 : 3;
+        var val1 = first switch
+        {
+            Direction.Clockwise => 1,
+            Direction.HalfTurn => 2,
+            _ => 3
+        };
         
-        var val2 = second == Direction.Clockwise ? 1 : second == Direction.HalfTurn ? 2 : 3;
+        var val2 = second switch
+        {
+            Direction.Clockwise => 1,
+            Direction.HalfTurn => 2,
+            _ => 3
+        };
         
         var totalTurns = (val1 + val2) % 4;
 
