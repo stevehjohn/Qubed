@@ -505,7 +505,7 @@ public sealed class RubiksCube : Game
         _solverFinished = true;
 
         _rotationDuration = _solveQueue.Count > 0
-            ? 20f / _solveQueue.Count
+            ? 10f / _solveQueue.Count
             : 0.25f;
     }
 
@@ -589,7 +589,7 @@ public sealed class RubiksCube : Game
                 return;
             }
 
-            if (_solverFinished && _solveQueue.Count == 0)
+            if (_solverFinished && _solveQueue.Count < 3)
             {
                 _isSolving = false;
                 
