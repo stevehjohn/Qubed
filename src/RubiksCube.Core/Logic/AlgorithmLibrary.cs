@@ -42,9 +42,9 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Up, 0, 2] == Colour.White
                         && cube[Face.Left, 2, 0] == Colour.Green
-                        && cube[Face.Front, 0, 0] == Colour.Red       // Corner Solved
+                        && cube[Face.Front, 0, 0] == Colour.Red
                         && cube[Face.Front, 0, 1] == Colour.Red
-                        && cube[Face.Left, 2, 1] == Colour.Green      // Edge Solved
+                        && cube[Face.Left, 2, 1] == Colour.Green
             ]
         ),
         (
@@ -57,9 +57,9 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Up, 2, 2] == Colour.White
                         && cube[Face.Front, 2, 0] == Colour.Red
-                        && cube[Face.Right, 0, 0] == Colour.Blue      // Corner Solved
+                        && cube[Face.Right, 0, 0] == Colour.Blue
                         && cube[Face.Front, 2, 1] == Colour.Red
-                        && cube[Face.Right, 0, 1] == Colour.Blue      // Edge Solved
+                        && cube[Face.Right, 0, 1] == Colour.Blue
             ]
         ),
         (
@@ -72,9 +72,9 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Up, 2, 0] == Colour.White
                         && cube[Face.Right, 2, 0] == Colour.Blue
-                        && cube[Face.Back, 0, 0] == Colour.Orange     // Corner Solved
+                        && cube[Face.Back, 0, 0] == Colour.Orange
                         && cube[Face.Right, 2, 1] == Colour.Blue
-                        && cube[Face.Back, 0, 1] == Colour.Orange     // Edge Solved
+                        && cube[Face.Back, 0, 1] == Colour.Orange
             ]
         ),
         (
@@ -87,9 +87,9 @@ public abstract class AlgorithmLibrary
             [
                 cube => cube[Face.Up, 0, 0] == Colour.White
                         && cube[Face.Left, 0, 0] == Colour.Green
-                        && cube[Face.Back, 2, 0] == Colour.Orange     // Corner Solved
+                        && cube[Face.Back, 2, 0] == Colour.Orange
                         && cube[Face.Back, 2, 1] == Colour.Orange
-                        && cube[Face.Left, 0, 1] == Colour.Green      // Edge Solved
+                        && cube[Face.Left, 0, 1] == Colour.Green
             ]
         ),
         (
