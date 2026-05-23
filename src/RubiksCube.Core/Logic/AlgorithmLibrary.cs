@@ -108,7 +108,9 @@ public abstract class AlgorithmLibrary
         (
             "Step 4 - Align Yellow Cross",
             [
-                "R' D2 R D R' D R D"
+                "D", "D'", "D2", // Allows solver to pre-align with a simple U-move twist
+                "R' D R' D' R' D' R' D R D R2", // U-Perm Clockwise (Edges)
+                "R2 D' R' D' R D R D R D' R"    // U-Perm Anti-Clockwise (Edges)
             ],
             [
                 cube => cube[Face.Front, 1, 2] == Colour.Red
@@ -118,41 +120,15 @@ public abstract class AlgorithmLibrary
             ]
         ),
         (
-            "Step 5 - Yellow Corners",
+            "Step 5 - Solve Last Layer Corners",
             [
-                "L D' R' D L' D' R D"
+                "D", "D'", "D2",
+                "L' D R D' L D R' D'",          // Niklas Corner Cycler
+                "R' F R' B2 R F' R' B2 R2",     // Aa-Perm Corner Swapper
+                "R' D' R D R' D' R D"           // Pure twist backup if orientation needs adjustment
             ],
             [
-                cube =>
-                    CornerHasAnyOrientation(cube,
-                        (Face.Down, 0, 0),
-                        (Face.Left, 0, 2),
-                        (Face.Back, 2, 2),
-                        Colour.Yellow, Colour.Green, Colour.Orange)
-                    && CornerHasAnyOrientation(cube,
-                        (Face.Down, 0, 2),
-                        (Face.Back, 0, 2),
-                        (Face.Right, 2, 2),
-                        Colour.Yellow, Colour.Orange, Colour.Blue)
-                    && CornerHasAnyOrientation(cube,
-                        (Face.Down, 2, 2),
-                        (Face.Right, 0, 2),
-                        (Face.Front, 2, 2),
-                        Colour.Yellow, Colour.Blue, Colour.Red)
-                    && CornerHasAnyOrientation(cube,
-                        (Face.Down, 2, 0),
-                        (Face.Front, 0, 2),
-                        (Face.Left, 2, 2),
-                        Colour.Yellow, Colour.Red, Colour.Green)
-            ]
-        ),
-        (
-            "Step 6 - Completion",
-            [
-                "R' D' R D R' D' R D"
-            ],
-            [
-                cube => cube.IsSolved()
+                cube => cube.IsSolved()          // Directly evaluates to full cube completion
             ]
         )
     ];
