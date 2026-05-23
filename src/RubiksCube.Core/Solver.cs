@@ -132,7 +132,7 @@ public class Solver
 
                 Console.WriteLine($"\nNew moves: {foundMoves.Count}, duration: {totalStopwatch.Elapsed}");
 
-                stepCallback(foundMoves);
+                stepCallback?.Invoke(foundMoves);
 
                 return true;
             }
