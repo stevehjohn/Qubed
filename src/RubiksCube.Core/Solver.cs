@@ -7,7 +7,7 @@ namespace RubiksCube.Core;
 
 public class Solver
 {
-    private const int MinDepth = 1;
+    private const int MinDepth = 3;
 
     private const int MaxDepth = 20;
 
