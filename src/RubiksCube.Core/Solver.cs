@@ -29,7 +29,7 @@ public class Solver
         if (_cube.IsSolved())
         {
             Console.WriteLine(_cube.ToString());
-            
+
             stepCallback?.Invoke(_moves);
 
             return (true, _moves, TimeSpan.Zero);
@@ -55,6 +55,8 @@ public class Solver
         }
 
         Console.WriteLine(_cube.ToString());
+
+        CompressMoves();
 
         foreach (var move in _moves)
         {
@@ -110,7 +112,7 @@ public class Solver
                         if (foundMoves == null || newMoves.Count < foundMoves.Count)
                         {
                             found = true;
-                            
+
                             foundMoves = new List<Move>(newMoves);
                         }
                     }
@@ -166,7 +168,7 @@ public class Solver
         {
             visitedDepths.Add(key, depth);
         }
-        
+
         for (var s = 0; s < moveSet.Count; s++)
         {
             var set = moveSet[s];
@@ -207,7 +209,7 @@ public class Solver
             {
                 continue;
             }
-            
+
             foreach (var move in set)
             {
                 cube.ApplyMove(move);
@@ -252,4 +254,55 @@ public class Solver
 
         return true;
     }
-}
+
+    private void CompressMoves()
+    {
+        var changed = true;
+
+        while (changed)
+        {
+            changed = false;
+
+            for (var i = 0; i < _moves.Count - 1; i++)
+            {
+                var first = _moves[i];
+
+                var second = _moves[i + 1];
+                
+                if (first.Face == second.Face)
+                {
+                    var newDirection = GetCompressedDirection(first.Direction, second.Direction);
+
+                    _moves.RemoveRange(i, 2);
+                    
+                    if (newDirection == null)
+                    {
+                        continue;
+                    }
+
+                    var newMove = first with { Direction = newDirection.Value };
+                    
+                    _moves.Insert(i, newMove);
+                    
+                    changed = true;
+                }
+            }
+        }
+    }
+
+    private static Direction? GetCompressedDirection(Direction first, Direction second)
+    {
+        var val1 = first == Direction.Clockwise ? 1 : first == Direction.HalfTurn ? 2 : 3;
+        
+        var val2 = second == Direction.Clockwise ? 1 : second == Direction.HalfTurn ? 2 : 3;
+        
+        var totalTurns = (val1 + val2) % 4;
+
+        return totalTurns switch
+        {
+            1 => Direction.Clockwise,
+            2 => Direction.HalfTurn,
+            3 => Direction.AntiClockwise,
+            _ => null
+        };
+    }}
