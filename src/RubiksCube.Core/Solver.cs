@@ -9,7 +9,7 @@ public class Solver
 {
     private const int MinDepth = 3;
 
-    private const int MaxDepth = 20;
+    private const int MaxDepth = 15;
 
     private readonly Cube _cube;
 
@@ -98,6 +98,8 @@ public class Solver
                 var cubeCopy = _cube.Clone();
 
                 var newMoves = new List<Move>(moveSet);
+                
+                var bestMoves = new List<Move>();
 
                 var algorithmIndices = new List<int> { (int) index };
 
@@ -106,7 +108,7 @@ public class Solver
                     cubeCopy.ApplyMove(move);
                 }
 
-                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, innerDepth - 1))
+                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, bestMoves, algorithmIndices, innerDepth - 1))
                 {
                     lock (state)
                     {
@@ -142,11 +144,14 @@ public class Solver
         return false;
     }
 
-    private bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<int> algorithmIndices, int depth)
+    private bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<Move> bestMoves, List<int> algorithmIndices, int depth)
     {
         if (ChecksPass(heuristics, cube))
         {
-            return true;
+            if (bestMoves.Count == 0 || moves.Count < bestMoves.Count)
+            {
+                bestMoves = new List<Move>(moves);
+            }
         }
 
         if (depth == 0)
@@ -218,7 +223,7 @@ public class Solver
 
             algorithmIndices.Add(s);
 
-            if (SearchAlgorithm(heuristics, moveSet, cube, moves, algorithmIndices, depth - 1))
+            if (SearchAlgorithm(heuristics, moveSet, cube, moves, bestMoves, algorithmIndices, depth - 1))
             {
                 return true;
             }
@@ -233,7 +238,7 @@ public class Solver
             algorithmIndices.RemoveAt(algorithmIndices.Count - 1);
         }
 
-        return false;
+        return bestMoves.Count > 0;
     }
 
     private static bool ChecksPass(List<Func<Cube, bool>> heuristics, Cube cube)
