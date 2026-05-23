@@ -33,102 +33,67 @@ public abstract class AlgorithmLibrary
             ]
         ),
         (
-            "Step 2 - Top Corners",
+            "Step 2.1 - F2L Slot 1 (Red & Green)",
             [
-                "F D F'",
-                "R' D' R",
-                "R' D R F D F'",
-                "R' D R F D2 F'"
+                "R' D' R", "F D F'", "R' D R", "F D' F'",
+                "R' D R D'", "R' D' R D", "R' D2 R", "R F' R' F",
+                "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
+            ],
+            [
+                cube => cube[Face.Up, 0, 2] == Colour.White
+                        && cube[Face.Left, 2, 0] == Colour.Green
+                        && cube[Face.Front, 0, 0] == Colour.Red       // Corner Solved
+                        && cube[Face.Front, 0, 1] == Colour.Red
+                        && cube[Face.Left, 2, 1] == Colour.Green      // Edge Solved
+            ]
+        ),
+        (
+            "Step 2.2 - F2L Slot 2 (Red & Blue)",
+            [
+                "R' D' R", "F D F'", "R' D R", "F D' F'",
+                "R' D R D'", "R' D' R D", "R' D2 R", "R F' R' F",
+                "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
+            ],
+            [
+                cube => cube[Face.Up, 2, 2] == Colour.White
+                        && cube[Face.Front, 2, 0] == Colour.Red
+                        && cube[Face.Right, 0, 0] == Colour.Blue      // Corner Solved
+                        && cube[Face.Front, 2, 1] == Colour.Red
+                        && cube[Face.Right, 0, 1] == Colour.Blue      // Edge Solved
+            ]
+        ),
+        (
+            "Step 2.3 - F2L Slot 3 (Blue & Orange)",
+            [
+                "R' D' R", "F D F'", "R' D R", "F D' F'",
+                "R' D R D'", "R' D' R D", "R' D2 R", "R F' R' F",
+                "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
+            ],
+            [
+                cube => cube[Face.Up, 2, 0] == Colour.White
+                        && cube[Face.Right, 2, 0] == Colour.Blue
+                        && cube[Face.Back, 0, 0] == Colour.Orange     // Corner Solved
+                        && cube[Face.Right, 2, 1] == Colour.Blue
+                        && cube[Face.Back, 0, 1] == Colour.Orange     // Edge Solved
+            ]
+        ),
+        (
+            "Step 2.4 - F2L Slot 4 (Orange & Green)",
+            [
+                "R' D' R", "F D F'", "R' D R", "F D' F'",
+                "R' D R D'", "R' D' R D", "R' D2 R", "R F' R' F",
+                "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
             ],
             [
                 cube => cube[Face.Up, 0, 0] == Colour.White
                         && cube[Face.Left, 0, 0] == Colour.Green
-                        && cube[Face.Back, 2, 0] == Colour.Orange,
-                cube => cube[Face.Up, 2, 0] == Colour.White
-                        && cube[Face.Right, 2, 0] == Colour.Blue
-                        && cube[Face.Back, 0, 0] == Colour.Orange,
-                cube => cube[Face.Up, 2, 2] == Colour.White
-                        && cube[Face.Front, 2, 0] == Colour.Red
-                        && cube[Face.Right, 0, 0] == Colour.Blue,
-                cube => cube[Face.Up, 0, 2] == Colour.White
-                        && cube[Face.Left, 2, 0] == Colour.Green
-                        && cube[Face.Front, 0, 0] == Colour.Red
+                        && cube[Face.Back, 2, 0] == Colour.Orange     // Corner Solved
+                        && cube[Face.Back, 2, 1] == Colour.Orange
+                        && cube[Face.Left, 0, 1] == Colour.Green      // Edge Solved
             ]
         ),
         (
-            "Step 3.1 - Middle Layer Edges Red & Green",
-            [
-                "D L' D L D F D' F'",
-                "D' L' D L D F D' F'",
-                "D2 L' D L D F D' F'",
-                "D R D' R' D' F' D F",
-                "D' R D' R' D' F' D F",
-                "D2 R D' R' D' F' D F",
-                "D R D' R' D F' D2 F D F' D2 F",
-                "D' R D' R' D F' D2 F D F' D2 F",
-                "D2 R D' R' D F' D2 F D F' D2 F"
-            ],
-            [
-                cube => cube[Face.Front, 0, 1] == Colour.Red
-                        && cube[Face.Left, 2, 1] == Colour.Green
-            ]
-        ),
-        (
-            "Step 3.2 - Middle Layer Edges Red & Blue",
-            [
-                "D L' D L D F D' F'",
-                "D' L' D L D F D' F'",
-                "D2 L' D L D F D' F'",
-                "D R D' R' D' F' D F",
-                "D' R D' R' D' F' D F",
-                "D2 R D' R' D' F' D F",
-                "D R D' R' D F' D2 F D F' D2 F",
-                "D' R D' R' D F' D2 F D F' D2 F",
-                "D2 R D' R' D F' D2 F D F' D2 F"
-            ],
-            [
-                cube => cube[Face.Front, 2, 1] == Colour.Red
-                        && cube[Face.Right, 0, 1] == Colour.Blue
-            ]
-        ),
-        (
-            "Step 3.3 - Middle Layer Edges Orange & Green",
-            [
-                "D L' D L D F D' F'",
-                "D' L' D L D F D' F'",
-                "D2 L' D L D F D' F'",
-                "D R D' R' D' F' D F",
-                "D' R D' R' D' F' D F",
-                "D2 R D' R' D' F' D F",
-                "D R D' R' D F' D2 F D F' D2 F",
-                "D' R D' R' D F' D2 F D F' D2 F",
-                "D2 R D' R' D F' D2 F D F' D2 F"
-            ],
-            [
-                cube => cube[Face.Back, 2, 1] == Colour.Orange
-                        && cube[Face.Left, 0, 1] == Colour.Green
-            ]
-        ),
-        (
-            "Step 3.4 - Middle Layer Edges Blue & Orange",
-            [
-                "D L' D L D F D' F'",
-                "D' L' D L D F D' F'",
-                "D2 L' D L D F D' F'",
-                "D R D' R' D' F' D F",
-                "D' R D' R' D' F' D F",
-                "D2 R D' R' D' F' D F",
-                "D R D' R' D F' D2 F D F' D2 F",
-                "D' R D' R' D F' D2 F D F' D2 F",
-                "D2 R D' R' D F' D2 F D F' D2 F"
-            ],
-            [
-                cube => cube[Face.Right, 2, 1] == Colour.Blue
-                        && cube[Face.Back, 0, 1] == Colour.Orange
-            ]
-        ),
-        (
-            "Step 4 - Yellow Cross",
+            "Step 3 - Yellow Cross",
             [
                 "F' R' D' R D F",
                 "F' D' R' D R F"
