@@ -772,7 +772,7 @@ public sealed class RubiksCube : Game
 
         const float stickerOffset = 0.015f;
 
-        const float stickerThickness = 0.025f;
+        const float stickerThickness = 0.05f;
 
         const float stickerHalf = h - stickerInset;
 
