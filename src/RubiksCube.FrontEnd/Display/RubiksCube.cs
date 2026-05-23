@@ -589,7 +589,12 @@ public sealed class RubiksCube : Game
                 return;
             }
 
-            if (_solverFinished && _solveQueue.Count < 3)
+            if (_solveQueue.Count < 2)
+            {
+                _rotationDuration = 0.25f; 
+            }
+
+            if (_solverFinished && _solveQueue.Count == 0)
             {
                 _isSolving = false;
                 
