@@ -271,6 +271,8 @@ public class Solver
                 
                 if (first.Face == second.Face)
                 {
+                    changed = true;
+                        
                     var newDirection = GetCompressedDirection(first.Direction, second.Direction);
 
                     _moves.RemoveRange(i, 2);
@@ -283,8 +285,6 @@ public class Solver
                     var newMove = first with { Direction = newDirection.Value };
                     
                     _moves.Insert(i, newMove);
-                    
-                    changed = true;
                 }
             }
         }
