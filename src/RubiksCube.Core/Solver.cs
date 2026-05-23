@@ -277,14 +277,14 @@ public class Solver
 
                     _moves.RemoveRange(i, 2);
                     
-                    if (newDirection == null)
+                    if (newDirection != null)
                     {
-                        continue;
+                        var newMove = first with { Direction = newDirection.Value };
+                    
+                        _moves.Insert(i, newMove);
                     }
 
-                    var newMove = first with { Direction = newDirection.Value };
-                    
-                    _moves.Insert(i, newMove);
+                    break;
                 }
             }
         }
