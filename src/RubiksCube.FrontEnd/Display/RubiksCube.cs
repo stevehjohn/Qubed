@@ -20,7 +20,7 @@ public sealed class RubiksCube : Game
 
     private readonly Queue<Move> _solveQueue = [];
 
-    private readonly Random _random = new(2);
+    private readonly Random _random = new();
     
     private BasicEffect _effect;
 
