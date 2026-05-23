@@ -203,7 +203,7 @@ public class Solver
                 }
             }
 
-            if (occurrences > 1)
+            if (occurrences > 2)
             {
                 continue;
             }
