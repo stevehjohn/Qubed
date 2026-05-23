@@ -108,9 +108,9 @@ public abstract class AlgorithmLibrary
         (
             "Step 4 - Align Yellow Cross",
             [
-                "D", "D'", "D2", // Allows solver to pre-align with a simple U-move twist
-                "R' D R' D' R' D' R' D R D R2", // U-Perm Clockwise (Edges)
-                "R2 D' R' D' R D R D R D' R"    // U-Perm Anti-Clockwise (Edges)
+                "D", "D'", "D2",
+                "R' D R' D' R' D' R' D R D R2",
+                "R2 D' R' D' R D R D R D' R"
             ],
             [
                 cube => cube[Face.Front, 1, 2] == Colour.Red
@@ -123,12 +123,12 @@ public abstract class AlgorithmLibrary
             "Step 5 - Solve Last Layer Corners",
             [
                 "D", "D'", "D2",
-                "L' D R D' L D R' D'",          // Niklas Corner Cycler
-                "R' F R' B2 R F' R' B2 R2",     // Aa-Perm Corner Swapper
-                "R' D' R D R' D' R D"           // Pure twist backup if orientation needs adjustment
+                "L' D R D' L D R' D'",
+                "R' F R' B2 R F' R' B2 R2",
+                "R' D' R D R' D' R D"
             ],
             [
-                cube => cube.IsSolved()          // Directly evaluates to full cube completion
+                cube => cube.IsSolved()
             ]
         )
     ];
