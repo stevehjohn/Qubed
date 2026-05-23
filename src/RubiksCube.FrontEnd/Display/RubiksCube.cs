@@ -56,7 +56,7 @@ public sealed class RubiksCube : Game
 
     private const float CubieSize = 1f;
 
-    private const float CubeSpacing = 1.25f;
+    private const float CubeSpacingFinal = 1.25f;
 
     private const float QuarterTurn = MathHelper.PiOver2;
 
@@ -68,7 +68,7 @@ public sealed class RubiksCube : Game
 
     private const float MaxCameraDistance = 18f;
 
-    private const float CubePickHalfExtent = CubeSpacing + CubieSize / 2f + 0.05f;
+    private const float CubePickHalfExtent = CubeSpacingFinal + CubieSize / 2f + 0.05f;
 
     private readonly Lock _solveLock = new();
 
@@ -119,7 +119,7 @@ public sealed class RubiksCube : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (_cubeSpacing > CubeSpacing)
+        if (_cubeSpacing > CubeSpacingFinal)
         {
             _cubeSpacing -= 0.1f;
         }
