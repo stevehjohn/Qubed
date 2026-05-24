@@ -64,6 +64,6 @@ public static class SolverBenchmark
         
         WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff} - {statistics.Max(s => s.Duration):ss\\.fff}.");
         
-        WriteLine($"\nTotal duration: {totalDuration:mm\\.ss\\.fff}.\n");
+        WriteLine($"\nTotal duration: {totalDuration:mm\\:ss\\.fff}.\n");
     }
 }
