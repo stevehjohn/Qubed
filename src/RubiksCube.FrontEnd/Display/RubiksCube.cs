@@ -54,6 +54,8 @@ public sealed class RubiksCube : Game
 
     private float _cubeSpacing = 9f;
 
+    private float _cubeSpacingSpeed = 0.1f;
+
     private const float CubieSize = 1f;
 
     private const float CubeSpacingFinal = 1.25f;
@@ -121,7 +123,13 @@ public sealed class RubiksCube : Game
     {
         if (_cubeSpacing > CubeSpacingFinal)
         {
-            _cubeSpacing -= 0.1f;
+            _cubeSpacing -= _cubeSpacingSpeed;
+
+            _cubeSpacingSpeed += 0.01f;
+        }
+        else
+        {
+            _cubeSpacing = CubeSpacingFinal;
         }
 
         var keyboard = Keyboard.GetState();
