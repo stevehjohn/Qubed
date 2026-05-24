@@ -17,7 +17,7 @@ public static class SolverBenchmark
 
         var stopwatch = Stopwatch.StartNew();
         
-        for (var i = 1; i <= iterations; i++)
+        for (var iteration = 1; iteration <= iterations; iteration++)
         {
             var cube = new Cube();
             
@@ -25,7 +25,7 @@ public static class SolverBenchmark
             
             var solver = new Solver(cube);
 
-            WriteLine($"\nIteration {i}/{iterations}.\n");
+            WriteLine($"\nIteration {iteration}/{iterations}.\n");
             
             WriteLine(cube.ToString());
             
@@ -44,7 +44,7 @@ public static class SolverBenchmark
             
             statistics.Add((result.Moves.Count, result.Duration));
             
-            WriteLine(@$"Moves: {result.Moves.Count}, duration: {result.Duration:ss\.fff}s. Average moves: {(double) totalMoves / i:N2}, average duration {totalDuration / i:ss\.fff}.\n");
+            WriteLine(@$"Moves: {result.Moves.Count}, duration: {result.Duration:ss\.fff}s. Average moves: {(double) totalMoves / iteration:N2}, average duration {totalDuration / iteration:ss\.fff}.\n");
         }
         
         stopwatch.Stop();
@@ -53,9 +53,13 @@ public static class SolverBenchmark
 
         foreach (var statistic in statistics)
         {
-            WriteLine(@$"Moves: {statistic.Moves}, duration: {statistic.Duration:ss\.fff}s.");
+            WriteLine(@$"Moves: {statistic.Moves,3}, duration: {statistic.Duration:ss\.fff}s.");
         }
         
-        WriteLine($@"\nTotal duration: {totalDuration:mm\.ss\.fff}.\n");
+        WriteLine("      ----            -------");
+        
+        WriteLine($"      {totalMoves / iterations}            {totalDuration / iterations}");
+        
+        WriteLine($"\nTotal duration: {totalDuration:mm\\.ss\\.fff}.\n");
     }
 }
