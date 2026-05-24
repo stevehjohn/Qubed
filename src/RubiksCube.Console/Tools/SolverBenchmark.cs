@@ -53,12 +53,12 @@ public static class SolverBenchmark
 
         foreach (var statistic in statistics)
         {
-            WriteLine(@$"Moves: {statistic.Moves,3}, duration: {statistic.Duration:ss\.fff}s.");
+            WriteLine(@$"Moves: {statistic.Moves}, duration: {statistic.Duration:ss\.fff}s.");
         }
         
         WriteLine("      ----            -------");
         
-        WriteLine($"       {totalMoves / iterations,3}            {totalDuration / iterations:ss\\.fff}");
+        WriteLine($"       {totalMoves / iterations}            {totalDuration / iterations:ss\\.fff}");
         
         WriteLine($"\nMoves range: {statistics.Min(s => s.Moves)} - {statistics.Max(s => s.Moves)}.");
         
