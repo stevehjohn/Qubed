@@ -102,7 +102,10 @@ public class Solver
 
             var stateLock = new Lock();
 
-            Parallel.ForEach(moveSets, new ParallelOptions(), (moveSet, _, index) =>
+            Parallel.ForEach(moveSets, new ParallelOptions
+            {
+                MaxDegreeOfParallelism = Environment.ProcessorCount / 2
+            }, (moveSet, _, index) =>
             {
                 var cubeCopy = _cube.Clone();
 

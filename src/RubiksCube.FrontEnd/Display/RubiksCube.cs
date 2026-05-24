@@ -56,6 +56,8 @@ public sealed class RubiksCube : Game
     private float _cubeSpacing = 9f;
 
     private float _cubeSpacingSpeed = 0.1f;
+    
+    private Face? _previousFace = null;
 
     private const float CubieSize = 1f;
 
@@ -450,6 +452,8 @@ public sealed class RubiksCube : Game
         {
             if (WasKeyPressed(keyboard, Keys.S))
             {
+                _previousFace = null;
+                
                 _scrambleTurns = _random.Next(20, 50);
 
                 _rotationDuration = 0.1f;
@@ -460,7 +464,14 @@ public sealed class RubiksCube : Game
             }
         }
 
-        var face = (Face) _random.Next(6);
+        Face face;
+
+        do
+        {
+            face = (Face) _random.Next(6);
+
+        } while (face == _previousFace);
+
 
         StartFaceRotation(new Move(face, (Direction) _random.Next(3)));
 
