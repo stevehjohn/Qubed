@@ -270,19 +270,19 @@ public class Solver
                 var first = _moves[i];
 
                 var second = _moves[i + 1];
-                
+
                 if (first.Face == second.Face)
                 {
                     changed = true;
-                        
+
                     var newDirection = GetCompressedDirection(first.Direction, second.Direction);
 
                     _moves.RemoveRange(i, 2);
-                    
+
                     if (newDirection != null)
                     {
                         var newMove = first with { Direction = newDirection.Value };
-                    
+
                         _moves.Insert(i, newMove);
                     }
 
@@ -300,14 +300,14 @@ public class Solver
             Direction.HalfTurn => 2,
             _ => 3
         };
-        
+
         var val2 = second switch
         {
             Direction.Clockwise => 1,
             Direction.HalfTurn => 2,
             _ => 3
         };
-        
+
         var totalTurns = (val1 + val2) % 4;
 
         return totalTurns switch
@@ -317,4 +317,5 @@ public class Solver
             3 => Direction.AntiClockwise,
             _ => null
         };
-    }}
+    }
+}
