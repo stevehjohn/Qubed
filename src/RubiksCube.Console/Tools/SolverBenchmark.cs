@@ -34,7 +34,7 @@ public static class SolverBenchmark
 
             totalDuration += result.Duration;
             
-            WriteLine($"Moves: {result.Moves.Count}, duration: {result.Duration}. Average moves: {(double) totalMoves / i:N2}, average duration {totalDuration / i}.\n");
+            WriteLine($"Moves: {result.Moves.Count}, duration: {result.Duration:ss.fff}s. Average moves: {(double) totalMoves / i:N2}, average duration {totalDuration / i:ss.fff}.\n");
         }
     }
 }
