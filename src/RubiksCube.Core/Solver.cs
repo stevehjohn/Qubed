@@ -90,6 +90,8 @@ public class Solver
 
             var innerDepth = depth;
 
+            var stateLock = new Lock();
+
             Parallel.ForEach(moveSets, new ParallelOptions(), (moveSet, state, index) =>
             {
                 var cubeCopy = _cube.Clone();
@@ -107,7 +109,7 @@ public class Solver
 
                 if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, visitedDepths, innerDepth - 1))
                 {
-                    lock (state)
+                    lock (stateLock)
                     {
                         if (foundMoves == null || newMoves.Count < foundMoves.Count)
                         {
