@@ -57,7 +57,7 @@ public sealed class RubiksCube : Game
 
     private float _cubeSpacingSpeed = 0.1f;
     
-    private Face? _previousFace = null;
+    private Face? _previousFace;
 
     private const float CubieSize = 1f;
 
