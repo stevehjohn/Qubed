@@ -5,6 +5,19 @@ namespace RubiksCube.Core.Logic;
 
 public abstract class AlgorithmLibrary
 {
+    private static readonly string[] F2LMoves =
+    [
+        "R' D' R",
+        "F D F'",
+        "R' D R",
+        "F D' F'",
+        "R' D R D'",
+        "R' D' R D",
+        "R' D2 R",
+        "R F' R' F",
+        "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
+    ];
+
     private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool>[] IsCompleteChecks)> AlgorithmMacros =
     [
         (
@@ -34,17 +47,7 @@ public abstract class AlgorithmLibrary
         ),
         (
             "Step 2.1 - F2L Slot 1 (Red & Green)",
-            [
-                "R' D' R",
-                "F D F'",
-                "R' D R",
-                "F D' F'",
-                "R' D R D'",
-                "R' D' R D",
-                "R' D2 R",
-                "R F' R' F",
-                "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
-            ],
+            F2LMoves,
             [
                 cube => cube[Face.Up, 0, 2] == Colour.White
                         && cube[Face.Left, 2, 0] == Colour.Green
@@ -55,17 +58,7 @@ public abstract class AlgorithmLibrary
         ),
         (
             "Step 2.2 - F2L Slot 2 (Red & Blue)",
-            [
-                "R' D' R",
-                "F D F'",
-                "R' D R",
-                "F D' F'",
-                "R' D R D'",
-                "R' D' R D",
-                "R' D2 R",
-                "R F' R' F",
-                "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
-            ],
+            F2LMoves,
             [
                 cube => cube[Face.Up, 2, 2] == Colour.White
                         && cube[Face.Front, 2, 0] == Colour.Red
@@ -76,17 +69,7 @@ public abstract class AlgorithmLibrary
         ),
         (
             "Step 2.3 - F2L Slot 3 (Blue & Orange)",
-            [
-                "R' D' R",
-                "F D F'",
-                "R' D R",
-                "F D' F'",
-                "R' D R D'",
-                "R' D' R D",
-                "R' D2 R",
-                "R F' R' F",
-                "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
-            ],
+            F2LMoves,
             [
                 cube => cube[Face.Up, 2, 0] == Colour.White
                         && cube[Face.Right, 2, 0] == Colour.Blue
@@ -97,17 +80,7 @@ public abstract class AlgorithmLibrary
         ),
         (
             "Step 2.4 - F2L Slot 4 (Orange & Green)",
-            [
-                "R' D' R",
-                "F D F'",
-                "R' D R",
-                "F D' F'",
-                "R' D R D'",
-                "R' D' R D",
-                "R' D2 R",
-                "R F' R' F",
-                "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
-            ],
+            F2LMoves,
             [
                 cube => cube[Face.Up, 0, 0] == Colour.White
                         && cube[Face.Left, 0, 0] == Colour.Green
