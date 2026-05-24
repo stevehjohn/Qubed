@@ -44,7 +44,7 @@ public static class SolverBenchmark
             
             statistics.Add((result.Moves.Count, result.Duration));
             
-            WriteLine(@$"Moves: {result.Moves.Count}, duration: {result.Duration:ss\.fff}s. Average moves: {(double) totalMoves / iteration:N2}, average duration {totalDuration / iteration:ss\.fff}.\n");
+            WriteLine(@$"Moves: {result.Moves.Count}, duration: {result.Duration:ss\.fff}s. Average moves: {(double) totalMoves / iteration:N2}, average duration {totalDuration / iteration:ss\.fff}.");
         }
         
         stopwatch.Stop();
