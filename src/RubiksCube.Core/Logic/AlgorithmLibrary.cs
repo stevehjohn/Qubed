@@ -100,7 +100,6 @@ public abstract class AlgorithmLibrary
                 "D", "D'", "D2",
                 "R' D R' D' R' D' R' D R D R2",
                 "R2 D' R' D' R D R D R D' R",
-                "D", "D'", "D2",
                 "L' D R D' L D R' D'",
                 "R' F R' B2 R F' R' B2 R2",
                 "R' D' R D R' D' R D"
