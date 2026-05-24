@@ -49,7 +49,7 @@ public static class SolverBenchmark
         
         stopwatch.Stop();
         
-        WriteLine("\nSummary:\n");
+        WriteLine("\nSummary\n-------\n");
 
         foreach (var statistic in statistics)
         {
@@ -62,7 +62,7 @@ public static class SolverBenchmark
         
         WriteLine($"\nMoves range: {statistics.Min(s => s.Moves)} - {statistics.Max(s => s.Moves)}.");
         
-        WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\fff} - {statistics.Max(s => s.Duration):ss\\.fff}.");
+        WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff} - {statistics.Max(s => s.Duration):ss\\.fff}.");
         
         WriteLine($"\nTotal duration: {totalDuration:mm\\.ss\\.fff}.\n");
     }
