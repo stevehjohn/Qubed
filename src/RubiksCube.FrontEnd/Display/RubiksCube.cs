@@ -56,8 +56,6 @@ public sealed class RubiksCube : Game
 
     private float _cubeSpacingSpeed = 0.1f;
 
-    private bool _isDrawingReflection;
-    
     private const float CubieSize = 1f;
 
     private const float CubeSpacingFinal = 1.25f;
