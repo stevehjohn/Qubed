@@ -35,8 +35,14 @@ public abstract class AlgorithmLibrary
         (
             "Step 2.1 - F2L Slot 1 (Red & Green)",
             [
-                "R' D' R", "F D F'", "R' D R", "F D' F'",
-                "R' D R D'", "R' D' R D", "R' D2 R", "R F' R' F",
+                "R' D' R",
+                "F D F'",
+                "R' D R",
+                "F D' F'",
+                "R' D R D'",
+                "R' D' R D",
+                "R' D2 R",
+                "R F' R' F",
                 "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
             ],
             [
@@ -50,8 +56,14 @@ public abstract class AlgorithmLibrary
         (
             "Step 2.2 - F2L Slot 2 (Red & Blue)",
             [
-                "R' D' R", "F D F'", "R' D R", "F D' F'",
-                "R' D R D'", "R' D' R D", "R' D2 R", "R F' R' F",
+                "R' D' R",
+                "F D F'",
+                "R' D R",
+                "F D' F'",
+                "R' D R D'",
+                "R' D' R D",
+                "R' D2 R",
+                "R F' R' F",
                 "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
             ],
             [
@@ -65,8 +77,14 @@ public abstract class AlgorithmLibrary
         (
             "Step 2.3 - F2L Slot 3 (Blue & Orange)",
             [
-                "R' D' R", "F D F'", "R' D R", "F D' F'",
-                "R' D R D'", "R' D' R D", "R' D2 R", "R F' R' F",
+                "R' D' R",
+                "F D F'",
+                "R' D R",
+                "F D' F'",
+                "R' D R D'",
+                "R' D' R D",
+                "R' D2 R",
+                "R F' R' F",
                 "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
             ],
             [
@@ -80,8 +98,14 @@ public abstract class AlgorithmLibrary
         (
             "Step 2.4 - F2L Slot 4 (Orange & Green)",
             [
-                "R' D' R", "F D F'", "R' D R", "F D' F'",
-                "R' D R D'", "R' D' R D", "R' D2 R", "R F' R' F",
+                "R' D' R",
+                "F D F'",
+                "R' D R",
+                "F D' F'",
+                "R' D R D'",
+                "R' D' R D",
+                "R' D2 R",
+                "R F' R' F",
                 "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
             ],
             [
