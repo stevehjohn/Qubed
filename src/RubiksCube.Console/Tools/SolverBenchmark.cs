@@ -60,6 +60,10 @@ public static class SolverBenchmark
         
         WriteLine($"       {totalMoves / iterations,3}            {totalDuration / iterations:ss\\.fff}");
         
+        WriteLine($"\nMoves range: {statistics.Min(s => s.Moves)} - {statistics.Max(s => s.Moves)}.");
+        
+        WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\fff} - {statistics.Max(s => s.Duration):ss\\.fff}.");
+        
         WriteLine($"\nTotal duration: {totalDuration:mm\\.ss\\.fff}.\n");
     }
 }
