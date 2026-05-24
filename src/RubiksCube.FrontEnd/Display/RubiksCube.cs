@@ -189,13 +189,16 @@ public sealed class RubiksCube : Game
     {
         GraphicsDevice.Clear(Color.FromNonPremultiplied(70, 70, 70, 255));
 
-        var world = Matrix.CreateRotationX(_pitch) * Matrix.CreateRotationY(_yaw);
+        GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
-        GraphicsDevice.BlendState = BlendState.Opaque;
         GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
+        var world = Matrix.CreateRotationX(_pitch) * Matrix.CreateRotationY(_yaw);
+
         _effect.World = world;
+
         _effect.View = _view;
+
         _effect.Projection = _projection;
 
         foreach (var pass in _effect.CurrentTechnique.Passes)
@@ -204,29 +207,6 @@ public sealed class RubiksCube : Game
 
             DrawRubiksCube();
         }
-
-        GraphicsDevice.BlendState = BlendState.AlphaBlend;
-        GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
-        var mirrorWorld =
-            Matrix.CreateScale(1f, -1f, 1f) *
-            Matrix.CreateTranslation(0f, -4.5f, 0f) *
-            world;
-
-        _isDrawingReflection = true;
-
-        _effect.World = mirrorWorld;
-
-        foreach (var pass in _effect.CurrentTechnique.Passes)
-        {
-            pass.Apply();
-
-            DrawRubiksCube();
-        }
-
-        _isDrawingReflection = false;
-
-        GraphicsDevice.BlendState = BlendState.Opaque;
 
         base.Draw(gameTime);
     }
