@@ -6,6 +6,6 @@ public static class EntryPoint
 {
     public static void Main()
     {
-        SolverBenchmark.Run(2);
+        SolverBenchmark.Run(100);
     }
 }
