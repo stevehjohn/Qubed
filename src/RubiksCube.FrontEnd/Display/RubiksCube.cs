@@ -513,7 +513,7 @@ public sealed class RubiksCube : Game
             return;
         }
 
-        var solver = new Solver(cube, new ConsoleLogger());
+        var solver = new Solver(cube, Mode.Fast, new ConsoleLogger());
 
         lock (_solveLock)
         {

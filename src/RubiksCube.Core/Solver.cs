@@ -17,12 +17,22 @@ public class Solver
     
     private readonly ILogger _logger;
 
-    public Solver(Cube cube) => _cube = cube.Clone();
+    private readonly int _degreeOfParallelism;
 
-    public Solver(Cube cube, ILogger logger)
+    public Solver(Cube cube, Mode mode = Mode.HalfCores) : this(cube, mode, null) { }
+
+    public Solver(Cube cube, Mode mode, ILogger logger)
     {
-        _cube = cube;
-        
+        _cube = cube.Clone();
+
+        _degreeOfParallelism = mode switch
+        {
+            Mode.Fast => Environment.ProcessorCount - 1,
+            Mode.HalfCores => Environment.ProcessorCount / 2,
+            Mode.SingleThreaded => 1,
+            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+        };
+
         _logger = logger;
     }
 
@@ -104,7 +114,7 @@ public class Solver
 
             Parallel.ForEach(moveSets, new ParallelOptions
             {
-                MaxDegreeOfParallelism = Environment.ProcessorCount / 2
+                MaxDegreeOfParallelism = _degreeOfParallelism
             }, (moveSet, _, index) =>
             {
                 var cubeCopy = _cube.Clone();
