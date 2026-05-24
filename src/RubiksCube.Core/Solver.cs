@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using RubiksCube.Core.Infrastructure;
 using RubiksCube.Core.Logic;
 using RubiksCube.Core.Models;
 
@@ -13,8 +14,17 @@ public class Solver
     private readonly Cube _cube;
 
     private readonly List<Move> _moves = [];
+    
+    private readonly ILogger _logger;
 
     public Solver(Cube cube) => _cube = cube.Clone();
+
+    public Solver(Cube cube, ILogger logger)
+    {
+        _cube = cube;
+        
+        _logger = logger;
+    }
 
     public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback, Action<List<Move>> stepCallback = null)
     {
@@ -28,7 +38,7 @@ public class Solver
 
         if (_cube.IsSolved())
         {
-            Console.WriteLine(_cube.ToString());
+            _logger?.WriteLine(_cube.ToString());
 
             stepCallback?.Invoke(_moves);
 
@@ -37,7 +47,7 @@ public class Solver
 
         var stopwatch = Stopwatch.StartNew();
 
-        Console.WriteLine(_cube.ToString());
+        _logger?.WriteLine(_cube.ToString());
 
         var checks = new List<Func<Cube, bool>>();
 
@@ -45,29 +55,29 @@ public class Solver
 
         foreach (var algorithm in AlgorithmLibrary.Algorithms)
         {
-            Console.WriteLine($"{algorithm.Name}\n");
+            _logger?.WriteLine($"{algorithm.Name}\n");
 
             checks.AddRange(algorithm.IsCompleteChecks);
 
             solved &= BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
 
-            Console.WriteLine();
+            _logger?.WriteLine();
         }
 
-        Console.WriteLine(_cube.ToString());
+        _logger?.WriteLine(_cube.ToString());
 
         CompressMoves();
 
         foreach (var move in _moves)
         {
-            Console.WriteLine(move.ToString());
+            _logger?.WriteLine(move.ToString());
         }
 
         stopwatch.Stop();
 
-        Console.WriteLine();
+        _logger?.WriteLine();
 
-        Console.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed}");
+        _logger?.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed}");
 
         return (solved, _moves, stopwatch.Elapsed);
     }
@@ -80,7 +90,7 @@ public class Solver
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
-            Console.Write(depth);
+            _logger?.Write(depth.ToString());
 
             branchStopwatch.Restart();
 
@@ -121,7 +131,7 @@ public class Solver
                 }
             });
 
-            Console.WriteLine($" {branchStopwatch.Elapsed}");
+            _logger?.WriteLine($" {branchStopwatch.Elapsed}");
 
             if (found)
             {
@@ -132,7 +142,7 @@ public class Solver
                     _cube.ApplyMove(move);
                 }
 
-                Console.WriteLine($"\nNew moves: {foundMoves.Count}, duration: {totalStopwatch.Elapsed}");
+                _logger?.WriteLine($"\nNew moves: {foundMoves.Count}, duration: {totalStopwatch.Elapsed}");
 
                 stepCallback?.Invoke(foundMoves);
 

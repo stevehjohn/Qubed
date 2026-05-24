@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RubiksCube.Core;
+using RubiksCube.Core.Infrastructure;
 using RubiksCube.Core.Models;
 
 namespace RubiksCube.FrontEnd.Display;
@@ -501,7 +502,7 @@ public sealed class RubiksCube : Game
             return;
         }
 
-        var solver = new Solver(cube);
+        var solver = new Solver(cube, new ConsoleLogger());
 
         lock (_solveLock)
         {
