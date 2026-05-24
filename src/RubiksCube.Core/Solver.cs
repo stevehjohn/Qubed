@@ -92,7 +92,7 @@ public class Solver
 
             var stateLock = new Lock();
 
-            Parallel.ForEach(moveSets, new ParallelOptions(), (moveSet, state, index) =>
+            Parallel.ForEach(moveSets, new ParallelOptions(), (moveSet, _, index) =>
             {
                 var cubeCopy = _cube.Clone();
 
