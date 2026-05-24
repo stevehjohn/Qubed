@@ -56,6 +56,8 @@ public sealed class RubiksCube : Game
 
     private float _cubeSpacingSpeed = 0.1f;
 
+    private bool _isDrawingReflection;
+    
     private const float CubieSize = 1f;
 
     private const float CubeSpacingFinal = 1.25f;
@@ -187,16 +189,13 @@ public sealed class RubiksCube : Game
     {
         GraphicsDevice.Clear(Color.FromNonPremultiplied(70, 70, 70, 255));
 
-        GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-
-        GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-
         var world = Matrix.CreateRotationX(_pitch) * Matrix.CreateRotationY(_yaw);
 
+        GraphicsDevice.BlendState = BlendState.Opaque;
+        GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
         _effect.World = world;
-
         _effect.View = _view;
-
         _effect.Projection = _projection;
 
         foreach (var pass in _effect.CurrentTechnique.Passes)
@@ -205,6 +204,29 @@ public sealed class RubiksCube : Game
 
             DrawRubiksCube();
         }
+
+        GraphicsDevice.BlendState = BlendState.AlphaBlend;
+        GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+        var mirrorWorld =
+            Matrix.CreateScale(1f, -1f, 1f) *
+            Matrix.CreateTranslation(0f, -4.5f, 0f) *
+            world;
+
+        _isDrawingReflection = true;
+
+        _effect.World = mirrorWorld;
+
+        foreach (var pass in _effect.CurrentTechnique.Passes)
+        {
+            pass.Apply();
+
+            DrawRubiksCube();
+        }
+
+        _isDrawingReflection = false;
+
+        GraphicsDevice.BlendState = BlendState.Opaque;
 
         base.Draw(gameTime);
     }
@@ -882,6 +904,15 @@ public sealed class RubiksCube : Game
 
     private void DrawQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color color)
     {
+        if (_isDrawingReflection)
+        {
+            color = Color.FromNonPremultiplied(
+                (int)(color.R * 0.35f),
+                (int)(color.G * 0.35f),
+                (int)(color.B * 0.35f),
+                90);
+        }
+
         var vertices = new[]
         {
             new VertexPositionColor(Vector3.Transform(a, _primitiveTransform), color),
