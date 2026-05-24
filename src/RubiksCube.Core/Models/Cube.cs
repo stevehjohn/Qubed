@@ -170,13 +170,23 @@ public class Cube
 
     public void Scramble(int turns)
     {
+        var previousFace = (Face) _random.Next(6);
+
         for (var i = 0; i < turns; i++)
         {
-            var face = (Face) _random.Next(6);
+            Face face;
             
+            do
+            {
+                face = (Face) _random.Next(6);
+
+            } while (face == previousFace);
+
             var direction = (Direction) _random.Next(3);
             
             ApplyMove(face, direction);
+
+            previousFace = face;
         }
     }
 
