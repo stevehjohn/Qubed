@@ -170,7 +170,7 @@ public class Cube
 
     public void Scramble(int turns)
     {
-        var previousFace = (Face) _random.Next(6);
+        Face? previousFace = null;
 
         for (var i = 0; i < turns; i++)
         {
