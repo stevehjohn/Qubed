@@ -882,15 +882,6 @@ public sealed class RubiksCube : Game
 
     private void DrawQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color color)
     {
-        if (_isDrawingReflection)
-        {
-            color = Color.FromNonPremultiplied(
-                (int)(color.R * 0.35f),
-                (int)(color.G * 0.35f),
-                (int)(color.B * 0.35f),
-                90);
-        }
-
         var vertices = new[]
         {
             new VertexPositionColor(Vector3.Transform(a, _primitiveTransform), color),
