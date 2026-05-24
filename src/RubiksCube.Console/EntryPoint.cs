@@ -2,7 +2,7 @@
 
 public static class EntryPoint
 {
-    public static void Main(string[] arguments)
+    public static void Main()
     {
     }
 }
