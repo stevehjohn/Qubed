@@ -2,10 +2,10 @@ namespace RubiksCube.Core.Models;
 
 public enum Face
 {
-    Up,
-    Down,
-    Front,
-    Back,
-    Left,
-    Right
+    Up = 0,
+    Down = 1,
+    Front = 2,
+    Back = 3,
+    Left = 4,
+    Right = 5
 }

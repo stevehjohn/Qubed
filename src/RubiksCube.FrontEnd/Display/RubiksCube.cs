@@ -462,7 +462,7 @@ public sealed class RubiksCube : Game
 
         var face = (Face) _random.Next(6);
 
-        StartFaceRotation(new Move(face, _random.Next(2) == 1 ? Direction.Clockwise : Direction.AntiClockwise));
+        StartFaceRotation(new Move(face, (Direction) _random.Next(3)));
 
         _scrambleTurns--;
 

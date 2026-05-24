@@ -8,6 +8,8 @@ public class Cube
     private readonly Colour[][,] _faces = new Colour[6][,];
 
     private readonly Stack<Move> _history = [];
+    
+    private readonly Random _random = new();
 
     private readonly Dictionary<Face, Slice[]> _affectedSlices =
         new()
@@ -164,6 +166,18 @@ public class Cube
         }
 
         return true;
+    }
+
+    public void Scramble(int turns)
+    {
+        for (var i = 0; i < turns; i++)
+        {
+            var face = (Face) _random.Next(6);
+            
+            var direction = (Direction) _random.Next(3);
+            
+            ApplyMove(face, direction);
+        }
     }
 
     public (ulong A, ulong B, ulong C) GetHash()
