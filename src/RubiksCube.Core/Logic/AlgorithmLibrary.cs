@@ -93,35 +93,13 @@ public abstract class AlgorithmLibrary
             ]
         ),
         (
-            "Step 3 - Yellow Cross",
+            "Step 3 - Last Layer",
             [
                 "F' R' D' R D F",
-                "F' D' R' D R F"
-            ],
-            [
-                cube => cube[Face.Down, 1, 0] == Colour.Yellow
-                        && cube[Face.Down, 2, 1] == Colour.Yellow
-                        && cube[Face.Down, 1, 2] == Colour.Yellow
-                        && cube[Face.Down, 0, 1] == Colour.Yellow
-            ]
-        ),
-        (
-            "Step 4 - Align Yellow Cross",
-            [
+                "F' D' R' D R F",
                 "D", "D'", "D2",
                 "R' D R' D' R' D' R' D R D R2",
-                "R2 D' R' D' R D R D R D' R"
-            ],
-            [
-                cube => cube[Face.Front, 1, 2] == Colour.Red
-                        && cube[Face.Right, 1, 2] == Colour.Blue
-                        && cube[Face.Back, 1, 2] == Colour.Orange
-                        && cube[Face.Left, 1, 2] == Colour.Green
-            ]
-        ),
-        (
-            "Step 5 - Solve Last Layer Corners",
-            [
+                "R2 D' R' D' R D R D R D' R",
                 "D", "D'", "D2",
                 "L' D R D' L D R' D'",
                 "R' F R' B2 R F' R' B2 R2",
