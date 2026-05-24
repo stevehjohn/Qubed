@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{30A1E6B8-93C2-42EB-ACCF-6BD7EC76C49D}"
 	ProjectSection(SolutionItems) = preProject
 		..\run.sh = ..\run.sh
+		..\run-console.sh = ..\run-console.sh
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiksCube.Console", "RubiksCube.Console\RubiksCube.Console.csproj", "{98CE56C2-A3BD-4552-91E1-56DD8CB9251B}"
