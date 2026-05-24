@@ -58,7 +58,7 @@ public static class SolverBenchmark
         
         WriteLine("      ----            -------");
         
-        WriteLine($"      {totalMoves / iterations}            {totalDuration / iterations}");
+        WriteLine($"       {totalMoves / iterations,3}            {totalDuration / iterations:ss\\.fff}");
         
         WriteLine($"\nTotal duration: {totalDuration:mm\\.ss\\.fff}.\n");
     }
