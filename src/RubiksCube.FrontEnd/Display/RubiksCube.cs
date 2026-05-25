@@ -21,6 +21,8 @@ public sealed class RubiksCube : Game
 
     private const int PanelHeight = NetTileSize * 9 + NetSpacing * 10;
 
+    private const float CameraDistance = 9.95f;
+
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly GraphicsDeviceManager _graphics;
@@ -52,8 +54,6 @@ public sealed class RubiksCube : Game
     private float _yaw = -5.16999674f;
 
     private float _pitch = -0.0299983565f;
-
-    private float _cameraDistance = 9.95f;
 
     private int _scrambleTurns;
 
@@ -240,7 +240,7 @@ public sealed class RubiksCube : Game
 
         _texture.SetData(_data);
 
-        var unit = NetTileSize + NetSpacing;
+        const int unit = NetTileSize + NetSpacing;
 
         DrawFace(Face.Up, NetSpacing + unit * 3, NetSpacing);
 
@@ -416,7 +416,7 @@ public sealed class RubiksCube : Game
     {
         var cameraDirection = Vector3.Normalize(new Vector3(5, 5, 7));
 
-        _view = Matrix.CreateLookAt(cameraDirection * _cameraDistance, new Vector3(2.5f, 0, 0), Vector3.Up);
+        _view = Matrix.CreateLookAt(cameraDirection * CameraDistance, new Vector3(2.5f, 0, 0), Vector3.Up);
     }
 
     private void CreateSolvedCube()
@@ -665,37 +665,16 @@ public sealed class RubiksCube : Game
 
     private static Color ToColor(Colour colour)
     {
-        if (colour == Colour.White)
+        return colour switch
         {
-            return Color.White;
-        }
-
-        if (colour == Colour.Yellow)
-        {
-            return Color.Yellow;
-        }
-
-        if (colour == Colour.Red)
-        {
-            return Color.Red;
-        }
-
-        if (colour == Colour.Orange)
-        {
-            return Color.Orange;
-        }
-
-        if (colour == Colour.Blue)
-        {
-            return Color.Blue;
-        }
-
-        if (colour == Colour.Green)
-        {
-            return Color.Green;
-        }
-
-        throw new ArgumentOutOfRangeException(nameof(colour), colour, "Unknown sticker colour.");
+            Colour.White => Color.White,
+            Colour.Yellow => Color.Yellow,
+            Colour.Red => Color.Red,
+            Colour.Orange => Color.Orange,
+            Colour.Blue => Color.Blue,
+            Colour.Green => Color.Green,
+            _ => throw new ArgumentOutOfRangeException(nameof(colour), colour, "Unknown sticker colour.")
+        };
     }
 
     private static Colour ToColour(Color color)
