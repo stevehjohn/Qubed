@@ -329,16 +329,7 @@ public sealed class RubiksCube : Game
             _yaw += (mouse.X - _previousMouse.X) * MouseRotationScale;
             _pitch += (mouse.Y - _previousMouse.Y) * MouseRotationScale;
         }
-
-        var scrollDelta = mouse.ScrollWheelValue - _previousMouse.ScrollWheelValue;
-
-        if (scrollDelta == 0)
-        {
-            return;
-        }
-
-        _cameraDistance = MathHelper.Clamp(_cameraDistance - scrollDelta * MouseZoomScale, MinCameraDistance, MaxCameraDistance);
-
+        
         UpdateView();
     }
 
