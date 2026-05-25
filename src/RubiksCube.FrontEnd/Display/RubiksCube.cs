@@ -22,7 +22,7 @@ public sealed class RubiksCube : Game
     private readonly Queue<Move> _solveQueue = [];
 
     private readonly Random _random = new();
-    
+
     private BasicEffect _effect;
 
     private Matrix _view;
@@ -56,7 +56,7 @@ public sealed class RubiksCube : Game
     private float _cubeSpacing = 9f;
 
     private float _cubeSpacingSpeed = 0.1f;
-    
+
     private Face? _previousFace;
 
     private const float CubieSize = 1f;
@@ -329,7 +329,7 @@ public sealed class RubiksCube : Game
     {
         var cameraDirection = Vector3.Normalize(new Vector3(5, 5, 7));
 
-        _view = Matrix.CreateLookAt(cameraDirection * _cameraDistance, Vector3.Zero, Vector3.Up);
+        _view = Matrix.CreateLookAt(cameraDirection * _cameraDistance, new Vector3(2.5f, 0, 0), Vector3.Up);
     }
 
     private void CreateSolvedCube()
@@ -440,7 +440,7 @@ public sealed class RubiksCube : Game
             StartFaceRotation(new Move(Face.Right, direction));
         }
     }
-    
+
     private void TryScramble(KeyboardState keyboard)
     {
         if (_activeRotation is not null || _isSolving)
@@ -453,7 +453,7 @@ public sealed class RubiksCube : Game
             if (WasKeyPressed(keyboard, Keys.S))
             {
                 _previousFace = null;
-                
+
                 _scrambleTurns = _random.Next(20, 50);
 
                 _rotationDuration = 0.1f;
@@ -469,7 +469,6 @@ public sealed class RubiksCube : Game
         do
         {
             face = (Face) _random.Next(6);
-
         } while (face == _previousFace);
 
 
@@ -576,27 +575,27 @@ public sealed class RubiksCube : Game
         {
             return Colour.White;
         }
-        
+
         if (color == Color.Yellow)
         {
             return Colour.Yellow;
         }
-        
+
         if (color == Color.Red)
         {
             return Colour.Red;
         }
-        
+
         if (color == Color.Orange)
         {
             return Colour.Orange;
         }
-        
+
         if (color == Color.Blue)
         {
             return Colour.Blue;
         }
-        
+
         if (color == Color.Green)
         {
             return Colour.Green;
@@ -618,13 +617,13 @@ public sealed class RubiksCube : Game
 
             if (_solveQueue.Count < 2)
             {
-                _rotationDuration = 0.25f; 
+                _rotationDuration = 0.25f;
             }
 
             if (_solverFinished && _solveQueue.Count == 0)
             {
                 _isSolving = false;
-                
+
                 _rotationDuration = 0.25f;
             }
         }
