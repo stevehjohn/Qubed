@@ -16,6 +16,10 @@ public static class SolverBenchmark
         var statistics = new List<(int Moves, TimeSpan Duration)>();
 
         var stopwatch = Stopwatch.StartNew();
+
+        var longestDuration = TimeSpan.Zero;
+
+        Cube longestCube = null; 
         
         for (var iteration = 1; iteration <= iterations; iteration++)
         {
@@ -32,6 +36,13 @@ public static class SolverBenchmark
             WriteLine(cube.ToString());
             
             var result = solver.Solve();
+
+            if (result.Duration > longestDuration)
+            {
+                longestDuration = result.Duration;
+
+                longestCube = cube.Clone();
+            }
 
             foreach (var move in result.Moves)
             {
@@ -67,5 +78,12 @@ public static class SolverBenchmark
         WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff} - {statistics.Max(s => s.Duration):ss\\.fff}.");
         
         WriteLine($"\nTotal duration: {totalDuration:mm\\:ss\\.fff}.\n");
+
+        if (longestCube != null)
+        {
+            WriteLine("\nLongest cube:\n");
+
+            WriteLine(longestCube.ToString());
+        }
     }
 }
