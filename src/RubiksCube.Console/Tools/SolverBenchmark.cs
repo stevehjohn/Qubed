@@ -19,29 +19,40 @@ public static class SolverBenchmark
 
         var longestDuration = TimeSpan.Zero;
 
-        Cube longestCube = null; 
-        
+        var longestMoves = 0;
+
+        Cube longestDurationCube = null;
+
+        Cube longestMovesCube = null;
+
         for (var iteration = 1; iteration <= iterations; iteration++)
         {
             var cube = new Cube();
-            
+
             var random = new Random();
-            
+
             cube.Scramble(random.Next(20, 50));
-            
+
             var solver = new Solver(cube);
 
             WriteLine($"\nIteration {iteration}/{iterations:N0}.\n");
-            
+
             WriteLine(cube.ToString());
-            
+
             var result = solver.Solve();
 
             if (result.Duration > longestDuration)
             {
                 longestDuration = result.Duration;
 
-                longestCube = cube.Clone();
+                longestDurationCube = cube.Clone();
+            }
+
+            if (result.Moves.Count > longestMoves)
+            {
+                longestMoves = result.Moves.Count;
+                
+                longestMovesCube = cube.Clone();
             }
 
             foreach (var move in result.Moves)
@@ -50,40 +61,47 @@ public static class SolverBenchmark
             }
 
             WriteLine(cube.ToString());
-            
+
             totalMoves += result.Moves.Count;
 
             totalDuration += result.Duration;
-            
+
             statistics.Add((result.Moves.Count, result.Duration));
-            
+
             WriteLine(@$"Moves: {result.Moves.Count}, duration: {result.Duration:ss\.fff}s. Average moves: {(double) totalMoves / iteration:N2}, average duration {totalDuration / iteration:ss\.fff}.");
         }
-        
+
         stopwatch.Stop();
-        
+
         WriteLine("\nSummary\n-------\n");
 
         foreach (var statistic in statistics)
         {
             WriteLine(@$"Moves: {statistic.Moves}, duration: {statistic.Duration:ss\.fff}s.");
         }
-        
+
         WriteLine("      ----            -------");
-        
+
         WriteLine($"       {totalMoves / iterations}            {totalDuration / iterations:ss\\.fff}");
-        
-        WriteLine($"\nMoves range: {statistics.Min(s => s.Moves)} - {statistics.Max(s => s.Moves)}.");
-        
-        WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff} - {statistics.Max(s => s.Duration):ss\\.fff}.");
-        
+
+        WriteLine($"\nMoves range: {statistics.Min(s => s.Moves)} - {longestMoves}.");
+
+        WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff} - {longestDuration:ss\\.fff}.");
+
         WriteLine($"\nTotal duration: {totalDuration:mm\\:ss\\.fff}.\n");
 
-        if (longestCube != null)
+        if (longestDurationCube != null)
         {
-            WriteLine("\nLongest cube:\n");
+            WriteLine($"\nLongest duration cube ({longestDuration:ss\\.fff}):\n");
 
-            WriteLine(longestCube.ToString());
+            WriteLine(longestDurationCube.ToString());
+        }
+
+        if (longestMovesCube != null)
+        {
+            WriteLine($"\nLongest moves cube ({longestMoves}):\n");
+
+            WriteLine(longestMovesCube.ToString());
         }
     }
 }
