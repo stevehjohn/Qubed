@@ -241,17 +241,24 @@ public sealed class RubiksCube : Game
 
         _texture.SetData(_data);
 
-        for (var y = 0; y < 3; y++)
-        {
-            for (var x = 0; x < 3; x++)
-            {
-                DrawTile(ToColor(_cube[Face.Up, x, y]), NetTileSize * 3 + NetSpacing * 2 + (NetTileSize + NetSpacing) * x, (NetTileSize + NetSpacing) * y);
-            }
-        }
+        DrawFace(Face.Up, (NetTileSize + NetSpacing) * 3, 0);
+
+        DrawFace(Face.Left, 0, (NetTileSize + NetSpacing) * 3);
 
         _spriteBatch.Draw(_texture, new Vector2(475, 120), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
 
         _spriteBatch.End();
+    }
+
+    private void DrawFace(Face face, int left, int top)
+    {
+        for (var y = 0; y < 3; y++)
+        {
+            for (var x = 0; x < 3; x++)
+            {
+                DrawTile(ToColor(_cube[face, x, y]), left + x * (NetTileSize + NetSpacing), top + y *  (NetTileSize + NetSpacing));
+            }
+        }
     }
 
     private void DrawTile(Color color, int left, int top)
