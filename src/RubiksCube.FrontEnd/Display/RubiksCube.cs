@@ -189,9 +189,14 @@ public sealed class RubiksCube : Game
 
         UpdateActiveRotation(gameTime);
 
-        if (_isSolving && _activeRotation is null)
+        if (_isSolving)
         {
-            StartNextSolveRotation();
+            _yaw -= 0.02f;
+
+            if (_activeRotation == null)
+            {
+                StartNextSolveRotation();
+            }
         }
 
         TryStartSolveAnimation(keyboard);
