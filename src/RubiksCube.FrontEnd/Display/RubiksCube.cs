@@ -751,6 +751,8 @@ public sealed class RubiksCube : Game
                 sticker.Face = FaceFromNormal(sticker.Normal);
             }
         }
+
+        _cube = GetCubeFromState();
     }
 
     private void DrawRubiksCube()
