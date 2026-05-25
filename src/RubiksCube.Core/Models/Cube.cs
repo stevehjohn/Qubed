@@ -3,7 +3,7 @@ using RubiksCube.Core.Extensions;
 
 namespace RubiksCube.Core.Models;
 
-public class Cube
+public sealed class Cube
 {
     private readonly Colour[][,] _faces = new Colour[6][,];
 

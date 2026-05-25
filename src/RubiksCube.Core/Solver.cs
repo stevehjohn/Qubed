@@ -5,7 +5,7 @@ using RubiksCube.Core.Models;
 
 namespace RubiksCube.Core;
 
-public class Solver
+public sealed class Solver
 {
     private const int MinDepth = 1;
 
