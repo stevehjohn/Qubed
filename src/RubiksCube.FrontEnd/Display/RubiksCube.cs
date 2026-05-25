@@ -23,6 +23,10 @@ public sealed class RubiksCube : Game
 
     private const float CameraDistance = 9.95f;
 
+    private const int NetLeft = 455;
+    
+    private const int NetTop = 120;
+
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly GraphicsDeviceManager _graphics;
@@ -254,7 +258,7 @@ public sealed class RubiksCube : Game
 
         DrawFace(Face.Down, NetSpacing + unit * 3, NetSpacing + unit * 6);
 
-        _spriteBatch.Draw(_texture, new Vector2(455, 120), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
+        _spriteBatch.Draw(_texture, new Vector2(NetLeft, NetTop), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
 
         _spriteBatch.End();
     }
