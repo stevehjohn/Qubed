@@ -251,6 +251,8 @@ public sealed class RubiksCube : Game
 
         DrawFace(Face.Back, (NetTileSize + NetSpacing) * 9, (NetTileSize + NetSpacing) * 3);
 
+        DrawFace(Face.Down, (NetTileSize + NetSpacing) * 3, (NetTileSize + NetSpacing) * 6);
+
         _spriteBatch.Draw(_texture, new Vector2(475, 120), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
 
         _spriteBatch.End();
