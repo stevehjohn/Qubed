@@ -17,9 +17,9 @@ public sealed class RubiksCube : Game
 
     private const int NetSpacing = 4;
 
-    private const int PanelWidth = NetTileSize * 12 + NetSpacing * 11;
+    private const int PanelWidth = NetTileSize * 12 + NetSpacing * 13;
 
-    private const int PanelHeight = NetTileSize * 9 + NetSpacing * 8;
+    private const int PanelHeight = NetTileSize * 9 + NetSpacing * 10;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -264,7 +264,34 @@ public sealed class RubiksCube : Game
         {
             for (var x = 0; x < 3; x++)
             {
+                DrawBorder(left + x * (NetTileSize + NetSpacing), top + y * (NetTileSize + NetSpacing));
+
                 DrawTile(ToColor(_cube[face, x, y]), left + x * (NetTileSize + NetSpacing), top + y * (NetTileSize + NetSpacing));
+            }
+        }
+    }
+
+    private void DrawBorder(int left, int top)
+    {
+        var right = left + NetTileSize;
+
+        var bottom = top + NetTileSize;
+
+        for (var y = top - NetSpacing; y < bottom + NetSpacing; y++)
+        {
+            for (var x = left - NetSpacing; x < right + NetSpacing; x++)
+            {
+                if (x < 0 || y < 0 || x >= PanelWidth || y >= PanelHeight)
+                {
+                    continue;
+                }
+
+                if (x >= left && x < right && y >= top && y < bottom)
+                {
+                    continue;
+                }
+
+                _data[x + y * PanelWidth] = Color.Black;
             }
         }
     }
