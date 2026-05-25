@@ -245,7 +245,7 @@ public sealed class RubiksCube : Game
         {
             for (var x = 0; x < 3; x++)
             {
-                DrawTile(ToColor(_cube[Face.Up, x, y]), NetTileSize * 3 + NetSpacing * 2, 0);
+                DrawTile(ToColor(_cube[Face.Up, x, y]), NetTileSize * 3 + NetSpacing * 2 + (NetTileSize + NetSpacing) * x, (NetTileSize + NetSpacing) * y);
             }
         }
 
