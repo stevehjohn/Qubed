@@ -3,7 +3,7 @@ using RubiksCube.Core.Models;
 
 namespace RubiksCube.Core.Logic;
 
-public abstract class AlgorithmLibrary
+public static class AlgorithmLibrary
 {
     private static readonly string[] F2LMoves =
     [
