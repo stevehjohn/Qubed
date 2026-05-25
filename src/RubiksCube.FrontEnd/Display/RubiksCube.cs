@@ -265,16 +265,16 @@ public sealed class RubiksCube : Game
             for (var x = 0; x < 3; x++)
             {
                 DrawBorder(left + x * (NetTileSize + NetSpacing), top + y * (NetTileSize + NetSpacing));
-
+                
                 DrawTile(ToColor(_cube[face, x, y]), left + x * (NetTileSize + NetSpacing), top + y * (NetTileSize + NetSpacing));
             }
         }
     }
-
+    
     private void DrawBorder(int left, int top)
     {
         var right = left + NetTileSize;
-
+        
         var bottom = top + NetTileSize;
 
         for (var y = top - NetSpacing; y < bottom + NetSpacing; y++)
@@ -295,12 +295,12 @@ public sealed class RubiksCube : Game
             }
         }
     }
-
+    
     private void DrawTile(Color color, int left, int top)
     {
-        for (var y = NetSpacing; y < NetTileSize; y++)
+        for (var y = 0; y < NetTileSize; y++)
         {
-            for (var x = NetSpacing; x < NetTileSize; x++)
+            for (var x = 0; x < NetTileSize; x++)
             {
                 _data[left + x + (top + y) * PanelWidth] = color;
             }
