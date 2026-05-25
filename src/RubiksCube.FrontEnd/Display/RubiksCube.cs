@@ -679,37 +679,16 @@ public sealed class RubiksCube : Game
 
     private static Colour ToColour(Color color)
     {
-        if (color == Color.White)
+        return color switch
         {
-            return Colour.White;
-        }
-
-        if (color == Color.Yellow)
-        {
-            return Colour.Yellow;
-        }
-
-        if (color == Color.Red)
-        {
-            return Colour.Red;
-        }
-
-        if (color == Color.Orange)
-        {
-            return Colour.Orange;
-        }
-
-        if (color == Color.Blue)
-        {
-            return Colour.Blue;
-        }
-
-        if (color == Color.Green)
-        {
-            return Colour.Green;
-        }
-
-        throw new ArgumentOutOfRangeException(nameof(color), color, "Unknown sticker colour.");
+            _ when color == Color.White => Colour.White,
+            _ when color == Color.Yellow => Colour.Yellow,
+            _ when color == Color.Red => Colour.Red,
+            _ when color == Color.Orange => Colour.Orange,
+            _ when color == Color.Blue => Colour.Blue,
+            _ when color == Color.Green => Colour.Green,
+            _ => throw new ArgumentOutOfRangeException(nameof(color), color, "Unknown sticker colour.")
+        };
     }
 
     private void StartNextSolveRotation()
