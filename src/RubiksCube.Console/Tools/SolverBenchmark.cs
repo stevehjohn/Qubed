@@ -38,6 +38,8 @@ public static class SolverBenchmark
             WriteLine($"\nIteration {iteration}/{iterations:N0}.\n");
 
             WriteLine(cube.ToString());
+            
+            WriteLine();
 
             var result = solver.Solve();
 
@@ -61,6 +63,8 @@ public static class SolverBenchmark
             }
 
             WriteLine(cube.ToString());
+            
+            WriteLine();
 
             totalMoves += result.Moves.Count;
 
@@ -88,7 +92,7 @@ public static class SolverBenchmark
 
         WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff} - {longestDuration:ss\\.fff}.");
 
-        WriteLine($"\nTotal duration: {totalDuration:mm\\:ss\\.fff}.\n");
+        WriteLine($"\nTotal duration: {totalDuration:mm\\:ss\\.fff}.");
 
         if (longestDurationCube != null)
         {
@@ -103,5 +107,7 @@ public static class SolverBenchmark
 
             WriteLine(longestMovesCube.ToString());
         }
+        
+        WriteLine();
     }
 }

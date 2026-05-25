@@ -387,7 +387,10 @@ public sealed class Cube
                 builder.Append($"{this[Face.Down, x, y].ToInitial()} ");
             }
 
-            builder.AppendLine();
+            if (y < 2)
+            {
+                builder.AppendLine();
+            }
         }
 
         return builder.ToString();

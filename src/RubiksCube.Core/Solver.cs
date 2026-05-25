@@ -58,6 +58,8 @@ public sealed class Solver
         var stopwatch = Stopwatch.StartNew();
 
         _logger?.WriteLine(_cube.ToString());
+        
+        _logger?.WriteLine();
 
         var checks = new List<Func<Cube, bool>>();
 
@@ -75,6 +77,8 @@ public sealed class Solver
         }
 
         _logger?.WriteLine(_cube.ToString());
+        
+        _logger?.WriteLine();
 
         CompressMoves();
 
