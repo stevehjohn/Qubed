@@ -15,7 +15,7 @@ public sealed class RubiksCube : Game
 {
     private const int NetTileSize = 20;
 
-    private const int NetSpacing = 4;
+    private const int NetSpacing = 6;
 
     private const int PanelWidth = NetTileSize * 12 + NetSpacing * 13;
 
