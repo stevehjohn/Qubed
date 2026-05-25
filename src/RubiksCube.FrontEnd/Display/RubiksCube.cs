@@ -241,17 +241,19 @@ public sealed class RubiksCube : Game
 
         _texture.SetData(_data);
 
-        DrawFace(Face.Up, (NetTileSize + NetSpacing) * 3, 0);
+        var unit = NetTileSize + NetSpacing;
 
-        DrawFace(Face.Left, 0, (NetTileSize + NetSpacing) * 3);
+        DrawFace(Face.Up, NetSpacing + unit * 3, NetSpacing);
 
-        DrawFace(Face.Front, (NetTileSize + NetSpacing) * 3, (NetTileSize + NetSpacing) * 3);
+        DrawFace(Face.Left, NetSpacing, NetSpacing + unit * 3);
+        
+        DrawFace(Face.Front, NetSpacing + unit * 3, NetSpacing + unit * 3);
+        
+        DrawFace(Face.Right, NetSpacing + unit * 6, NetSpacing + unit * 3);
+        
+        DrawFace(Face.Back, NetSpacing + unit * 9, NetSpacing + unit * 3);
 
-        DrawFace(Face.Right, (NetTileSize + NetSpacing) * 6, (NetTileSize + NetSpacing) * 3);
-
-        DrawFace(Face.Back, (NetTileSize + NetSpacing) * 9, (NetTileSize + NetSpacing) * 3);
-
-        DrawFace(Face.Down, (NetTileSize + NetSpacing) * 3, (NetTileSize + NetSpacing) * 6);
+        DrawFace(Face.Down, NetSpacing + unit * 3, NetSpacing + unit * 6);
 
         _spriteBatch.Draw(_texture, new Vector2(475, 120), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
 
@@ -265,16 +267,16 @@ public sealed class RubiksCube : Game
             for (var x = 0; x < 3; x++)
             {
                 DrawBorder(left + x * (NetTileSize + NetSpacing), top + y * (NetTileSize + NetSpacing));
-                
+
                 DrawTile(ToColor(_cube[face, x, y]), left + x * (NetTileSize + NetSpacing), top + y * (NetTileSize + NetSpacing));
             }
         }
     }
-    
+
     private void DrawBorder(int left, int top)
     {
         var right = left + NetTileSize;
-        
+
         var bottom = top + NetTileSize;
 
         for (var y = top - NetSpacing; y < bottom + NetSpacing; y++)
@@ -295,7 +297,7 @@ public sealed class RubiksCube : Game
             }
         }
     }
-    
+
     private void DrawTile(Color color, int left, int top)
     {
         for (var y = 0; y < NetTileSize; y++)
