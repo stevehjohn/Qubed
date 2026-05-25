@@ -46,6 +46,8 @@ public sealed class Solver
     {
         _moves.Clear();
 
+        _logger?.WriteLine();
+        
         if (_cube.IsSolved())
         {
             _logger?.WriteLine(_cube.ToString());
