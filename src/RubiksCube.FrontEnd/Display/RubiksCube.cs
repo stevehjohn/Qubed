@@ -298,9 +298,9 @@ public sealed class RubiksCube : Game
 
     private void DrawTile(Color color, int left, int top)
     {
-        for (var y = 0; y < NetTileSize; y++)
+        for (var y = NetSpacing; y < NetTileSize; y++)
         {
-            for (var x = 0; x < NetTileSize; x++)
+            for (var x = NetSpacing; x < NetTileSize; x++)
             {
                 _data[left + x + (top + y) * PanelWidth] = color;
             }
