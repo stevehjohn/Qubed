@@ -55,9 +55,9 @@ public sealed class RubiksCube : Game
 
     private bool _isSolving;
 
-    private float _yaw = -5.16999674f;
+    private float _yaw = -4.95999622f;
 
-    private float _pitch = -0.0299983565f;
+    private float _pitch = 0.140001684f;
 
     private int _scrambleTurns;
 
