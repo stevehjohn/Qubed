@@ -82,13 +82,7 @@ public sealed class RubiksCube : Game
     private const float QuarterTurn = MathHelper.PiOver2;
 
     private const float MouseRotationScale = 0.01f;
-
-    private const float MouseZoomScale = 0.01f;
-
-    private const float MinCameraDistance = 5f;
-
-    private const float MaxCameraDistance = 18f;
-
+    
     private const float CubePickHalfExtent = CubeSpacingFinal + CubieSize / 2f + 0.05f;
 
     private readonly Lock _solveLock = new();
