@@ -13,6 +13,14 @@ namespace RubiksCube.FrontEnd.Display;
 
 public sealed class RubiksCube : Game
 {
+    private const int NetTileSize = 20;
+
+    private const int NetSpacing = 4;
+
+    private const int PanelWidth = NetTileSize * 12 + NetSpacing * 11;
+
+    private const int PanelHeight = NetTileSize * 9 + NetSpacing * 8;
+
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly GraphicsDeviceManager _graphics;
@@ -58,6 +66,14 @@ public sealed class RubiksCube : Game
     private float _cubeSpacingSpeed = 0.1f;
 
     private Face? _previousFace;
+
+    private SpriteBatch _spriteBatch;
+
+    private Texture2D _texture;
+
+    private Cube _cube = new();
+
+    private readonly Color[] _data = new Color[PanelWidth * PanelHeight];
 
     private const float CubieSize = 1f;
 
@@ -116,6 +132,11 @@ public sealed class RubiksCube : Game
             VertexColorEnabled = true,
             LightingEnabled = false
         };
+
+        _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+        _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
+
 
         UpdateView();
 
@@ -209,7 +230,39 @@ public sealed class RubiksCube : Game
             DrawRubiksCube();
         }
 
+        DrawNet();
+
         base.Draw(gameTime);
+    }
+
+    private void DrawNet()
+    {
+        _spriteBatch.Begin(SpriteSortMode.FrontToBack);
+
+        _texture.SetData(_data);
+
+        for (var y = 0; y < 3; y++)
+        {
+            for (var x = 0; x < 3; x++)
+            {
+                DrawTile(ToColor(_cube[Face.Up, x, y]), NetTileSize * 3 + NetSpacing * 2, 0);
+            }
+        }
+
+        _spriteBatch.Draw(_texture, new Vector2(475, 120), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
+
+        _spriteBatch.End();
+    }
+
+    private void DrawTile(Color color, int left, int top)
+    {
+        for (var y = 0; y < NetTileSize; y++)
+        {
+            for (var x = 0; x < NetTileSize; x++)
+            {
+                _data[left + x + (top + y) * PanelWidth] = color;
+            }
+        }
     }
 
     private void UpdateMouseControls(MouseState mouse)
@@ -494,18 +547,7 @@ public sealed class RubiksCube : Game
 
     private void FindSolveMoves()
     {
-        var cube = new Cube();
-
-        foreach (var face in Enum.GetValues<Face>())
-        {
-            for (var x = 0; x < 3; x++)
-            {
-                for (var y = 0; y < 3; y++)
-                {
-                    cube[face, x, y] = GetFaceColor(face, x, y);
-                }
-            }
-        }
+        var cube = GetCubeFromState();
 
         if (cube.IsSolved())
         {
@@ -524,6 +566,24 @@ public sealed class RubiksCube : Game
         _solverFinished = false;
 
         solver.SolveAsync(SolvedCallback, StepCallback);
+    }
+
+    private Cube GetCubeFromState()
+    {
+        var cube = new Cube();
+
+        foreach (var face in Enum.GetValues<Face>())
+        {
+            for (var x = 0; x < 3; x++)
+            {
+                for (var y = 0; y < 3; y++)
+                {
+                    cube[face, x, y] = GetFaceColor(face, x, y);
+                }
+            }
+        }
+
+        return cube;
     }
 
     private void SolvedCallback((bool Solved, IReadOnlyList<Move> Moves, TimeSpan Elapsed) result)
@@ -567,6 +627,41 @@ public sealed class RubiksCube : Game
         // ReSharper restore CompareOfFloatsByEqualityOperator
 
         return ToColour(cubie.Stickers.Single(s => s.Face == face).Color);
+    }
+
+    private static Color ToColor(Colour colour)
+    {
+        if (colour == Colour.White)
+        {
+            return Color.White;
+        }
+
+        if (colour == Colour.Yellow)
+        {
+            return Color.Yellow;
+        }
+
+        if (colour == Colour.Red)
+        {
+            return Color.Red;
+        }
+
+        if (colour == Colour.Orange)
+        {
+            return Color.Orange;
+        }
+
+        if (colour == Colour.Blue)
+        {
+            return Color.Blue;
+        }
+
+        if (colour == Colour.Green)
+        {
+            return Color.Green;
+        }
+
+        throw new ArgumentOutOfRangeException(nameof(colour), colour, "Unknown sticker colour.");
     }
 
     private static Colour ToColour(Color color)
