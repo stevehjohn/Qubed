@@ -25,7 +25,7 @@ public static class SolverBenchmark
             
             var solver = new Solver(cube);
 
-            WriteLine($"\nIteration {iteration}/{iterations}.\n");
+            WriteLine($"\nIteration {iteration}/{iterations:N0}.\n");
             
             WriteLine(cube.ToString());
             
