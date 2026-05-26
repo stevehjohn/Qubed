@@ -323,27 +323,38 @@ public sealed class RubiksCube : Game
 
     private void UpdateMouseControls(MouseState mouse)
     {
-        if (! IsMouseInsideClientArea(mouse))
+        var leftWasReleased = _previousMouse.LeftButton == ButtonState.Released;
+        
+        var leftIsPressed = mouse.LeftButton == ButtonState.Pressed;
+        
+        var leftIsReleased = mouse.LeftButton == ButtonState.Released;
+
+        if (leftIsReleased)
         {
             _mouseDragMode = MouseDragMode.None;
+            
             return;
         }
 
-        _mouseDragMode = mouse.LeftButton switch
+        if (leftIsPressed && leftWasReleased)
         {
-            ButtonState.Pressed when _previousMouse.LeftButton == ButtonState.Released => TryStartMouseFaceRotation(mouse) ? MouseDragMode.FaceTurn : MouseDragMode.Orbit,
-            ButtonState.Released => MouseDragMode.None,
-            _ => _mouseDragMode
-        };
-
-        if (mouse.LeftButton == ButtonState.Pressed && _previousMouse.LeftButton == ButtonState.Pressed && _mouseDragMode == MouseDragMode.Orbit)
-        {
-            _yaw -= (mouse.X - _previousMouse.X) * MouseRotationScale * ViewSign();
-            
-            _pitch += (mouse.Y - _previousMouse.Y) * MouseRotationScale;
+            _mouseDragMode = IsMouseInsideClientArea(mouse) && TryStartMouseFaceRotation(mouse)
+                ? MouseDragMode.FaceTurn
+                : IsMouseInsideClientArea(mouse)
+                    ? MouseDragMode.Orbit
+                    : MouseDragMode.None;
         }
 
-        UpdateView();
+        if (leftIsPressed && _previousMouse.LeftButton == ButtonState.Pressed && _mouseDragMode == MouseDragMode.Orbit)
+        {
+            var viewSign = ViewSign();
+
+            _yaw -= (mouse.X - _previousMouse.X) * MouseRotationScale * viewSign;
+            
+            _pitch += (mouse.Y - _previousMouse.Y) * MouseRotationScale;
+
+            UpdateView();
+        }
     }
 
     private bool IsMouseInsideClientArea(MouseState mouse)
