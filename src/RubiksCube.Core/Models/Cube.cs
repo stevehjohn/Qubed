@@ -128,7 +128,7 @@ public sealed class Cube
 
         RotateEdges(move.Face, opposite);
 
-        return move;
+        return move with { Direction = opposite };
     }
 
     public void ApplyMove(Face face, Direction direction, bool addToHistory = true)
