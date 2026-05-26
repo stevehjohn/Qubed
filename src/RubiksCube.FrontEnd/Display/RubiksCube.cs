@@ -222,7 +222,7 @@ public sealed class RubiksCube : Game
 
         var fullViewport = GraphicsDevice.Viewport;
 
-        var cubeViewport = new Viewport(0, 0, (int) (fullViewport.Width * 0.66f), fullViewport.Height);
+        var cubeViewport = new Viewport(-40, -15, (int) (fullViewport.Width * 0.66f), fullViewport.Height);
 
         GraphicsDevice.Viewport = cubeViewport;
 
