@@ -8,7 +8,7 @@ public sealed class Cube
     private readonly Colour[][,] _faces = new Colour[6][,];
 
     private readonly Stack<Move> _history = [];
-    
+
     private readonly Random _random = new();
 
     private readonly Dictionary<Face, Slice[]> _affectedSlices =
@@ -133,11 +133,7 @@ public sealed class Cube
 
     public void ApplyMove(Face face, Direction direction)
     {
-        RotateFace(face, direction);
-
-        RotateEdges(face, direction);
-
-        _history.Push(new Move(face, direction));
+        ApplyMove(new Move(face, direction));
     }
 
     public void ApplyMove(Move move)
@@ -182,15 +178,14 @@ public sealed class Cube
         for (var i = 0; i < turns; i++)
         {
             Face face;
-            
+
             do
             {
                 face = (Face) _random.Next(6);
-
             } while (face == previousFace);
 
             var direction = (Direction) _random.Next(3);
-            
+
             ApplyMove(face, direction);
 
             previousFace = face;
@@ -200,18 +195,18 @@ public sealed class Cube
     public (ulong A, ulong B, ulong C) GetHash()
     {
         ulong a = 0, b = 0, c = 0;
-        
+
         var i = 0;
 
         for (var faceIdx = 0; faceIdx < 6; faceIdx++)
         {
             var faceMatrix = _faces[faceIdx];
-        
+
             for (var x = 0; x < 3; x++)
             {
                 for (var y = 0; y < 3; y++)
                 {
-                    var colour = (ulong)faceMatrix[x, y];
+                    var colour = (ulong) faceMatrix[x, y];
 
                     switch (i)
                     {
@@ -225,6 +220,7 @@ public sealed class Cube
                             c |= colour << ((i - 42) * 3);
                             break;
                     }
+
                     i++;
                 }
             }
