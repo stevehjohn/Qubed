@@ -76,7 +76,9 @@ public sealed class RubiksCube : Game
 
     private Texture2D _texture;
 
-    private Cube _cube = new();
+    private bool _isUndo;
+
+    private readonly Cube _cube = new();
 
     private readonly Color[] _data = new Color[PanelWidth * PanelHeight];
 
@@ -543,6 +545,8 @@ public sealed class RubiksCube : Game
 
         if (move != null)
         {
+            _isUndo = true;
+            
             StartFaceRotation(move.Value);
         }
     }
@@ -763,7 +767,9 @@ public sealed class RubiksCube : Game
             }
         }
 
-        _cube.ApplyMove(rotation.Face, rotation.Direction.Opposite(), false);
+        _cube.ApplyMove(rotation.Face, rotation.Direction.Opposite(), _isUndo);
+
+        _isUndo = false;
     }
 
     private void DrawRubiksCube()
