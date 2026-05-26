@@ -763,7 +763,7 @@ public sealed class RubiksCube : Game
             }
         }
 
-        _cube.ApplyMove(rotation.Face, rotation.Direction.Opposite());
+        _cube.ApplyMove(rotation.Face, rotation.Direction.Opposite(), false);
     }
 
     private void DrawRubiksCube()
