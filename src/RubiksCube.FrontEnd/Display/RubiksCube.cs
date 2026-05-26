@@ -819,6 +819,8 @@ public sealed class RubiksCube : Game
         {
             _cube.ApplyMove(rotation.Face, rotation.Direction);
         }
+        
+        Console.WriteLine($"Move count: {_cube.MoveCount}.");
 
         _isUndo = false;
     }
