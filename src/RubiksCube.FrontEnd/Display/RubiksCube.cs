@@ -191,10 +191,6 @@ public sealed class RubiksCube : Game
 
         if (_isSolving)
         {
-            _yaw += 0.02f;
-            
-            UpdateView();
-
             if (_activeRotation == null)
             {
                 StartNextSolveRotation();
