@@ -25,7 +25,7 @@ public sealed class RubiksCube : Game
     private const float CameraDistance = 9.95f;
 
     private const int NetLeft = 455;
-    
+
     private const int NetTop = 120;
 
     // ReSharper disable once NotAccessedField.Local
@@ -89,7 +89,7 @@ public sealed class RubiksCube : Game
     private const float QuarterTurn = MathHelper.PiOver2;
 
     private const float MouseRotationScale = 0.01f;
-    
+
     private const float CubePickHalfExtent = CubeSpacingFinal + CubieSize / 2f + 0.05f;
 
     private readonly Lock _solveLock = new();
@@ -221,9 +221,7 @@ public sealed class RubiksCube : Game
 
         GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-        var world = Matrix.CreateRotationX(_pitch) * Matrix.CreateRotationY(_yaw);
-
-        _effect.World = world;
+        _effect.World = Matrix.Identity;
 
         _effect.View = _view;
 
@@ -252,11 +250,11 @@ public sealed class RubiksCube : Game
         DrawFace(Face.Up, NetSpacing + unit * 3, NetSpacing);
 
         DrawFace(Face.Left, NetSpacing, NetSpacing + unit * 3);
-        
+
         DrawFace(Face.Front, NetSpacing + unit * 3, NetSpacing + unit * 3);
-        
+
         DrawFace(Face.Right, NetSpacing + unit * 6, NetSpacing + unit * 3);
-        
+
         DrawFace(Face.Back, NetSpacing + unit * 9, NetSpacing + unit * 3);
 
         DrawFace(Face.Down, NetSpacing + unit * 3, NetSpacing + unit * 6);
@@ -332,10 +330,10 @@ public sealed class RubiksCube : Game
 
         if (mouse.LeftButton == ButtonState.Pressed && _previousMouse.LeftButton == ButtonState.Pressed && _mouseDragMode == MouseDragMode.Orbit)
         {
-            _yaw += (mouse.X - _previousMouse.X) * MouseRotationScale;
+            _yaw -= (mouse.X - _previousMouse.X) * MouseRotationScale;
             _pitch += (mouse.Y - _previousMouse.Y) * MouseRotationScale;
         }
-        
+
         UpdateView();
     }
 
@@ -421,9 +419,17 @@ public sealed class RubiksCube : Game
 
     private void UpdateView()
     {
-        var cameraDirection = Vector3.Normalize(new Vector3(5, 5, 7));
+        _pitch = MathHelper.Clamp(_pitch, -MathHelper.PiOver2 + 0.01f, MathHelper.PiOver2 - 0.01f);
 
-        _view = Matrix.CreateLookAt(cameraDirection * CameraDistance, new Vector3(2.5f, 0, 0), Vector3.Up);
+        var x = MathF.Cos(_pitch) * MathF.Sin(_yaw);
+        
+        var y = MathF.Sin(_pitch);
+        
+        var z = MathF.Cos(_pitch) * MathF.Cos(_yaw);
+
+        var cameraPosition = new Vector3(x, y, z) * CameraDistance;
+
+        _view = Matrix.CreateLookAt(cameraPosition, Vector3.Zero, Vector3.Up);
     }
 
     private void CreateSolvedCube()
@@ -546,7 +552,7 @@ public sealed class RubiksCube : Game
         if (move != null)
         {
             _isUndo = true;
-            
+
             StartFaceRotation(move.Value);
         }
     }
