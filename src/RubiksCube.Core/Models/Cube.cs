@@ -131,18 +131,21 @@ public sealed class Cube
         return move with { Direction = opposite };
     }
 
-    public void ApplyMove(Face face, Direction direction)
+    public void ApplyMove(Face face, Direction direction, bool addToHistory = true)
     {
-        ApplyMove(new Move(face, direction));
+        ApplyMove(new Move(face, direction), addToHistory);
     }
 
-    public void ApplyMove(Move move)
+    public void ApplyMove(Move move, bool addToHistory = true)
     {
         RotateFace(move.Face, move.Direction);
 
         RotateEdges(move.Face, move.Direction);
 
-        _history.Push(move);
+        if (addToHistory)
+        {
+            _history.Push(move);
+        }
     }
 
     public Cube Clone()
