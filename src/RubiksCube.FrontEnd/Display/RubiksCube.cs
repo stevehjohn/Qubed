@@ -616,7 +616,7 @@ public sealed class RubiksCube : Game
 
                 _scrambleTurns = _random.Next(20, 40);
                 
-                Console.WriteLine();
+                Console.WriteLine($"Scrambling for {_scrambleTurns} moves.");
 
                 _rotationDuration = 0.1f;
 
