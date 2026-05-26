@@ -338,7 +338,8 @@ public sealed class RubiksCube : Game
 
         if (mouse.LeftButton == ButtonState.Pressed && _previousMouse.LeftButton == ButtonState.Pressed && _mouseDragMode == MouseDragMode.Orbit)
         {
-            _yaw -= (mouse.X - _previousMouse.X) * MouseRotationScale;
+            _yaw -= (mouse.X - _previousMouse.X) * MouseRotationScale * ViewSign();
+            
             _pitch += (mouse.Y - _previousMouse.Y) * MouseRotationScale;
         }
 
@@ -462,6 +463,11 @@ public sealed class RubiksCube : Game
         _view = Matrix.CreateLookAt(cameraPosition, Vector3.Zero, up);
     }
 
+    private int ViewSign()
+    {
+        return MathF.Cos(_pitch) >= 0f ? 1 : -1;
+    }
+    
     private void CreateSolvedCube()
     {
         _cubies.Clear();
