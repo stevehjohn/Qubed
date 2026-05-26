@@ -73,6 +73,11 @@ public sealed class Solver
 
             checks.AddRange(algorithm.IsCompleteChecks);
 
+            if (ChecksPass(checks, _cube))
+            {
+                continue;
+            }
+
             solved &= BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
 
             _logger?.WriteLine();
