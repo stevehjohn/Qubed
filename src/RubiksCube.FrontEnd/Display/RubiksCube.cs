@@ -616,6 +616,8 @@ public sealed class RubiksCube : Game
 
                 _scrambleTurns = _random.Next(20, 40);
                 
+                Console.WriteLine($"Scrambling for {_scrambleTurns} moves.");
+
                 _rotationDuration = 0.1f;
 
                 _isScrambling = true;
@@ -832,7 +834,9 @@ public sealed class RubiksCube : Game
                 _isScrambling = false;
             }
         }
-        
+
+        Console.WriteLine($"Move count: {_cube.MoveCount}.");
+
         _isUndo = false;
     }
 
