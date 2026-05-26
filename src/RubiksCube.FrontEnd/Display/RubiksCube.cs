@@ -440,17 +440,27 @@ public sealed class RubiksCube : Game
 
     private void UpdateView()
     {
-        _pitch = MathHelper.Clamp(_pitch, -MathHelper.PiOver2 + 0.01f, MathHelper.PiOver2 - 0.01f);
+        const float epsilon = 0.0001f;
 
-        var x = MathF.Cos(_pitch) * MathF.Sin(_yaw);
+        var pitch = _pitch;
 
-        var y = MathF.Sin(_pitch);
+        // Avoid exactly looking straight down/up, where LookAt has no stable "up".
+        if (MathF.Abs(MathF.Cos(pitch)) < epsilon)
+        {
+            pitch += MathF.Sign(MathF.Sin(pitch)) * epsilon;
+        }
 
-        var z = MathF.Cos(_pitch) * MathF.Cos(_yaw);
+        var x = MathF.Cos(pitch) * MathF.Sin(_yaw);
+        var y = MathF.Sin(pitch);
+        var z = MathF.Cos(pitch) * MathF.Cos(_yaw);
 
         var cameraPosition = new Vector3(x, y, z) * CameraDistance;
 
-        _view = Matrix.CreateLookAt(cameraPosition, Vector3.Zero, Vector3.Up);
+        var up = MathF.Cos(pitch) >= 0f
+            ? Vector3.Up
+            : Vector3.Down;
+
+        _view = Matrix.CreateLookAt(cameraPosition, Vector3.Zero, up);
     }
 
     private void CreateSolvedCube()
