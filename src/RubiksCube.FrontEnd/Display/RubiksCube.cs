@@ -444,21 +444,20 @@ public sealed class RubiksCube : Game
 
         var pitch = _pitch;
 
-        // Avoid exactly looking straight down/up, where LookAt has no stable "up".
         if (MathF.Abs(MathF.Cos(pitch)) < epsilon)
         {
             pitch += MathF.Sign(MathF.Sin(pitch)) * epsilon;
         }
 
         var x = MathF.Cos(pitch) * MathF.Sin(_yaw);
+        
         var y = MathF.Sin(pitch);
+        
         var z = MathF.Cos(pitch) * MathF.Cos(_yaw);
 
         var cameraPosition = new Vector3(x, y, z) * CameraDistance;
 
-        var up = MathF.Cos(pitch) >= 0f
-            ? Vector3.Up
-            : Vector3.Down;
+        var up = MathF.Cos(pitch) >= 0f ? Vector3.Up : Vector3.Down;
 
         _view = Matrix.CreateLookAt(cameraPosition, Vector3.Zero, up);
     }
