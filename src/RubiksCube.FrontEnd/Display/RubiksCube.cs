@@ -319,15 +319,15 @@ public sealed class RubiksCube : Game
     private void UpdateMouseControls(MouseState mouse)
     {
         var leftWasReleased = _previousMouse.LeftButton == ButtonState.Released;
-        
+
         var leftIsPressed = mouse.LeftButton == ButtonState.Pressed;
-        
+
         var leftIsReleased = mouse.LeftButton == ButtonState.Released;
 
         if (leftIsReleased)
         {
             _mouseDragMode = MouseDragMode.None;
-            
+
             return;
         }
 
@@ -345,7 +345,7 @@ public sealed class RubiksCube : Game
             var viewSign = ViewSign();
 
             _yaw -= (mouse.X - _previousMouse.X) * MouseRotationScale * viewSign;
-            
+
             _pitch += (mouse.Y - _previousMouse.Y) * MouseRotationScale;
 
             UpdateView();
@@ -457,9 +457,9 @@ public sealed class RubiksCube : Game
         }
 
         var x = MathF.Cos(pitch) * MathF.Sin(_yaw);
-        
+
         var y = MathF.Sin(pitch);
-        
+
         var z = MathF.Cos(pitch) * MathF.Cos(_yaw);
 
         var cameraPosition = new Vector3(x, y, z) * CameraDistance;
@@ -473,7 +473,7 @@ public sealed class RubiksCube : Game
     {
         return MathF.Cos(_pitch) >= 0f ? 1 : -1;
     }
-    
+
     private void CreateSolvedCube()
     {
         _cubies.Clear();
