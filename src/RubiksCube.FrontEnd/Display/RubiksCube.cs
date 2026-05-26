@@ -816,7 +816,7 @@ public sealed class RubiksCube : Game
             }
         }
 
-        _cube.ApplyMove(rotation.Face, rotation.Direction.Opposite(), ! _isUndo);
+        _cube.ApplyMove(rotation.Face, rotation.Direction, ! _isUndo);
 
         _isUndo = false;
     }
