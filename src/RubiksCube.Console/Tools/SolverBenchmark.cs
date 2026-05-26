@@ -89,6 +89,20 @@ public static class SolverBenchmark
         WriteLine($"       {totalMoves / iterations}            {totalDuration / iterations:ss\\.fff}");
 
         WriteLine($"\nMoves range: {statistics.Min(s => s.Moves)} - {longestMoves}.");
+        
+        var ordered = statistics.OrderBy(s => s.Moves).Select(s => s.Moves).ToArray();
+
+        var median = ordered.Length % 2 == 0
+            ? (ordered[ordered.Length / 2 - 1] + ordered[ordered.Length / 2]) / 2.0
+            : ordered[ordered.Length / 2];
+
+        var mode = ordered
+            .GroupBy(x => x)
+            .OrderByDescending(g => g.Count())
+            .First()
+            .Key;
+        
+        WriteLine($"\nMedian: {median}, mode: {mode}.");
 
         WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff} - {longestDuration:ss\\.fff}.");
 
