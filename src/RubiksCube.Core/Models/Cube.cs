@@ -131,16 +131,13 @@ public sealed class Cube
         return move with { Direction = opposite };
     }
 
-    public void ApplyMove(Face face, Direction direction, bool addToHistory = true)
+    public void ApplyMove(Face face, Direction direction)
     {
         RotateFace(face, direction);
 
         RotateEdges(face, direction);
 
-        if (addToHistory)
-        {
-            _history.Push(new Move(face, direction));
-        }
+        _history.Push(new Move(face, direction));
     }
 
     public void ApplyMove(Move move)
