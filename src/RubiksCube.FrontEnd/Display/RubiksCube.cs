@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RubiksCube.Core;
+using RubiksCube.Core.Extensions;
 using RubiksCube.Core.Infrastructure;
 using RubiksCube.Core.Models;
 
@@ -762,7 +763,7 @@ public sealed class RubiksCube : Game
             }
         }
 
-        _cube.ApplyMove(rotation.Face, rotation.Direction);
+        _cube.ApplyMove(rotation.Face, rotation.Direction.Opposite());
     }
 
     private void DrawRubiksCube()
