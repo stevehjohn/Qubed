@@ -628,8 +628,7 @@ public sealed class RubiksCube : Game
         {
             face = (Face) _random.Next(6);
         } while (face == _previousFace);
-
-
+        
         StartFaceRotation(new Move(face, (Direction) _random.Next(3)));
 
         _scrambleTurns--;
