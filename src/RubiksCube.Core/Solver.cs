@@ -14,12 +14,14 @@ public sealed class Solver
     private readonly Cube _cube;
 
     private readonly List<Move> _moves = [];
-    
+
     private readonly ILogger _logger;
 
     private readonly int _degreeOfParallelism;
 
-    public Solver(Cube cube, Mode mode = Mode.HalfCores) : this(cube, mode, null) { }
+    public Solver(Cube cube, Mode mode = Mode.HalfCores) : this(cube, mode, null)
+    {
+    }
 
     public Solver(Cube cube, Mode mode, ILogger logger)
     {
@@ -47,7 +49,7 @@ public sealed class Solver
         _moves.Clear();
 
         _logger?.WriteLine();
-        
+
         if (_cube.IsSolved())
         {
             _logger?.WriteLine(_cube.ToString());
@@ -60,7 +62,7 @@ public sealed class Solver
         var stopwatch = Stopwatch.StartNew();
 
         _logger?.WriteLine(_cube.ToString());
-        
+
         _logger?.WriteLine();
 
         var checks = new List<Func<Cube, bool>>();
@@ -84,7 +86,7 @@ public sealed class Solver
         }
 
         _logger?.WriteLine(_cube.ToString());
-        
+
         _logger?.WriteLine();
 
         CompressMoves();
@@ -130,13 +132,20 @@ public sealed class Solver
             {
                 var cubeCopy = _cube.Clone();
 
-                var newMoves = new List<Move>(moveSet);
+                var newMoves = new List<Move>();
 
                 var algorithmIndices = new List<int> { (int) index };
 
                 foreach (var move in moveSet)
                 {
                     cubeCopy.ApplyMove(move);
+
+                    newMoves.Add(move);
+
+                    if (ChecksPass(heuristics, cubeCopy))
+                    {
+                        break;
+                    }
                 }
 
                 var visitedDepths = new Dictionary<(ulong A, ulong B, ulong C), int>();
