@@ -176,8 +176,13 @@ public sealed class Cube
         return true;
     }
 
-    public void Scramble(int turns)
+    public void Scramble(int turns = -1)
     {
+        if (turns == -1)
+        {
+            turns = _random.Next(20, 40);
+        }
+
         Face? previousFace = null;
 
         for (var i = 0; i < turns; i++)

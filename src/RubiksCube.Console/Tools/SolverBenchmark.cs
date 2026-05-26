@@ -29,9 +29,7 @@ public static class SolverBenchmark
         {
             var cube = new Cube();
 
-            var random = new Random();
-
-            cube.Scramble(random.Next(20, 50));
+            cube.Scramble();
 
             var solver = new Solver(cube);
 

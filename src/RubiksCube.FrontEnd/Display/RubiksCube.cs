@@ -612,7 +612,9 @@ public sealed class RubiksCube : Game
             {
                 _previousFace = null;
 
-                _scrambleTurns = _random.Next(20, 50);
+                _scrambleTurns = _random.Next(20, 40);
+                
+                Console.WriteLine();
 
                 _rotationDuration = 0.1f;
             }
