@@ -78,6 +78,8 @@ public sealed class RubiksCube : Game
 
     private bool _isUndo;
 
+    private Viewport _mainViewport;
+
     private readonly Cube _cube = new();
 
     private readonly Color[] _data = new Color[PanelWidth * PanelHeight];
@@ -138,6 +140,7 @@ public sealed class RubiksCube : Game
 
         _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
 
+        _mainViewport = GraphicsDevice.Viewport;
 
         UpdateView();
 
@@ -221,18 +224,27 @@ public sealed class RubiksCube : Game
 
         GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
+        var fullViewport = GraphicsDevice.Viewport;
+
+        var cubeViewport = new Viewport(0, 0, (int) (fullViewport.Width * 0.66f), fullViewport.Height);
+
+        GraphicsDevice.Viewport = cubeViewport;
+
         _effect.World = Matrix.Identity;
 
         _effect.View = _view;
 
-        _effect.Projection = _projection;
+        _effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), cubeViewport.AspectRatio, 0.1f, 100f);
 
         foreach (var pass in _effect.CurrentTechnique.Passes)
         {
             pass.Apply();
-
             DrawRubiksCube();
         }
+
+        GraphicsDevice.Viewport = fullViewport;
+
+        _effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), fullViewport.AspectRatio, 0.1f, 100f);
 
         DrawNet();
 
@@ -383,10 +395,10 @@ public sealed class RubiksCube : Game
 
         var distance = ray.Intersects(bounds);
 
-        if (!distance.HasValue)
+        if (! distance.HasValue)
         {
             face = Face.Front;
-            
+
             return false;
         }
 
@@ -423,9 +435,9 @@ public sealed class RubiksCube : Game
         _pitch = MathHelper.Clamp(_pitch, -MathHelper.PiOver2 + 0.01f, MathHelper.PiOver2 - 0.01f);
 
         var x = MathF.Cos(_pitch) * MathF.Sin(_yaw);
-        
+
         var y = MathF.Sin(_pitch);
-        
+
         var z = MathF.Cos(_pitch) * MathF.Cos(_yaw);
 
         var cameraPosition = new Vector3(x, y, z) * CameraDistance;
