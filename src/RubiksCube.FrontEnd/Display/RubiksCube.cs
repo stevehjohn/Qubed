@@ -78,8 +78,6 @@ public sealed class RubiksCube : Game
 
     private bool _isUndo;
 
-    private Viewport _mainViewport;
-
     private readonly Cube _cube = new();
 
     private readonly Color[] _data = new Color[PanelWidth * PanelHeight];
@@ -139,8 +137,6 @@ public sealed class RubiksCube : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
-
-        _mainViewport = GraphicsDevice.Viewport;
 
         UpdateView();
 
