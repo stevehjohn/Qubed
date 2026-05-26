@@ -621,6 +621,8 @@ public sealed class RubiksCube : Game
                 _rotationDuration = 0.1f;
 
                 _isScrambling = true;
+                
+                _cube.ResetHistory();
             }
             else
             {

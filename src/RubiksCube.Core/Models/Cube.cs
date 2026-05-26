@@ -176,6 +176,11 @@ public sealed class Cube
         return true;
     }
 
+    public void ResetHistory()
+    {
+        _history.Clear();
+    }
+
     public void Scramble(int turns = -1)
     {
         if (turns == -1)
