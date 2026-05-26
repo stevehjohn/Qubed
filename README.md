@@ -13,6 +13,7 @@
 - Press `Space` to search for and animate a solution from the current cube state.
 - Press `Esc` to exit.
 - Press `S` to scramble.
+- Press `Control` + `Z` to undo a move.
 
 ## Ideas
 
