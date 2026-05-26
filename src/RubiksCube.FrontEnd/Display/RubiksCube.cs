@@ -42,7 +42,7 @@ public sealed class RubiksCube : Game
 
     private Matrix _view;
 
-    private Matrix _projection;
+    private Viewport _cubeViewport;
 
     private Matrix _primitiveTransform = Matrix.Identity;
 
@@ -56,9 +56,9 @@ public sealed class RubiksCube : Game
 
     private bool _isSolving;
 
-    private float _yaw = -4.95999622f;
+    private float _yaw = -0.789994895f;
 
-    private float _pitch = 0.140001684f;
+    private float _pitch = 0.490001917f;
 
     private int _scrambleTurns;
 
@@ -140,7 +140,7 @@ public sealed class RubiksCube : Game
 
         UpdateView();
 
-        _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), GraphicsDevice.Viewport.AspectRatio, 0.1f, 100f);
+        _cubeViewport = GetCubeViewport();
     }
 
     protected override void Update(GameTime gameTime)
@@ -222,15 +222,13 @@ public sealed class RubiksCube : Game
 
         var fullViewport = GraphicsDevice.Viewport;
 
-        var cubeViewport = new Viewport(-40, -15, (int) (fullViewport.Width * 0.66f), fullViewport.Height);
-
-        GraphicsDevice.Viewport = cubeViewport;
+        GraphicsDevice.Viewport = _cubeViewport;
 
         _effect.World = Matrix.Identity;
 
         _effect.View = _view;
 
-        _effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), cubeViewport.AspectRatio, 0.1f, 100f);
+        _effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), _cubeViewport.AspectRatio, 0.1f, 100f);
 
         foreach (var pass in _effect.CurrentTechnique.Passes)
         {
@@ -377,24 +375,29 @@ public sealed class RubiksCube : Game
 
     private bool TryPickCubeFace(MouseState mouse, out Face face)
     {
-        var viewport = GraphicsDevice.Viewport;
+        var viewport = GetCubeViewport();
 
-        var nearPoint = viewport.Unproject(new Vector3(mouse.X, mouse.Y, 0f), _projection, _view, Matrix.Identity);
+        if (mouse.X < viewport.X || mouse.Y < viewport.Y || mouse.X >= viewport.X + viewport.Width || mouse.Y >= viewport.Y + viewport.Height)
+        {
+            face = Face.Front;
+            return false;
+        }
 
-        var farPoint = viewport.Unproject(new Vector3(mouse.X, mouse.Y, 1f), _projection, _view, Matrix.Identity);
+        var projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), viewport.AspectRatio, 0.1f, 100f);
+
+        var nearPoint = viewport.Unproject(new Vector3(mouse.X, mouse.Y, 0f), projection, _view, Matrix.Identity);
+
+        var farPoint = viewport.Unproject(new Vector3(mouse.X, mouse.Y, 1f), projection, _view, Matrix.Identity);
 
         var ray = new Ray(nearPoint, Vector3.Normalize(farPoint - nearPoint));
 
-        var bounds = new BoundingBox(
-            new Vector3(-CubePickHalfExtent, -CubePickHalfExtent, -CubePickHalfExtent),
-            new Vector3(CubePickHalfExtent, CubePickHalfExtent, CubePickHalfExtent));
+        var bounds = new BoundingBox(new Vector3(-CubePickHalfExtent, -CubePickHalfExtent, -CubePickHalfExtent), new Vector3(CubePickHalfExtent, CubePickHalfExtent, CubePickHalfExtent));
 
         var distance = ray.Intersects(bounds);
 
         if (! distance.HasValue)
         {
             face = Face.Front;
-
             return false;
         }
 
@@ -403,6 +406,13 @@ public sealed class RubiksCube : Game
         face = FaceFromHitPoint(hit);
 
         return true;
+    }
+
+    private Viewport GetCubeViewport()
+    {
+        var fullViewport = GraphicsDevice.Viewport;
+
+        return new Viewport(-40, -15, (int) (fullViewport.Width * 0.66f), fullViewport.Height);
     }
 
     private static Face FaceFromHitPoint(Vector3 hit)
