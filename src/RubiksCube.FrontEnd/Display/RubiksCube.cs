@@ -371,21 +371,22 @@ public sealed class RubiksCube : Game
     {
         var viewport = GraphicsDevice.Viewport;
 
-        var world = Matrix.CreateRotationX(_pitch) * Matrix.CreateRotationY(_yaw);
+        var nearPoint = viewport.Unproject(new Vector3(mouse.X, mouse.Y, 0f), _projection, _view, Matrix.Identity);
 
-        var nearPoint = viewport.Unproject(new Vector3(mouse.X, mouse.Y, 0f), _projection, _view, world);
-
-        var farPoint = viewport.Unproject(new Vector3(mouse.X, mouse.Y, 1f), _projection, _view, world);
+        var farPoint = viewport.Unproject(new Vector3(mouse.X, mouse.Y, 1f), _projection, _view, Matrix.Identity);
 
         var ray = new Ray(nearPoint, Vector3.Normalize(farPoint - nearPoint));
 
-        var bounds = new BoundingBox(new Vector3(-CubePickHalfExtent, -CubePickHalfExtent, -CubePickHalfExtent), new Vector3(CubePickHalfExtent, CubePickHalfExtent, CubePickHalfExtent));
+        var bounds = new BoundingBox(
+            new Vector3(-CubePickHalfExtent, -CubePickHalfExtent, -CubePickHalfExtent),
+            new Vector3(CubePickHalfExtent, CubePickHalfExtent, CubePickHalfExtent));
 
         var distance = ray.Intersects(bounds);
 
-        if (! distance.HasValue)
+        if (!distance.HasValue)
         {
             face = Face.Front;
+            
             return false;
         }
 
