@@ -55,6 +55,8 @@ public sealed class RubiksCube : Game
 
     private bool _isSolving;
 
+    private bool _isScrambling;
+
     private float _yaw = -0.789994895f;
 
     private float _pitch = 0.490001917f;
@@ -617,6 +619,8 @@ public sealed class RubiksCube : Game
                 Console.WriteLine();
 
                 _rotationDuration = 0.1f;
+
+                _isScrambling = true;
             }
             else
             {
@@ -632,13 +636,6 @@ public sealed class RubiksCube : Game
         } while (face == _previousFace);
         
         StartFaceRotation(new Move(face, (Direction) _random.Next(3)));
-
-        _scrambleTurns--;
-
-        if (_scrambleTurns < 2)
-        {
-            _rotationDuration = 0.25f;
-        }
     }
 
     private void TryStartSolveAnimation(KeyboardState keyboard)
@@ -818,9 +815,24 @@ public sealed class RubiksCube : Game
 
         if (! _isUndo)
         {
-            _cube.ApplyMove(rotation.Face, rotation.Direction);
+            _cube.ApplyMove(rotation.Face, rotation.Direction, ! _isScrambling);
         }
-        
+
+        if (_scrambleTurns > 0)
+        {
+            _scrambleTurns--;
+
+            if (_scrambleTurns < 2)
+            {
+                _rotationDuration = 0.25f;
+            }
+
+            if (_scrambleTurns == 0)
+            {
+                _isScrambling = false;
+            }
+        }
+
         Console.WriteLine($"Move count: {_cube.MoveCount}.");
 
         _isUndo = false;
