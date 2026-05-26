@@ -113,8 +113,13 @@ public sealed class Cube
         init => _faces[(int) face] = value;
     }
 
-    public void UndoMove()
+    public Move? UndoMove()
     {
+        if (_history.Count == 0)
+        {
+            return null;
+        }
+
         var move = _history.Pop();
 
         var opposite = move.Direction.Opposite();
@@ -122,6 +127,8 @@ public sealed class Cube
         RotateFace(move.Face, opposite);
 
         RotateEdges(move.Face, opposite);
+
+        return move;
     }
 
     public void ApplyMove(Face face, Direction direction)

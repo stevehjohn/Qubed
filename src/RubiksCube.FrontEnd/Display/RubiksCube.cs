@@ -530,6 +530,20 @@ public sealed class RubiksCube : Game
         {
             StartFaceRotation(new Move(Face.Right, direction));
         }
+        else if (WasKeyPressed(keyboard, Keys.Z) && (keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl)))
+        {
+            UndoMove();
+        }
+    }
+
+    private void UndoMove()
+    {
+        var move = _cube.UndoMove();
+
+        if (move != null)
+        {
+            StartFaceRotation(move.Value);
+        }
     }
 
     private void TryScramble(KeyboardState keyboard)
