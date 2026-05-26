@@ -104,7 +104,7 @@ public static class SolverBenchmark
         
         WriteLine($"\nMedian: {median}, mode: {mode}.");
 
-        WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff} - {longestDuration:ss\\.fff}.");
+        WriteLine($"\nDuration range: {statistics.Min(s => s.Duration):ss\\.fff}s - {longestDuration:ss\\.fff}s.");
 
         WriteLine($"\nTotal duration: {totalDuration:mm\\:ss\\.fff}.");
 
