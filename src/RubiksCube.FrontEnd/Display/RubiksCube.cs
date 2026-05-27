@@ -830,7 +830,7 @@ public sealed class RubiksCube : Game
             }
         }
         
-        if (_solverFinished && _solveQueue.Count == 0)
+        if (_isSolving && _solverFinished && _solveQueue.Count == 0)
         {
             _isSolving = false;
 
@@ -839,7 +839,10 @@ public sealed class RubiksCube : Game
             _cube.ResetHistory();
         }
 
-        Console.WriteLine($"Move count: {_cube.MoveCount}.");
+        if (_cube.MoveCount > 0)
+        {
+            Console.WriteLine($"Move count: {_cube.MoveCount}.");
+        }
 
         _isUndo = false;
     }
