@@ -785,8 +785,6 @@ public sealed class RubiksCube : Game
                 _isSolving = false;
 
                 _rotationDuration = 0.25f;
-                
-                _cube.ResetHistory();
             }
         }
 
@@ -836,6 +834,8 @@ public sealed class RubiksCube : Game
             if (_scrambleTurns == 0)
             {
                 _isScrambling = false;
+                
+                _cube.ResetHistory();
             }
         }
         
