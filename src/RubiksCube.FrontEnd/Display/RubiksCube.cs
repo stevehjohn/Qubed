@@ -27,6 +27,13 @@ public sealed class RubiksCube : Game
 
     private const int NetTop = 120;
 
+    private const float StickerInset = 0.08f;
+
+    private const float StickerOffset = 0.015f;
+
+    private const float StickerThickness = 0.05f;
+
+    
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly GraphicsDeviceManager _graphics;
@@ -979,25 +986,19 @@ public sealed class RubiksCube : Game
     {
         var centre = cubie.Position * _cubeSpacing;
 
-        const float h = CubieSize / 2f;
+        const float half = CubieSize / 2f;
 
-        DrawBox(centre, h, Color.Black);
-
-        const float stickerInset = 0.08f;
-
-        const float stickerOffset = 0.015f;
-
-        const float stickerThickness = 0.05f;
-
-        const float stickerHalf = h - stickerInset;
+        DrawBox(centre, half, Color.Black);
+        
+        const float stickerHalf = half - StickerInset;
 
         foreach (var sticker in cubie.Stickers)
         {
             DrawSticker(
-                centre + sticker.Normal * (h + stickerOffset),
+                centre + sticker.Normal * (half + StickerOffset),
                 sticker.Face,
                 stickerHalf,
-                stickerThickness,
+                StickerThickness,
                 sticker.Color);
         }
     }
