@@ -779,13 +779,6 @@ public sealed class RubiksCube : Game
             {
                 _rotationDuration = 0.25f;
             }
-
-            if (_solverFinished && _solveQueue.Count == 0)
-            {
-                _isSolving = false;
-
-                _rotationDuration = 0.25f;
-            }
         }
 
         StartFaceRotation(move);
@@ -837,6 +830,15 @@ public sealed class RubiksCube : Game
             }
         }
         
+        if (_solverFinished && _solveQueue.Count == 0)
+        {
+            _isSolving = false;
+
+            _rotationDuration = 0.25f;
+            
+            _cube.ResetHistory();
+        }
+
         Console.WriteLine($"Move count: {_cube.MoveCount}.");
 
         _isUndo = false;
