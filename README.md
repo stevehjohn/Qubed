@@ -21,6 +21,7 @@
   - Save scramble state.
   - Reset cube to it.
   - Play saved moves from solver.
+- Rede as well as undo.
 
 ## Notes
 
