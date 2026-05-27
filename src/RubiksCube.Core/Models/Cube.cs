@@ -146,7 +146,7 @@ public sealed class Cube
         
         var move = _redoStack.Pop();
         
-        ApplyMove(move);
+        ApplyMove(move, true, false);
         
         return move;
     }
@@ -156,7 +156,7 @@ public sealed class Cube
         ApplyMove(new Move(face, direction), addToHistory);
     }
 
-    public void ApplyMove(Move move, bool addToHistory = true)
+    public void ApplyMove(Move move, bool addToHistory = true, bool clearRedo = true)
     {
         RotateFace(move.Face, move.Direction);
 
@@ -166,8 +166,11 @@ public sealed class Cube
         {
             _history.Push(move);
         }
-        
-        _redoStack.Clear();
+
+        if (clearRedo)
+        {
+            _redoStack.Clear();
+        }
     }
 
     public Cube Clone()
