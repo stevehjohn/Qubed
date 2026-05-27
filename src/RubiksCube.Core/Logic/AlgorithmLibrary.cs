@@ -15,7 +15,9 @@ public static class AlgorithmLibrary
         "R' D' R D",
         "R' D2 R",
         "R F' R' F",
-        "R' D2 R D' R' D R", "R' D R D' R' D R", "R' D' R D R' D' R"
+        "R' D2 R D' R' D R",
+        "R' D R D' R' D R", 
+        "R' D' R D R' D' R"
     ];
 
     private static readonly List<(string Description, string[] MoveSets, Func<Cube, bool>[] IsCompleteChecks)> AlgorithmMacros =
@@ -94,7 +96,9 @@ public static class AlgorithmLibrary
             [
                 "F' R' D' R D F",
                 "F' D' R' D R F",
-                "D", "D'", "D2",
+                "D", 
+                "D'", 
+                "D2",
                 "R' D R' D' R' D' R' D R D R2",
                 "R2 D' R' D' R D R D R D' R",
                 "L' D R D' L D R' D'",
