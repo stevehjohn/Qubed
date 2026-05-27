@@ -83,7 +83,7 @@ public sealed class RubiksCube : Game
 
     private Texture2D _texture;
 
-    private bool _isUndo;
+    private bool _isUndoRedo;
 
     private readonly Cube _cube = new();
 
@@ -591,7 +591,14 @@ public sealed class RubiksCube : Game
         }
         else if (WasKeyPressed(keyboard, Keys.Z) && (keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl)))
         {
-            UndoMove();
+            if (keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift))
+            {
+                RedoMove();
+            }
+            else
+            {
+                UndoMove();
+            }
         }
     }
 
@@ -601,7 +608,19 @@ public sealed class RubiksCube : Game
 
         if (move != null)
         {
-            _isUndo = true;
+            _isUndoRedo = true;
+
+            StartFaceRotation(move.Value);
+        }
+    }
+
+    private void RedoMove()
+    {
+        var move = _cube.RedoMove();
+
+        if (move != null)
+        {
+            _isUndoRedo = true;
 
             StartFaceRotation(move.Value);
         }
@@ -816,7 +835,7 @@ public sealed class RubiksCube : Game
             }
         }
 
-        if (! _isUndo)
+        if (! _isUndoRedo)
         {
             _cube.ApplyMove(rotation.Face, rotation.Direction, ! _isScrambling);
         }
@@ -850,7 +869,7 @@ public sealed class RubiksCube : Game
             Console.WriteLine($"Move count: {_cube.MoveCount}.");
         }
 
-        _isUndo = false;
+        _isUndoRedo = false;
     }
 
     private void DrawRubiksCube()

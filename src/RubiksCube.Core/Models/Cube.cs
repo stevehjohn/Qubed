@@ -8,6 +8,8 @@ public sealed class Cube
     private readonly Colour[][,] _faces = new Colour[6][,];
 
     private readonly Stack<Move> _history = [];
+    
+    private readonly Stack<Move> _redoStack = [];
 
     private readonly Random _random = new();
 
@@ -129,8 +131,20 @@ public sealed class Cube
         RotateFace(move.Face, opposite);
 
         RotateEdges(move.Face, opposite);
+        
+        _redoStack.Push(move);
 
         return move with { Direction = opposite };
+    }
+
+    public Move? RedoMove()
+    {
+        if (_redoStack.Count == 0)
+        {
+            return null;
+        }
+        
+        return _redoStack.Pop();
     }
 
     public void ApplyMove(Face face, Direction direction, bool addToHistory = true)
@@ -148,6 +162,8 @@ public sealed class Cube
         {
             _history.Push(move);
         }
+        
+        _redoStack.Clear();
     }
 
     public Cube Clone()
