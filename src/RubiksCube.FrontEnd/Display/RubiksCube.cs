@@ -647,7 +647,7 @@ public sealed class RubiksCube : Game
 
                 _isScrambling = true;
                 
-                _cube.ResetHistory();
+                _cube.ResetMoveCount();
             }
             else
             {
@@ -861,7 +861,7 @@ public sealed class RubiksCube : Game
 
             _rotationDuration = 0.25f;
             
-            _cube.ResetHistory();
+            _cube.ResetMoveCount();
         }
 
         if (_cube.MoveCount > 0)

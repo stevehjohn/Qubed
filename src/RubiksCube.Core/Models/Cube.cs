@@ -72,7 +72,7 @@ public sealed class Cube
             }
         };
     
-    public int MoveCount => _history.Count;
+    public int MoveCount { get; private set; }
 
     public Cube()
     {
@@ -165,6 +165,8 @@ public sealed class Cube
         if (addToHistory)
         {
             _history.Push(move);
+            
+            MoveCount++;
         }
 
         if (clearRedo)
@@ -199,9 +201,9 @@ public sealed class Cube
         return true;
     }
 
-    public void ResetHistory()
+    public void ResetMoveCount()
     {
-        _history.Clear();
+        MoveCount = 0;
     }
 
     public void Scramble(int turns = -1)
