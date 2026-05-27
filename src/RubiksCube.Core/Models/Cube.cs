@@ -144,7 +144,11 @@ public sealed class Cube
             return null;
         }
         
-        return _redoStack.Pop();
+        var move = _redoStack.Pop();
+        
+        ApplyMove(move);
+        
+        return move;
     }
 
     public void ApplyMove(Face face, Direction direction, bool addToHistory = true)
