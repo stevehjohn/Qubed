@@ -32,7 +32,6 @@ public sealed class RubiksCube : Game
     private const float StickerOffset = 0.015f;
 
     private const float StickerThickness = 0.05f;
-
     
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
