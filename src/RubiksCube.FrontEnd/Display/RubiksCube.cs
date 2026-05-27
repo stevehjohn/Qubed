@@ -698,6 +698,8 @@ public sealed class RubiksCube : Game
         _rotationDuration = _solveQueue.Count > 0
             ? 10f / _solveQueue.Count
             : 0.25f;
+        
+        _rotationDuration = Math.Min(_rotationDuration, 0.25f);
     }
 
     private void StepCallback(List<Move> moves)
