@@ -14,6 +14,7 @@
 - Press `Esc` to exit.
 - Press `S` to scramble.
 - Press `Control` + `Z` to undo a move.
+- Press `Control` + `Shift` + `Z` to redo a move.
 
 ## Ideas
 
@@ -21,7 +22,6 @@
   - Save scramble state.
   - Reset cube to it.
   - Play saved moves from solver.
-- Rede as well as undo.
 
 ## Notes
 
