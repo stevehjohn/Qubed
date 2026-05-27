@@ -222,6 +222,7 @@ public sealed class Cube
             do
             {
                 face = (Face) _random.Next(6);
+                
             } while (face == previousFace);
 
             var direction = (Direction) _random.Next(3);
