@@ -22,6 +22,7 @@
   - Save scramble state.
   - Reset cube to it.
   - Play saved moves from solver.
+- Invisible cube mode?
 
 ## Notes
 
