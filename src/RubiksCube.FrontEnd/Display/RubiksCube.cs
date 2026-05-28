@@ -43,7 +43,7 @@ public sealed class RubiksCube : Game
     private const float StickerOffset = 0.015f;
 
     private const float StickerThickness = 0.05f;
-    
+
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly GraphicsDeviceManager _graphics;
@@ -437,30 +437,47 @@ public sealed class RubiksCube : Game
         face = FaceFromHitPoint(hit);
 
         MapFacesToDirection();
-        
+
         return true;
     }
 
     private Dictionary<Face, Face> MapFacesToDirection()
     {
         var normals = new List<(Face Face, Vector3 Normal)>();
-        
+
         foreach (var face in Enum.GetValues<Face>())
         {
             normals.Add((face, Vector3.TransformNormal(NormalForFace(face), _view)));
         }
 
+        var front = normals.MaxBy(n => n.Normal.Z).Face;
+
+        var up = normals
+            .Where(n => n.Face != front &&
+                        n.Face != front.Opposite())
+            .MaxBy(n => n.Normal.Y).Face;
+
+        var right = normals
+            .Where(n => n.Face != front &&
+                        n.Face != front.Opposite() &&
+                        n.Face != up &&
+                        n.Face != up.Opposite())
+            .MaxBy(n => n.Normal.X).Face;
+
         var mappings = new Dictionary<Face, Face>
         {
-            { Face.Front, normals.MaxBy(n => n.Normal.Z).Face },
-            { Face.Up, normals.MaxBy(n => n.Normal.Y).Face },
-            { Face.Right, normals.MaxBy(n => n.Normal.X).Face }
+            { Face.Up, up },
+            { Face.Down, up.Opposite() },
+            { Face.Front, front },
+            { Face.Back, front.Opposite() },
+            { Face.Left, right.Opposite() },
+            { Face.Right, right }
         };
 
         mappings.Add(Face.Back, mappings[Face.Front].Opposite());
-        
+
         mappings.Add(Face.Down, mappings[Face.Up].Opposite());
-        
+
         mappings.Add(Face.Left, mappings[Face.Right].Opposite());
 
         return mappings;
@@ -686,17 +703,17 @@ public sealed class RubiksCube : Game
             if (WasKeyPressed(keyboard, Keys.S, 's'))
             {
                 _previousFace1 = null;
-                
+
                 _previousFace2 = null;
 
                 _scrambleTurns = 20;
-                
+
                 Console.WriteLine($"Scrambling with {_scrambleTurns} moves.");
-                
+
                 _rotationDuration = 0.1f;
 
                 _isScrambling = true;
-                
+
                 _cube.ResetMoveCount();
             }
             else
@@ -710,15 +727,14 @@ public sealed class RubiksCube : Game
         do
         {
             face = (Face) _random.Next(6);
-            
         } while ((_previousFace1.HasValue && face == _previousFace1)
                  // ReSharper disable once PossibleInvalidOperationException
                  || (_previousFace2.HasValue && face == _previousFace2 && _previousFace1.Value == _previousFace2.Value.Opposite()));
 
         _previousFace2 = _previousFace1;
-        
+
         _previousFace1 = face;
-        
+
         StartFaceRotation(new Move(face, (Direction) _random.Next(3)));
     }
 
@@ -780,7 +796,7 @@ public sealed class RubiksCube : Game
         _rotationDuration = _solveQueue.Count > 0
             ? 10f / _solveQueue.Count
             : 0.25f;
-        
+
         _rotationDuration = Math.Min(_rotationDuration, 0.25f);
     }
 
@@ -916,13 +932,13 @@ public sealed class RubiksCube : Game
                 _isScrambling = false;
             }
         }
-        
+
         if (_isSolving && _solverFinished && _solveQueue.Count == 0)
         {
             _isSolving = false;
 
             _rotationDuration = 0.25f;
-            
+
             _cube.ResetMoveCount();
         }
 
@@ -1069,7 +1085,7 @@ public sealed class RubiksCube : Game
         const float half = CubieSize / 2f;
 
         DrawBox(centre, half, Color.Black);
-        
+
         const float stickerHalf = half - StickerInset;
 
         foreach (var sticker in cubie.Stickers)
