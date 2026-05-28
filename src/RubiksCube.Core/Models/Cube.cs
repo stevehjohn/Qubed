@@ -134,6 +134,8 @@ public sealed class Cube
         
         _redoStack.Push(move);
 
+        MoveCount--;
+
         return move with { Direction = opposite };
     }
 
