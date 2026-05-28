@@ -24,6 +24,8 @@
   - Play saved moves from solver.
 - Invisible cube mode?
 - Save points (not necessarily to disc, but maybe).
+- Immediate solve button to skip to the end.
+- Scramble, solve, repeat with stats.
 
 ## Notes
 
