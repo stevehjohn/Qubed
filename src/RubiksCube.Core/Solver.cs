@@ -13,7 +13,7 @@ public sealed class Solver
 
     private readonly Cube _cube;
 
-    private readonly List<Move> _moves = [];
+    private readonly List<List<Move>> _candidates = [];
 
     private readonly ILogger _logger;
 
@@ -58,7 +58,7 @@ public sealed class Solver
 
     public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<List<Move>> stepCallback = null)
     {
-        _moves.Clear();
+        _candidates.Clear();
 
         _logger?.WriteLine();
 
@@ -66,9 +66,9 @@ public sealed class Solver
         {
             _logger?.WriteLine(_cube.ToString());
 
-            stepCallback?.Invoke(_moves);
+            stepCallback?.Invoke(_candidates);
 
-            return (true, _moves, TimeSpan.Zero);
+            return (true, _candidates, TimeSpan.Zero);
         }
 
         var stopwatch = Stopwatch.StartNew();
@@ -111,7 +111,7 @@ public sealed class Solver
 
         CompressMoves();
 
-        foreach (var move in _moves)
+        foreach (var move in _candidates)
         {
             _logger?.WriteLine(move.ToString());
         }
@@ -120,9 +120,9 @@ public sealed class Solver
 
         _logger?.WriteLine();
 
-        _logger?.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed:mm\\:ss\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
+        _logger?.WriteLine($"Moves: {_candidates.Count}. Duration: {stopwatch.Elapsed:mm\\:ss\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
 
-        return (solved, _moves, stopwatch.Elapsed);
+        return (solved, _candidates, stopwatch.Elapsed);
     }
 
     private (bool ChecksPass, int NodesExplored) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
@@ -132,6 +132,8 @@ public sealed class Solver
         var branchStopwatch = new Stopwatch();
 
         var nodesExplored = 0;
+        
+        _candidates.Clear();
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
@@ -181,12 +183,9 @@ public sealed class Solver
                 {
                     lock (stateLock)
                     {
-                        if (foundMoves == null || newMoves.Count < foundMoves.Count)
-                        {
-                            found = true;
-
-                            foundMoves = new List<Move>(newMoves);
-                        }
+                        found = true;
+                        
+                        _candidates.AddRange(newMoves);
                     }
                 }
             });
@@ -195,16 +194,7 @@ public sealed class Solver
 
             if (found)
             {
-                _moves.AddRange(foundMoves);
-
-                foreach (var move in foundMoves)
-                {
-                    _cube.ApplyMove(move);
-                }
-
-                _logger?.WriteLine($"\nNew moves: {foundMoves.Count:N0}, duration: {totalStopwatch.Elapsed:ss\\.fff}");
-
-                stepCallback?.Invoke(foundMoves);
+                _logger?.WriteLine($"\nDuration: {totalStopwatch.Elapsed:ss\\.fff}");
 
                 return (true, nodesExplored);
             }
@@ -337,11 +327,11 @@ public sealed class Solver
         {
             changed = false;
 
-            for (var i = 0; i < _moves.Count - 1; i++)
+            for (var i = 0; i < _candidates.Count - 1; i++)
             {
-                var first = _moves[i];
+                var first = _candidates[i];
 
-                var second = _moves[i + 1];
+                var second = _candidates[i + 1];
 
                 if (first.Face == second.Face)
                 {
@@ -349,13 +339,13 @@ public sealed class Solver
 
                     var newDirection = GetCompressedDirection(first.Direction, second.Direction);
 
-                    _moves.RemoveRange(i, 2);
+                    _candidates.RemoveRange(i, 2);
 
                     if (newDirection != null)
                     {
                         var newMove = first with { Direction = newDirection.Value };
 
-                        _moves.Insert(i, newMove);
+                        _candidates.Insert(i, newMove);
                     }
 
                     break;
