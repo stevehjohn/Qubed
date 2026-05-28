@@ -839,12 +839,9 @@ public sealed class RubiksCube : Game
 
     private bool WasKeyPressed(KeyboardState keyboard, Keys key, char? character = null)
     {
-        if (Console.KeyAvailable)
+        if (_consoleKey.HasValue && character.HasValue && char.ToLower(_consoleKey.Value) == char.ToLower(character.Value))
         {
-            if (_consoleKey.HasValue && character.HasValue && char.ToLower(_consoleKey.Value) == char.ToLower(character.Value))
-            {
-                return true;
-            }
+            return true;
         }
 
         return keyboard.IsKeyDown(key) && ! _previousKeyboard.IsKeyDown(key);
