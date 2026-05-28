@@ -606,6 +606,11 @@ public sealed class RubiksCube : Game
             ? Direction.AntiClockwise
             : Direction.Clockwise;
 
+        if (keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl))
+        {
+            direction = Direction.HalfTurn;
+        }
+
         var mappings = MapFacesToDirection();
 
         if (WasKeyPressed(keyboard, Keys.U))
