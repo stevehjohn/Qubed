@@ -13,8 +13,6 @@ public sealed class Solver
 
     private readonly Cube _cube;
 
-    private readonly List<List<Move>> _candidates = [];
-
     private readonly ILogger _logger;
 
     private readonly int _degreeOfParallelism;
@@ -58,8 +56,6 @@ public sealed class Solver
 
     public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<List<Move>> stepCallback = null)
     {
-        _candidates.Clear();
-
         _logger?.WriteLine();
 
         if (_cube.IsSolved())
@@ -79,35 +75,11 @@ public sealed class Solver
 
         var checks = new List<Func<Cube, bool>>();
 
-        var solved = true;
-
         var totalNodes = 0;
 
-        foreach (var algorithm in AlgorithmLibrary.Algorithms)
-        {
-            _logger?.WriteLine($"{algorithm.Name}\n");
+        var solution = new List<Move>();
 
-            checks.AddRange(algorithm.IsCompleteChecks);
-
-            if (ChecksPass(checks, _cube))
-            {
-                continue;
-            }
-
-            var result = BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
-
-            foreach (var move in result.Candidates)
-            {
-            }
-
-            _logger?.WriteLine($"\nAlgorithm nodes explored: {result.NodesExplored:N0}.");
-
-            solved &= result.ChecksPass;
-
-            totalNodes += result.NodesExplored;
-
-            _logger?.WriteLine();
-        }
+        var solved = SearchStages(0, _cube, checks, solution, ref totalNodes);
 
         _logger?.WriteLine(_cube.ToString());
 
@@ -115,28 +87,87 @@ public sealed class Solver
 
         // CompressMoves();
 
-        foreach (var move in _candidates)
-        {
-            _logger?.WriteLine(move.ToString());
-        }
-
         stopwatch.Stop();
 
         _logger?.WriteLine();
 
-        _logger?.WriteLine($"Moves: {_candidates.Count}. Duration: {stopwatch.Elapsed:mm\\:ss\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
+        // _logger?.WriteLine($"Moves: {_candidates.Count}. Duration: {stopwatch.Elapsed:mm\\:ss\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
 
-        return (solved, _candidates, stopwatch.Elapsed);
+        return (solved, solution, stopwatch.Elapsed);
     }
 
-    private (bool ChecksPass, int NodesExplored, List<List<Move>> Candidates) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
+    private bool SearchStages(
+        int algorithmIndex,
+        Cube cube,
+        List<Func<Cube, bool>> checks,
+        List<Move> solution,
+        ref int totalNodes)
+    {
+        if (algorithmIndex == AlgorithmLibrary.Algorithms.Count)
+        {
+            return cube.IsSolved();
+        }
+
+        var algorithm = AlgorithmLibrary.Algorithms[algorithmIndex];
+        
+        Console.WriteLine(algorithm.Name);
+
+        checks.AddRange(algorithm.IsCompleteChecks);
+
+        if (ChecksPass(checks, cube))
+        {
+            var passed = SearchStages(
+                algorithmIndex + 1,
+                cube,
+                checks,
+                solution,
+                ref totalNodes);
+
+            return passed;
+        }
+
+        var result = BruteForceAlgorithm(checks, algorithm.MoveSets, cube);
+
+        totalNodes += result.NodesExplored;
+
+        foreach (var candidate in result.Candidates.Where(c => c is { Count: > 0 }).OrderBy(c => c.Count))
+        {
+            var before = solution.Count;
+
+            foreach (var move in candidate)
+            {
+                cube.ApplyMove(move);
+                solution.Add(move);
+            }
+
+            if (SearchStages(algorithmIndex + 1, cube, checks, solution, ref totalNodes))
+            {
+                return true;
+            }
+
+            while (solution.Count > before)
+            {
+                cube.UndoMove();
+                solution.RemoveAt(solution.Count - 1);
+            }
+        }
+
+        return false;
+    }
+
+    private static void RemoveChecks<T>(List<T> checks, int count)
+    {
+        checks.RemoveRange(checks.Count - count, count);
+    }
+
+    private (bool ChecksPass, int NodesExplored, List<List<Move>> Candidates) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Cube cube)
     {
         var totalStopwatch = Stopwatch.StartNew();
 
         var branchStopwatch = new Stopwatch();
 
         var nodesExplored = 0;
-        
+
         var candidates = new List<List<Move>>();
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
@@ -152,7 +183,7 @@ public sealed class Solver
             var stateLock = new Lock();
 
             nodesExplored = 0;
-            
+
             candidates.Clear();
 
             Parallel.ForEach(moveSets, new ParallelOptions
@@ -160,7 +191,7 @@ public sealed class Solver
                 MaxDegreeOfParallelism = _degreeOfParallelism
             }, (moveSet, _, index) =>
             {
-                var cubeCopy = _cube.Clone();
+                var cubeCopy = cube.Clone();
 
                 var newMoves = new List<Move>();
 
@@ -188,7 +219,7 @@ public sealed class Solver
                     lock (stateLock)
                     {
                         found = true;
-                        
+
                         candidates.AddRange(newMoves);
                     }
                 }
