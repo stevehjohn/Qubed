@@ -120,7 +120,7 @@ public sealed class Solver
 
         _logger?.WriteLine();
 
-        _logger?.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed:mm:\\ss.\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
+        _logger?.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed:mm\\:\\ss.\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
 
         return (solved, _moves, stopwatch.Elapsed);
     }
