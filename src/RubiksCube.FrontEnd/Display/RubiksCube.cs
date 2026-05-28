@@ -441,7 +441,7 @@ public sealed class RubiksCube : Game
         return true;
     }
 
-    private void MapToDirection()
+    private Dictionary<Face, Face> MapToDirection()
     {
         var normals = new List<(Face Face, Vector3 Normal)>();
         
@@ -450,9 +450,21 @@ public sealed class RubiksCube : Game
             normals.Add((face, Vector3.TransformNormal(NormalForFace(face), _view)));
         }
 
-        Console.WriteLine($"Front: {normals.MaxBy(n => n.Normal.Z).Face}");
-        Console.WriteLine($"Up: {normals.MaxBy(n => n.Normal.Y).Face}");
-        Console.WriteLine($"Right: {normals.MaxBy(n => n.Normal.X).Face}");
+        var mappings = new Dictionary<Face, Face>();
+        
+        mappings.Add(Face.Front, normals.MaxBy(n => n.Normal.Z).Face);
+        
+        mappings.Add(Face.Up, normals.MaxBy(n => n.Normal.Y).Face);
+        
+        mappings.Add(Face.Right, normals.MaxBy(n => n.Normal.X).Face);
+        
+        mappings.Add(Face.Back, mappings[Face.Front].Opposite());
+        
+        mappings.Add(Face.Down, mappings[Face.Up].Opposite());
+        
+        mappings.Add(Face.Left, mappings[Face.Right].Opposite());
+        
+        return mappings;
     }
 
     private Viewport GetCubeViewport()
