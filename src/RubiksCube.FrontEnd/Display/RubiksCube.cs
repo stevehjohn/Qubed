@@ -474,12 +474,6 @@ public sealed class RubiksCube : Game
             { Face.Right, right }
         };
 
-        mappings.Add(Face.Back, mappings[Face.Front].Opposite());
-
-        mappings.Add(Face.Down, mappings[Face.Up].Opposite());
-
-        mappings.Add(Face.Left, mappings[Face.Right].Opposite());
-
         return mappings;
     }
 
