@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RubiksCube.Core;
+using RubiksCube.Core.Extensions;
 using RubiksCube.Core.Infrastructure;
 using RubiksCube.Core.Models;
 
@@ -77,7 +78,9 @@ public sealed class RubiksCube : Game
 
     private float _cubeSpacingSpeed = 0.1f;
 
-    private Face? _previousFace;
+    private Face? _previousFace1;
+
+    private Face? _previousFace2;
 
     private SpriteBatch _spriteBatch;
 
@@ -637,7 +640,9 @@ public sealed class RubiksCube : Game
         {
             if (WasKeyPressed(keyboard, Keys.S))
             {
-                _previousFace = null;
+                _previousFace1 = null;
+                
+                _previousFace2 = null;
 
                 _scrambleTurns = 20;
                 
@@ -661,7 +666,13 @@ public sealed class RubiksCube : Game
         {
             face = (Face) _random.Next(6);
             
-        } while (face == _previousFace);
+        } while ((_previousFace1.HasValue && face == _previousFace1)
+                 // ReSharper disable once PossibleInvalidOperationException
+                 || (_previousFace2.HasValue && face == _previousFace2 && _previousFace1.Value == _previousFace2.Value.Opposite()));
+
+        _previousFace2 = _previousFace1;
+        
+        _previousFace1 = face;
         
         StartFaceRotation(new Move(face, (Direction) _random.Next(3)));
     }

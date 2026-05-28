@@ -210,7 +210,9 @@ public sealed class Cube
 
     public void Scramble(int turns = 20)
     {
-        Face? previousFace = null;
+        Face? previousFace1 = null;
+
+        Face? previousFace2 = null;
 
         for (var i = 0; i < turns; i++)
         {
@@ -219,14 +221,17 @@ public sealed class Cube
             do
             {
                 face = (Face) _random.Next(6);
-                
-            } while (face == previousFace);
+
+            } while ((previousFace1.HasValue && face == previousFace1)
+                     || (previousFace2.HasValue && face == previousFace2 && previousFace1.Value == previousFace2.Value.Opposite()));
 
             var direction = (Direction) _random.Next(3);
 
             ApplyMove(face, direction);
 
-            previousFace = face;
+            previousFace2 = previousFace1;
+            
+            previousFace1 = face;
         }
     }
 
