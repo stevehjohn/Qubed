@@ -66,9 +66,9 @@ public sealed class Solver
         {
             _logger?.WriteLine(_cube.ToString());
 
-            stepCallback?.Invoke(_candidates);
+            stepCallback?.Invoke([]);
 
-            return (true, _candidates, TimeSpan.Zero);
+            return (true, [], TimeSpan.Zero);
         }
 
         var stopwatch = Stopwatch.StartNew();
@@ -96,6 +96,10 @@ public sealed class Solver
 
             var result = BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
 
+            foreach (var move in result.Candidates)
+            {
+            }
+
             _logger?.WriteLine($"\nAlgorithm nodes explored: {result.NodesExplored:N0}.");
 
             solved &= result.ChecksPass;
@@ -109,7 +113,7 @@ public sealed class Solver
 
         _logger?.WriteLine();
 
-        CompressMoves();
+        // CompressMoves();
 
         foreach (var move in _candidates)
         {
@@ -125,7 +129,7 @@ public sealed class Solver
         return (solved, _candidates, stopwatch.Elapsed);
     }
 
-    private (bool ChecksPass, int NodesExplored) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
+    private (bool ChecksPass, int NodesExplored, List<List<Move>> Candidates) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
     {
         var totalStopwatch = Stopwatch.StartNew();
 
@@ -133,7 +137,7 @@ public sealed class Solver
 
         var nodesExplored = 0;
         
-        _candidates.Clear();
+        var candidates = new List<List<Move>>();
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
@@ -148,6 +152,8 @@ public sealed class Solver
             var stateLock = new Lock();
 
             nodesExplored = 0;
+            
+            candidates.Clear();
 
             Parallel.ForEach(moveSets, new ParallelOptions
             {
@@ -177,13 +183,13 @@ public sealed class Solver
 
                 var visitedDepths = new Dictionary<(ulong A, ulong B, ulong C), int>();
 
-                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, visitedDepths, innerDepth - 1, ref nodesExplored))
+                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, candidates, algorithmIndices, visitedDepths, innerDepth - 1, ref nodesExplored))
                 {
                     lock (stateLock)
                     {
                         found = true;
                         
-                        _candidates.AddRange(newMoves);
+                        candidates.AddRange(newMoves);
                     }
                 }
             });
@@ -194,40 +200,35 @@ public sealed class Solver
             {
                 _logger?.WriteLine($"\nDuration: {totalStopwatch.Elapsed:ss\\.fff}");
 
-                return (true, nodesExplored);
+                return (true, nodesExplored, candidates);
             }
         }
 
-        return (false, nodesExplored);
+        return (false, nodesExplored, candidates);
     }
 
-    private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<int> algorithmIndices, Dictionary<(ulong A, ulong B, ulong C), int> visitedDepths, int depth, ref int nodesExplored)
+    private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<List<Move>> candidates, List<int> algorithmIndices, Dictionary<(ulong A, ulong B, ulong C), int> visitedDepths, int depth, ref int nodesExplored)
     {
-        if (ChecksPass(heuristics, cube))
-        {
-            return true;
-        }
-
         if (depth == 0)
         {
-            return false;
+            return candidates.Count > 0;
         }
 
-        var key = cube.GetHash();
-
-        if (visitedDepths.TryGetValue(key, out var seenDepth))
-        {
-            if (seenDepth >= depth)
-            {
-                return false;
-            }
-
-            visitedDepths[key] = depth;
-        }
-        else
-        {
-            visitedDepths.Add(key, depth);
-        }
+        // var key = cube.GetHash();
+        //
+        // if (visitedDepths.TryGetValue(key, out var seenDepth))
+        // {
+        //     if (seenDepth >= depth)
+        //     {
+        //         return false;
+        //     }
+        //
+        //     visitedDepths[key] = depth;
+        // }
+        // else
+        // {
+        //     visitedDepths.Add(key, depth);
+        // }
 
         for (var s = 0; s < moveSet.Count; s++)
         {
@@ -272,26 +273,32 @@ public sealed class Solver
                 continue;
             }
 
+            var appliedMoves = 0;
+
             foreach (var move in set)
             {
                 cube.ApplyMove(move);
 
                 moves.Add(move);
 
+                appliedMoves++;
+
                 if (ChecksPass(heuristics, cube))
                 {
-                    return true;
+                    candidates.Add([..moves]);
+
+                    break;
                 }
             }
 
             algorithmIndices.Add(s);
 
-            if (SearchAlgorithm(heuristics, moveSet, cube, moves, algorithmIndices, visitedDepths, depth - 1, ref nodesExplored))
+            if (SearchAlgorithm(heuristics, moveSet, cube, moves, candidates, algorithmIndices, visitedDepths, depth - 1, ref nodesExplored))
             {
-                return true;
+                candidates.Add([..moves]);
             }
 
-            for (var i = 0; i < set.Count; i++)
+            for (var i = 0; i < appliedMoves; i++)
             {
                 cube.UndoMove();
 
@@ -301,7 +308,7 @@ public sealed class Solver
             algorithmIndices.RemoveAt(algorithmIndices.Count - 1);
         }
 
-        return false;
+        return candidates.Count > 0;
     }
 
     private static bool ChecksPass(List<Func<Cube, bool>> heuristics, Cube cube)
@@ -317,65 +324,65 @@ public sealed class Solver
         return true;
     }
 
-    private void CompressMoves()
-    {
-        var changed = true;
-
-        while (changed)
-        {
-            changed = false;
-
-            for (var i = 0; i < _candidates.Count - 1; i++)
-            {
-                var first = _candidates[i];
-
-                var second = _candidates[i + 1];
-
-                if (first.Face == second.Face)
-                {
-                    changed = true;
-
-                    var newDirection = GetCompressedDirection(first.Direction, second.Direction);
-
-                    _candidates.RemoveRange(i, 2);
-
-                    if (newDirection != null)
-                    {
-                        var newMove = first with { Direction = newDirection.Value };
-
-                        _candidates.Insert(i, newMove);
-                    }
-
-                    break;
-                }
-            }
-        }
-    }
-
-    private static Direction? GetCompressedDirection(Direction first, Direction second)
-    {
-        var firstTurns = first switch
-        {
-            Direction.Clockwise => 1,
-            Direction.HalfTurn => 2,
-            _ => 3
-        };
-
-        var secondTurns = second switch
-        {
-            Direction.Clockwise => 1,
-            Direction.HalfTurn => 2,
-            _ => 3
-        };
-
-        var totalTurns = (firstTurns + secondTurns) % 4;
-
-        return totalTurns switch
-        {
-            1 => Direction.Clockwise,
-            2 => Direction.HalfTurn,
-            3 => Direction.AntiClockwise,
-            _ => null
-        };
-    }
+    // private void CompressMoves()
+    // {
+    //     var changed = true;
+    //
+    //     while (changed)
+    //     {
+    //         changed = false;
+    //
+    //         for (var i = 0; i < _candidates.Count - 1; i++)
+    //         {
+    //             var first = _candidates[i];
+    //
+    //             var second = _candidates[i + 1];
+    //
+    //             if (first.Face == second.Face)
+    //             {
+    //                 changed = true;
+    //
+    //                 var newDirection = GetCompressedDirection(first.Direction, second.Direction);
+    //
+    //                 _candidates.RemoveRange(i, 2);
+    //
+    //                 if (newDirection != null)
+    //                 {
+    //                     var newMove = first with { Direction = newDirection.Value };
+    //
+    //                     _candidates.Insert(i, newMove);
+    //                 }
+    //
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
+    //
+    // private static Direction? GetCompressedDirection(Direction first, Direction second)
+    // {
+    //     var firstTurns = first switch
+    //     {
+    //         Direction.Clockwise => 1,
+    //         Direction.HalfTurn => 2,
+    //         _ => 3
+    //     };
+    //
+    //     var secondTurns = second switch
+    //     {
+    //         Direction.Clockwise => 1,
+    //         Direction.HalfTurn => 2,
+    //         _ => 3
+    //     };
+    //
+    //     var totalTurns = (firstTurns + secondTurns) % 4;
+    //
+    //     return totalTurns switch
+    //     {
+    //         1 => Direction.Clockwise,
+    //         2 => Direction.HalfTurn,
+    //         3 => Direction.AntiClockwise,
+    //         _ => null
+    //     };
+    // }
 }
