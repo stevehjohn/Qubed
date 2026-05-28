@@ -436,12 +436,12 @@ public sealed class RubiksCube : Game
 
         face = FaceFromHitPoint(hit);
 
-        MapToDirection();
+        MapFacesToDirection();
         
         return true;
     }
 
-    private Dictionary<Face, Face> MapToDirection()
+    private Dictionary<Face, Face> MapFacesToDirection()
     {
         var normals = new List<(Face Face, Vector3 Normal)>();
         
@@ -450,23 +450,18 @@ public sealed class RubiksCube : Game
             normals.Add((face, Vector3.TransformNormal(NormalForFace(face), _view)));
         }
 
-        var mappings = new Dictionary<Face, Face>();
-        
-        mappings.Add(Face.Front, normals.MaxBy(n => n.Normal.Z).Face);
-        
-        mappings.Add(Face.Up, normals.MaxBy(n => n.Normal.Y).Face);
-        
-        mappings.Add(Face.Right, normals.MaxBy(n => n.Normal.X).Face);
-        
+        var mappings = new Dictionary<Face, Face>
+        {
+            { Face.Front, normals.MaxBy(n => n.Normal.Z).Face },
+            { Face.Up, normals.MaxBy(n => n.Normal.Y).Face },
+            { Face.Right, normals.MaxBy(n => n.Normal.X).Face }
+        };
+
         mappings.Add(Face.Back, mappings[Face.Front].Opposite());
         
         mappings.Add(Face.Down, mappings[Face.Up].Opposite());
         
         mappings.Add(Face.Left, mappings[Face.Right].Opposite());
-
-        Console.WriteLine($"Front: {normals.MaxBy(n => n.Normal.Z).Face}");
-        Console.WriteLine($"Up: {normals.MaxBy(n => n.Normal.Y).Face}");
-        Console.WriteLine($"Right: {normals.MaxBy(n => n.Normal.X).Face}");
 
         return mappings;
     }
@@ -611,29 +606,31 @@ public sealed class RubiksCube : Game
             ? Direction.AntiClockwise
             : Direction.Clockwise;
 
+        var mappings = MapFacesToDirection();
+
         if (WasKeyPressed(keyboard, Keys.U))
         {
-            StartFaceRotation(new Move(Face.Up, direction));
+            StartFaceRotation(new Move(mappings[Face.Up], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.D))
         {
-            StartFaceRotation(new Move(Face.Down, direction));
+            StartFaceRotation(new Move(mappings[Face.Down], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.F))
         {
-            StartFaceRotation(new Move(Face.Front, direction));
+            StartFaceRotation(new Move(mappings[Face.Front], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.B))
         {
-            StartFaceRotation(new Move(Face.Back, direction));
+            StartFaceRotation(new Move(mappings[Face.Back], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.L))
         {
-            StartFaceRotation(new Move(Face.Left, direction));
+            StartFaceRotation(new Move(mappings[Face.Left], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.R))
         {
-            StartFaceRotation(new Move(Face.Right, direction));
+            StartFaceRotation(new Move(mappings[Face.Right], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.Z) && (keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl)))
         {
