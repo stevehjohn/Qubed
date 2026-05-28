@@ -208,13 +208,8 @@ public sealed class Cube
         MoveCount = 0;
     }
 
-    public void Scramble(int turns = -1)
+    public void Scramble(int turns = 20)
     {
-        if (turns == -1)
-        {
-            turns = _random.Next(20, 40);
-        }
-
         Face? previousFace = null;
 
         for (var i = 0; i < turns; i++)

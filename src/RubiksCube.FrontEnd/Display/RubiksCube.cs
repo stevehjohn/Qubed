@@ -639,7 +639,7 @@ public sealed class RubiksCube : Game
             {
                 _previousFace = null;
 
-                _scrambleTurns = _random.Next(20, 40);
+                _scrambleTurns = 20;
                 
                 Console.WriteLine($"Scrambling with {_scrambleTurns} moves.");
                 
