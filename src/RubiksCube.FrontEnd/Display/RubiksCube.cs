@@ -28,6 +28,16 @@ public sealed class RubiksCube : Game
 
     private const int NetTop = 120;
 
+    private const float CubieSize = 1f;
+
+    private const float CubeSpacingFinal = 1.25f;
+
+    private const float QuarterTurn = MathHelper.PiOver2;
+
+    private const float MouseRotationScale = 0.01f;
+
+    private const float CubePickHalfExtent = CubeSpacingFinal + CubieSize / 2f + 0.05f;
+
     private const float StickerInset = 0.08f;
 
     private const float StickerOffset = 0.015f;
@@ -43,6 +53,12 @@ public sealed class RubiksCube : Game
     private readonly Queue<Move> _solveQueue = [];
 
     private readonly Random _random = new();
+
+    private readonly Cube _cube = new();
+
+    private readonly Color[] _data = new Color[PanelWidth * PanelHeight];
+
+    private readonly Lock _solveLock = new();
 
     private BasicEffect _effect;
 
@@ -88,21 +104,7 @@ public sealed class RubiksCube : Game
 
     private bool _isUndoRedo;
 
-    private readonly Cube _cube = new();
-
-    private readonly Color[] _data = new Color[PanelWidth * PanelHeight];
-
-    private const float CubieSize = 1f;
-
-    private const float CubeSpacingFinal = 1.25f;
-
-    private const float QuarterTurn = MathHelper.PiOver2;
-
-    private const float MouseRotationScale = 0.01f;
-
-    private const float CubePickHalfExtent = CubeSpacingFinal + CubieSize / 2f + 0.05f;
-
-    private readonly Lock _solveLock = new();
+    private char? _consoleKey;
 
     private readonly Color[] _faceColors =
     [
@@ -164,6 +166,15 @@ public sealed class RubiksCube : Game
         else
         {
             _cubeSpacing = CubeSpacingFinal;
+        }
+
+        if (Console.KeyAvailable)
+        {
+            _consoleKey = Console.ReadKey(true).KeyChar;
+        }
+        else
+        {
+            _consoleKey = null;
         }
 
         var keyboard = Keyboard.GetState();
@@ -638,7 +649,7 @@ public sealed class RubiksCube : Game
 
         if (_scrambleTurns == 0)
         {
-            if (WasKeyPressed(keyboard, Keys.S))
+            if (WasKeyPressed(keyboard, Keys.S, 's'))
             {
                 _previousFace1 = null;
                 
@@ -679,7 +690,7 @@ public sealed class RubiksCube : Game
 
     private void TryStartSolveAnimation(KeyboardState keyboard)
     {
-        if (_activeRotation is not null || _isSolving || _scrambleTurns > 0 || ! WasKeyPressed(keyboard, Keys.Space))
+        if (_activeRotation is not null || _isSolving || _scrambleTurns > 0 || ! WasKeyPressed(keyboard, Keys.Space, ' '))
         {
             return;
         }
@@ -826,8 +837,16 @@ public sealed class RubiksCube : Game
         _activeRotation = new FaceRotation(move);
     }
 
-    private bool WasKeyPressed(KeyboardState keyboard, Keys key)
+    private bool WasKeyPressed(KeyboardState keyboard, Keys key, char? character = null)
     {
+        if (Console.KeyAvailable)
+        {
+            if (_consoleKey.HasValue && character.HasValue && char.ToLower(_consoleKey.Value) == char.ToLower(character.Value))
+            {
+                return true;
+            }
+        }
+
         return keyboard.IsKeyDown(key) && ! _previousKeyboard.IsKeyDown(key);
     }
 
