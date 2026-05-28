@@ -143,8 +143,6 @@ public sealed class Solver
 
             var found = false;
 
-            List<Move> foundMoves = null;
-
             var innerDepth = depth;
 
             var stateLock = new Lock();
