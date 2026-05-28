@@ -23,6 +23,7 @@
   - Reset cube to it.
   - Play saved moves from solver.
 - Invisible cube mode?
+- Save points (not necessarily to disc, but maybe).
 
 ## Notes
 
