@@ -146,6 +146,8 @@ public static class AlgorithmLibrary
 
         for (var i = 1; i < 4; i++)
         {
+            var replaced = false;
+            
             for (var c = 0; c < macro.Length; c++)
             {
                 if (macro[c] is 'L' or 'F' or 'R' or 'B')
@@ -153,11 +155,18 @@ public static class AlgorithmLibrary
                     var newCharacterIndex = (faces.IndexOf(macro[c]) + i) % 4;
 
                     newSet[c] = faces[newCharacterIndex];
+                    
+                    replaced = true;
 
                     continue;
                 }
 
                 newSet[c] = macro[c];
+            }
+
+            if (! replaced)
+            {
+                break;
             }
 
             expandedMacro.Add(new string(newSet));
