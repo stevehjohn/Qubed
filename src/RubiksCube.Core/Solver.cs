@@ -116,12 +116,9 @@ public sealed class Solver
 
         if (ChecksPass(checks, cube))
         {
-            var passed = SearchStages(
-                algorithmIndex + 1,
-                cube,
-                checks,
-                solution,
-                ref totalNodes);
+            var passed = SearchStages(algorithmIndex + 1, cube, checks, solution, ref totalNodes);
+
+            RemoveChecks(checks, algorithm.IsCompleteChecks.Length);
 
             return passed;
         }
@@ -137,6 +134,7 @@ public sealed class Solver
             foreach (var move in candidate)
             {
                 cube.ApplyMove(move);
+                
                 solution.Add(move);
             }
 
@@ -148,9 +146,12 @@ public sealed class Solver
             while (solution.Count > before)
             {
                 cube.UndoMove();
+                
                 solution.RemoveAt(solution.Count - 1);
             }
         }
+        
+        RemoveChecks(checks, algorithm.IsCompleteChecks.Length);
 
         return false;
     }
