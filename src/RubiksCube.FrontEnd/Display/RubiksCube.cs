@@ -463,7 +463,11 @@ public sealed class RubiksCube : Game
         mappings.Add(Face.Down, mappings[Face.Up].Opposite());
         
         mappings.Add(Face.Left, mappings[Face.Right].Opposite());
-        
+
+        Console.WriteLine($"Front: {normals.MaxBy(n => n.Normal.Z).Face}");
+        Console.WriteLine($"Up: {normals.MaxBy(n => n.Normal.Y).Face}");
+        Console.WriteLine($"Right: {normals.MaxBy(n => n.Normal.X).Face}");
+
         return mappings;
     }
 
