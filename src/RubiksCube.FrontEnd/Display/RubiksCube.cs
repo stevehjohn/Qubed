@@ -436,7 +436,23 @@ public sealed class RubiksCube : Game
 
         face = FaceFromHitPoint(hit);
 
+        MapToDirection();
+        
         return true;
+    }
+
+    private void MapToDirection()
+    {
+        var normals = new List<(Face Face, Vector3 Normal)>();
+        
+        foreach (var face in Enum.GetValues<Face>())
+        {
+            normals.Add((face, Vector3.TransformNormal(NormalForFace(face), _view)));
+        }
+
+        Console.WriteLine($"Front: {normals.MaxBy(n => n.Normal.Z).Face}");
+        Console.WriteLine($"Up: {normals.MaxBy(n => n.Normal.Y).Face}");
+        Console.WriteLine($"Right: {normals.MaxBy(n => n.Normal.X).Face}");
     }
 
     private Viewport GetCubeViewport()
