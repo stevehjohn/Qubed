@@ -69,6 +69,8 @@ public sealed class Solver
 
         var solved = true;
 
+        var totalNodes = 0;
+
         foreach (var algorithm in AlgorithmLibrary.Algorithms)
         {
             _logger?.WriteLine($"{algorithm.Name}\n");
@@ -80,7 +82,13 @@ public sealed class Solver
                 continue;
             }
 
-            solved &= BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
+            var result = BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
+            
+            _logger?.WriteLine($"\nAlgorithm nodes explored: {result.NodesExplored:N0}.");
+
+            solved &= result.ChecksPass;
+
+            totalNodes += result.NodesExplored;
 
             _logger?.WriteLine();
         }
@@ -100,16 +108,18 @@ public sealed class Solver
 
         _logger?.WriteLine();
 
-        _logger?.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed}");
+        _logger?.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed:ss:\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
 
         return (solved, _moves, stopwatch.Elapsed);
     }
 
-    private bool BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
+    private (bool ChecksPass, int NodesExplored) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
     {
         var totalStopwatch = Stopwatch.StartNew();
 
         var branchStopwatch = new Stopwatch();
+
+        var nodesExplored = 0;
 
         for (var depth = MinDepth; depth <= MaxDepth; depth++)
         {
@@ -125,6 +135,8 @@ public sealed class Solver
 
             var stateLock = new Lock();
 
+            nodesExplored = 0;
+
             Parallel.ForEach(moveSets, new ParallelOptions
             {
                 MaxDegreeOfParallelism = _degreeOfParallelism
@@ -135,6 +147,9 @@ public sealed class Solver
                 var newMoves = new List<Move>();
 
                 var algorithmIndices = new List<int> { (int) index };
+
+                // ReSharper disable once AccessToModifiedClosure
+                Interlocked.Increment(ref nodesExplored);
 
                 foreach (var move in moveSet)
                 {
@@ -150,7 +165,7 @@ public sealed class Solver
 
                 var visitedDepths = new Dictionary<(ulong A, ulong B, ulong C), int>();
 
-                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, visitedDepths, innerDepth - 1))
+                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, visitedDepths, innerDepth - 1, ref nodesExplored))
                 {
                     lock (stateLock)
                     {
@@ -179,14 +194,14 @@ public sealed class Solver
 
                 stepCallback?.Invoke(foundMoves);
 
-                return true;
+                return (true, nodesExplored);
             }
         }
 
-        return false;
+        return (false, nodesExplored);
     }
 
-    private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<int> algorithmIndices, Dictionary<(ulong A, ulong B, ulong C), int> visitedDepths, int depth)
+    private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<int> algorithmIndices, Dictionary<(ulong A, ulong B, ulong C), int> visitedDepths, int depth, ref int nodesExplored)
     {
         if (ChecksPass(heuristics, cube))
         {
@@ -217,6 +232,8 @@ public sealed class Solver
         for (var s = 0; s < moveSet.Count; s++)
         {
             var set = moveSet[s];
+            
+            Interlocked.Increment(ref nodesExplored);
 
             if (moves.Count > 0)
             {
@@ -269,7 +286,7 @@ public sealed class Solver
 
             algorithmIndices.Add(s);
 
-            if (SearchAlgorithm(heuristics, moveSet, cube, moves, algorithmIndices, visitedDepths, depth - 1))
+            if (SearchAlgorithm(heuristics, moveSet, cube, moves, algorithmIndices, visitedDepths, depth - 1, ref nodesExplored))
             {
                 return true;
             }
