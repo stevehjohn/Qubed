@@ -450,18 +450,29 @@ public sealed class RubiksCube : Game
             normals.Add((face, Vector3.TransformNormal(NormalForFace(face), _view)));
         }
 
+        var front = normals.MaxBy(n => n.Normal.Z).Face;
+
+        var up = normals
+            .Where(n => n.Face != front &&
+                        n.Face != front.Opposite())
+            .MaxBy(n => n.Normal.Y).Face;
+
+        var right = normals
+            .Where(n => n.Face != front &&
+                        n.Face != front.Opposite() &&
+                        n.Face != up &&
+                        n.Face != up.Opposite())
+            .MaxBy(n => n.Normal.X).Face;
+
         var mappings = new Dictionary<Face, Face>
         {
-            { Face.Front, normals.MaxBy(n => n.Normal.Z).Face },
-            { Face.Up, normals.MaxBy(n => n.Normal.Y).Face },
-            { Face.Right, normals.MaxBy(n => n.Normal.X).Face }
+            { Face.Front, front },
+            { Face.Back, front.Opposite() },
+            { Face.Up, up },
+            { Face.Down, up.Opposite() },
+            { Face.Right, right },
+            { Face.Left, right.Opposite() }
         };
-
-        mappings.Add(Face.Back, mappings[Face.Front].Opposite());
-        
-        mappings.Add(Face.Down, mappings[Face.Up].Opposite());
-        
-        mappings.Add(Face.Left, mappings[Face.Right].Opposite());
 
         return mappings;
     }
