@@ -864,7 +864,7 @@ public sealed class RubiksCube : Game
             _cube.ResetMoveCount();
         }
 
-        if (_cube.MoveCount > 0)
+        if (! _isSolving && _cube.MoveCount > 0)
         {
             Console.WriteLine($"Move count: {_cube.MoveCount}.");
         }

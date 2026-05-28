@@ -108,7 +108,7 @@ public sealed class Solver
 
         _logger?.WriteLine();
 
-        _logger?.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed:ss:\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
+        _logger?.WriteLine($"Moves: {_moves.Count}. Duration: {stopwatch.Elapsed:mm:\\ss.\\.fff}, Total nodes explored: {totalNodes:N0}.\n");
 
         return (solved, _moves, stopwatch.Elapsed);
     }
@@ -190,7 +190,7 @@ public sealed class Solver
                     _cube.ApplyMove(move);
                 }
 
-                _logger?.WriteLine($"\nNew moves: {foundMoves.Count}, duration: {totalStopwatch.Elapsed}");
+                _logger?.WriteLine($"\nNew moves: {foundMoves.Count:N0}, duration: {totalStopwatch.Elapsed:ss\\.fff}");
 
                 stepCallback?.Invoke(foundMoves);
 
