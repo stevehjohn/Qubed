@@ -129,7 +129,7 @@ public sealed class Solver
 
         totalNodes += result.NodesExplored;
 
-        foreach (var candidate in result.Candidates.Where(c => c is { Count: > 0 }).OrderBy(c => c.Count))
+        foreach (var candidate in result.Candidates.Where(c => c is { Count: > 0 }).OrderBy(c => c.Count).Take(8))
         {
             var before = solution.Count;
 
@@ -341,10 +341,7 @@ public sealed class Solver
 
             algorithmIndices.Add(s);
 
-            if (SearchAlgorithm(heuristics, moveSet, cube, moves, candidates, algorithmIndices, visitedDepths, depth - 1, ref nodesExplored))
-            {
-                candidates.Add([..moves]);
-            }
+            SearchAlgorithm(heuristics, moveSet, cube, moves, candidates, algorithmIndices, visitedDepths, depth - 1, ref nodesExplored);
 
             for (var i = 0; i < appliedMoves; i++)
             {
