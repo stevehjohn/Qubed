@@ -16,7 +16,9 @@ public sealed class Solver
     private readonly ILogger _logger;
 
     private readonly int _degreeOfParallelism;
-
+    
+    private readonly Stopwatch _lastReport = Stopwatch.StartNew();
+    
     public Solver(Cube cube, Mode mode = Mode.HalfCores) : this(cube, mode, null)
     {
     }
@@ -161,6 +163,18 @@ public sealed class Solver
         checks.RemoveRange(checks.Count - count, count);
     }
 
+    private void ReportProgress(int depth, int nodes, int candidates)
+    {
+        if (_lastReport.ElapsedMilliseconds < 10_000)
+        {
+            return;
+        }
+        
+        Console.WriteLine($"Depth {depth}, nodes {nodes:N0}, candidates {candidates:N0}.");
+
+        _lastReport.Restart();
+    }
+    
     private (bool ChecksPass, int NodesExplored, List<List<Move>> Candidates) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Cube cube)
     {
         var totalStopwatch = Stopwatch.StartNew();
@@ -239,28 +253,30 @@ public sealed class Solver
         return (false, nodesExplored, candidates);
     }
 
-    private static bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<List<Move>> candidates, List<int> algorithmIndices, Dictionary<(ulong A, ulong B, ulong C), int> visitedDepths, int depth, ref int nodesExplored)
+    private bool SearchAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSet, Cube cube, List<Move> moves, List<List<Move>> candidates, List<int> algorithmIndices, Dictionary<(ulong A, ulong B, ulong C), int> visitedDepths, int depth, ref int nodesExplored)
     {
         if (depth == 0)
         {
             return candidates.Count > 0;
         }
-
-        // var key = cube.GetHash();
-        //
-        // if (visitedDepths.TryGetValue(key, out var seenDepth))
-        // {
-        //     if (seenDepth >= depth)
-        //     {
-        //         return false;
-        //     }
-        //
-        //     visitedDepths[key] = depth;
-        // }
-        // else
-        // {
-        //     visitedDepths.Add(key, depth);
-        // }
+        
+        ReportProgress(depth, nodesExplored, candidates.Count);
+        
+        var key = cube.GetHash();
+        
+        if (visitedDepths.TryGetValue(key, out var seenDepth))
+        {
+            if (seenDepth >= depth)
+            {
+                return false;
+            }
+        
+            visitedDepths[key] = depth;
+        }
+        else
+        {
+            visitedDepths.Add(key, depth);
+        }
 
         for (var s = 0; s < moveSet.Count; s++)
         {
