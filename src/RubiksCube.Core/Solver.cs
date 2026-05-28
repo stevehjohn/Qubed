@@ -41,7 +41,19 @@ public sealed class Solver
     public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback, Action<List<Move>> stepCallback = null)
     {
         Task.Run(() => Solve(stepCallback))
-            .ContinueWith(task => { callback(task.Result); }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            .ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    _logger?.WriteLine(task.Exception?.GetBaseException().ToString());
+
+                    callback((false, [], TimeSpan.Zero));
+
+                    return;
+                }
+
+                callback(task.Result);
+            });
     }
 
     public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<List<Move>> stepCallback = null)
@@ -83,7 +95,7 @@ public sealed class Solver
             }
 
             var result = BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
-            
+
             _logger?.WriteLine($"\nAlgorithm nodes explored: {result.NodesExplored:N0}.");
 
             solved &= result.ChecksPass;
@@ -232,7 +244,7 @@ public sealed class Solver
         for (var s = 0; s < moveSet.Count; s++)
         {
             var set = moveSet[s];
-            
+
             Interlocked.Increment(ref nodesExplored);
 
             if (moves.Count > 0)
