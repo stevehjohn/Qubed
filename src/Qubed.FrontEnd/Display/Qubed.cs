@@ -18,8 +18,6 @@ namespace Qubed.FrontEnd.Display;
 
 public sealed class Qubed : Game
 {
-    private const string Directions = " '2";
-    
     private const int NetTileSize = 20;
 
     private const int NetSpacing = 6;
@@ -143,10 +141,6 @@ public sealed class Qubed : Game
     private SoundEffect _solvedSound;
 
     private Dictionary<Face, Face> _faceMappings;
-
-    private Dictionary<Face, Face> _inverseFaceMappings;
-
-    private List<string> _history = [];
 
     public Qubed(ILogger logger = null)
     {
@@ -507,10 +501,6 @@ public sealed class Qubed : Game
                 ? Direction.HalfTurn
                 : Direction.Clockwise;
 
-        var move = $"{_inverseFaceMappings[face].ToString()[0]}{Directions[(int) direction]}".Trim();
-        
-        _history.Add(move);
-        
         StartFaceRotation(new Move(face, direction));
 
         return true;
@@ -585,8 +575,6 @@ public sealed class Qubed : Game
             { Face.Left, right.Opposite() },
             { Face.Right, right }
         };
-
-        _inverseFaceMappings = _faceMappings.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
     }
 
     private Viewport GetCubeViewport()
@@ -738,38 +726,26 @@ public sealed class Qubed : Game
 
         if (WasKeyPressed(keyboard, Keys.U))
         {
-            _history.Add($"U{Directions[(int) direction]}".Trim());
-            
             StartFaceRotation(new Move(_faceMappings[Face.Up], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.D))
         {
-            _history.Add($"D{Directions[(int) direction]}".Trim());
-            
             StartFaceRotation(new Move(_faceMappings[Face.Down], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.F))
         {
-            _history.Add($"F{Directions[(int) direction]}".Trim());
-            
             StartFaceRotation(new Move(_faceMappings[Face.Front], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.B))
         {
-            _history.Add($"B{Directions[(int) direction]}".Trim());
-            
             StartFaceRotation(new Move(_faceMappings[Face.Back], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.L))
         {
-            _history.Add($"L{Directions[(int) direction]}".Trim());
-            
             StartFaceRotation(new Move(_faceMappings[Face.Left], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.R))
         {
-            _history.Add($"R{Directions[(int) direction]}".Trim());
-            
             StartFaceRotation(new Move(_faceMappings[Face.Right], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.Z) && (keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl)))
