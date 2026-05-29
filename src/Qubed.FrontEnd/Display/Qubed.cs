@@ -347,7 +347,7 @@ public sealed class Qubed : Game
 
         var time = (float) gameTime.TotalGameTime.TotalSeconds;
 
-        var textColour = (byte) (191.5f + MathF.Sin(time * MathHelper.TwoPi) * 63.5f);
+        var textColour = (byte) (127 + MathF.Sin(time * MathHelper.TwoPi) * 100);
 
         if (_isScrambling)
         {
