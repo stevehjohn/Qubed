@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.Xna.Framework;
@@ -65,6 +66,18 @@ public sealed class Qubed : Game
 
     private readonly ILogger _logger;
 
+    private readonly Color[] _faceColors =
+    [
+        Color.White,
+        Color.Yellow,
+        Color.Red,
+        Color.Orange,
+        Color.Green,
+        Color.Blue
+    ];
+    
+    private readonly Stopwatch _stopwatch = new();
+
     private TextManager _textManager;
 
     private BasicEffect _effect;
@@ -126,16 +139,6 @@ public sealed class Qubed : Game
     private SoundEffect _clickSound;
 
     private SoundEffect _solvedSound;
-
-    private readonly Color[] _faceColors =
-    [
-        Color.White,
-        Color.Yellow,
-        Color.Red,
-        Color.Orange,
-        Color.Green,
-        Color.Blue
-    ];
 
     public Qubed(ILogger logger = null)
     {
@@ -329,7 +332,9 @@ public sealed class Qubed : Game
 
     private void UpdateText()
     {
-        _textManager.DrawMessage($"Moves: {_cube.MoveCount}", 300, 50);
+        _textManager.DrawMessage($"Moves: {_cube.MoveCount}", NetLeft + PanelWidth / 4, 20);
+        
+        _textManager.DrawMessage($@"Time: {_stopwatch.Elapsed:mm\:ss\.ff}", NetLeft + PanelWidth / 4, 60);
     }
 
     private void DrawNet()
