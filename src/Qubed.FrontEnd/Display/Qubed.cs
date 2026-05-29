@@ -300,7 +300,8 @@ public sealed class Qubed : Game
         foreach (var pass in _effect.CurrentTechnique.Passes)
         {
             pass.Apply();
-            DrawRubiksCube();
+            
+            DrawQube();
         }
 
         GraphicsDevice.Viewport = fullViewport;
@@ -1018,7 +1019,7 @@ public sealed class Qubed : Game
         _solvedSound.Play();
     }
 
-    private void DrawRubiksCube()
+    private void DrawQube()
     {
         foreach (var cubie in _cubies)
         {
