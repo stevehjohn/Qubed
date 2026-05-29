@@ -982,7 +982,7 @@ public sealed class Qubed : Game
 
         if (! _isUndoRedo)
         {
-            if (_cube.MoveCount == 0)
+            if (_cube.MoveCount == 0 && ! _isScrambling)
             {
                 _stopwatch.Restart();
             }
