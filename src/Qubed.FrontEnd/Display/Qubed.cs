@@ -225,21 +225,29 @@ public sealed class Qubed : Game
         if (keyboard.IsKeyDown(Keys.Left))
         {
             _yaw -= 0.02f;
+            
+            UpdateView();
         }
 
         if (keyboard.IsKeyDown(Keys.Right))
         {
             _yaw += 0.02f;
+            
+            UpdateView();
         }
 
         if (keyboard.IsKeyDown(Keys.Up))
         {
             _pitch -= 0.02f;
+            
+            UpdateView();
         }
 
         if (keyboard.IsKeyDown(Keys.Down))
         {
             _pitch += 0.02f;
+            
+            UpdateView();
         }
 
         UpdateMouseControls(mouse);
