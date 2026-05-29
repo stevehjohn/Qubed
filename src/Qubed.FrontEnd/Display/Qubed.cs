@@ -1002,7 +1002,7 @@ public sealed class Qubed : Game
 
         if (! _isSolving && _cube.MoveCount > 0)
         {
-            Console.WriteLine($"Move count: {_cube.MoveCount}.");
+            _logger?.WriteLine($"Move count: {_cube.MoveCount}.");
         }
 
         _isUndoRedo = false;
