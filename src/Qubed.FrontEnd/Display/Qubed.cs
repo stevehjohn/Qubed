@@ -139,6 +139,8 @@ public sealed class Qubed : Game
     private SoundEffect _clickSound;
 
     private SoundEffect _solvedSound;
+    
+    private Dictionary<Face, Face> _faceMappings;
 
     public Qubed(ILogger logger = null)
     {
@@ -530,8 +532,6 @@ public sealed class Qubed : Game
 
         face = FaceFromHitPoint(hit);
 
-        MapFacesToDirection();
-
         return true;
     }
 
@@ -621,6 +621,8 @@ public sealed class Qubed : Game
         var up = MathF.Cos(pitch) >= 0f ? Vector3.Up : Vector3.Down;
 
         _view = Matrix.CreateLookAt(cameraPosition, Vector3.Zero, up);
+        
+        _faceMappings = MapFacesToDirection();
     }
 
     private int ViewSign()
@@ -716,31 +718,29 @@ public sealed class Qubed : Game
             direction = Direction.HalfTurn;
         }
 
-        var mappings = MapFacesToDirection();
-
         if (WasKeyPressed(keyboard, Keys.U))
         {
-            StartFaceRotation(new Move(mappings[Face.Up], direction));
+            StartFaceRotation(new Move(_faceMappings[Face.Up], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.D))
         {
-            StartFaceRotation(new Move(mappings[Face.Down], direction));
+            StartFaceRotation(new Move(_faceMappings[Face.Down], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.F))
         {
-            StartFaceRotation(new Move(mappings[Face.Front], direction));
+            StartFaceRotation(new Move(_faceMappings[Face.Front], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.B))
         {
-            StartFaceRotation(new Move(mappings[Face.Back], direction));
+            StartFaceRotation(new Move(_faceMappings[Face.Back], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.L))
         {
-            StartFaceRotation(new Move(mappings[Face.Left], direction));
+            StartFaceRotation(new Move(_faceMappings[Face.Left], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.R))
         {
-            StartFaceRotation(new Move(mappings[Face.Right], direction));
+            StartFaceRotation(new Move(_faceMappings[Face.Right], direction));
         }
         else if (WasKeyPressed(keyboard, Keys.Z) && (keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl)))
         {
