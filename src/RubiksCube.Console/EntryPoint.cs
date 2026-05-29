@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using RubiksCube.Console.Tools;
+using Qubed.Console.Tools;
 
-namespace RubiksCube.Console;
+namespace Qubed.Console;
 
 [SuppressMessage("Performance", "CA1806:Do not ignore method results")]
 public static class EntryPoint

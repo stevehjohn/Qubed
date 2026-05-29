@@ -3,7 +3,7 @@ using Qubed.Core;
 using Qubed.Core.Models;
 using static System.Console;
 
-namespace RubiksCube.Console.Tools;
+namespace Qubed.Console.Tools;
 
 public static class SolverBenchmark
 {
