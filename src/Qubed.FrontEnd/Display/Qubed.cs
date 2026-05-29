@@ -751,8 +751,6 @@ public sealed class Qubed : Game
 
                 _scrambleTurns = 20;
 
-                Console.WriteLine($"Scrambling with {_scrambleTurns} moves.");
-
                 _rotationDuration = 0.1f;
 
                 _isScrambling = true;
