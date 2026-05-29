@@ -222,8 +222,8 @@ public sealed class Cube
             {
                 face = (Face) _random.Next(6);
 
-            } while ((previousFace1.HasValue && face == previousFace1)
-                     || (previousFace2.HasValue && face == previousFace2 && previousFace1.Value == previousFace2.Value.Opposite()));
+            } while (face == previousFace1
+                     || (face == previousFace2 && previousFace1.Value == previousFace2.Value.Opposite()));
 
             var direction = (Direction) _random.Next(3);
 

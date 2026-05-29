@@ -722,9 +722,9 @@ public sealed class RubiksCube : Game
         {
             face = (Face) _random.Next(6);
             
-        } while ((_previousFace1.HasValue && face == _previousFace1)
+        } while (face == _previousFace1
                  // ReSharper disable once PossibleInvalidOperationException
-                 || (_previousFace2.HasValue && face == _previousFace2 && _previousFace1.Value == _previousFace2.Value.Opposite()));
+                 || (face == _previousFace2 && _previousFace1.Value == _previousFace2.Value.Opposite()));
 
         _previousFace2 = _previousFace1;
 
