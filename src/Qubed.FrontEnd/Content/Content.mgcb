@@ -22,3 +22,11 @@
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /build:solved.wav
+
+
+#begin font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font.spritefont
