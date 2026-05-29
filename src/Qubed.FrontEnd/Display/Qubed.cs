@@ -802,7 +802,7 @@ public sealed class Qubed : Game
             return;
         }
 
-        var solver = new Solver(cube, Mode.Fast, new ConsoleLogger());
+        var solver = new Solver(cube, Mode.Fast, _logger);
 
         lock (_solveLock)
         {
