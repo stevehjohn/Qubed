@@ -6,7 +6,7 @@
         <TieredCompilation>false</TieredCompilation>
         <LangVersion>14</LangVersion>
         <OutputType>WinExe</OutputType>
-        <AssemblyName>Qubed.FrontEnd</AssemblyName>
+        <AssemblyName>Qubed</AssemblyName>
         <RootNamespace>Qubed.FrontEnd</RootNamespace>
     </PropertyGroup>
     <PropertyGroup>
