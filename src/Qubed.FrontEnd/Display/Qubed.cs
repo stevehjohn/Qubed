@@ -64,9 +64,9 @@ public sealed class Qubed : Game
     private readonly Lock _solveLock = new();
 
     private readonly ILogger _logger;
-    
+
     private TextManager _textManager;
-    
+
     private BasicEffect _effect;
 
     private Matrix _view;
@@ -172,7 +172,7 @@ public sealed class Qubed : Game
         };
 
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        
+
         _textManager = new TextManager(_spriteBatch, Content.Load<SpriteFont>("font"));
 
         _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
@@ -308,7 +308,7 @@ public sealed class Qubed : Game
         foreach (var pass in _effect.CurrentTechnique.Passes)
         {
             pass.Apply();
-            
+
             DrawQube();
         }
 
@@ -316,15 +316,24 @@ public sealed class Qubed : Game
 
         _effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), fullViewport.AspectRatio, 0.1f, 100f);
 
+        _spriteBatch.Begin(SpriteSortMode.FrontToBack);
+
         DrawNet();
+
+        UpdateText();
+
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }
 
+    private void UpdateText()
+    {
+        _textManager.DrawMessage($"Moves: {_cube.MoveCount}", 300, 50);
+    }
+
     private void DrawNet()
     {
-        _spriteBatch.Begin(SpriteSortMode.FrontToBack);
-
         _texture.SetData(_data);
 
         const int unit = NetTileSize + NetSpacing;
@@ -342,8 +351,6 @@ public sealed class Qubed : Game
         DrawFace(Face.Down, NetSpacing + unit * 3, NetSpacing + unit * 6);
 
         _spriteBatch.Draw(_texture, new Vector2(NetLeft, NetTop), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
-
-        _spriteBatch.End();
     }
 
     private void DrawFace(Face face, int left, int top)
@@ -938,7 +945,7 @@ public sealed class Qubed : Game
         var pitch = (float) (_random.NextDouble() * 0.3 - 0.15);
 
         var volume = _isScrambling || _isSolving ? 0.4f : 1f;
-        
+
         _clickSound.Play(volume, pitch, 0f);
     }
 
