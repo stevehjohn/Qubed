@@ -921,6 +921,8 @@ public sealed class RubiksCube : Game
     private void StartFaceRotation(Move move)
     {
         _activeRotation = new FaceRotation(move);
+
+        _clickSound.Play();
     }
 
     private bool WasKeyPressed(KeyboardState keyboard, Keys key, char? character = null)
@@ -991,8 +993,6 @@ public sealed class RubiksCube : Game
         }
 
         _isUndoRedo = false;
-
-        _clickSound.Play();
     }
 
     private void TriggerVictory()
