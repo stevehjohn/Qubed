@@ -982,12 +982,19 @@ public sealed class Qubed : Game
 
         if (! _isUndoRedo)
         {
+            if (_cube.MoveCount == 0)
+            {
+                _stopwatch.Restart();
+            }
+
             _cube.ApplyMove(rotation.Face, rotation.Direction, ! _isScrambling);
 
             var solved = _cube.IsSolved();
 
             if (solved)
             {
+                _stopwatch.Stop();
+                
                 TriggerVictory();
             }
         }
