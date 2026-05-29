@@ -368,7 +368,14 @@ public sealed class Qubed : Game
 
         if (_isSolving)
         {
-            _textManager.DrawMessage("Solving!", 220, 20, true, Color.FromNonPremultiplied(0xFF, 0xFF, textColour, 0xFF));
+            if (_activeRotation == null)
+            {
+                _textManager.DrawMessage("Thinking...", 220, 20, true, Color.FromNonPremultiplied(0xFF, textColour, 0xFF, 0xFF));
+            }
+            else
+            {
+                _textManager.DrawMessage("Solving!", 220, 20, true, Color.FromNonPremultiplied(0xFF, 0xFF, textColour, 0xFF));
+            }
         }
 
         if (_cube.IsSolved() && _stopwatch.Elapsed > TimeSpan.Zero)
