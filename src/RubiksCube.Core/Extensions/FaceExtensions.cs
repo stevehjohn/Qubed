@@ -11,7 +11,7 @@ public static class FaceExtensions
             return face switch
             {
                 Face.Up => Face.Down,
-                Face.Down => Face.Front,
+                Face.Down => Face.Up,
                 Face.Front => Face.Back,
                 Face.Back => Face.Front,
                 Face.Left => Face.Right,
