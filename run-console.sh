@@ -1,1 +1,1 @@
-dotnet run --project src/RubiksCube.Console/RubiksCube.Console.csproj -c Release $*
+dotnet run --project src/Qubed.Console/Qubed.Console.csproj -c Release $*
