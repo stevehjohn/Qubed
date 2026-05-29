@@ -1,7 +1,7 @@
 using Qubed.Core.Models;
 using Xunit;
 
-namespace RubiksCube.Core.Tests.Models;
+namespace Qubed.Core.Tests.Models;
 
 public class CubeTests
 {

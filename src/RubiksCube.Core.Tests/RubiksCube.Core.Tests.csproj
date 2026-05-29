@@ -6,6 +6,8 @@
         <Nullable>disable</Nullable>
         <OutputType>Exe</OutputType>
         <IsTestProject>true</IsTestProject>
+        <AssemblyName>Qubed.Core.Tests</AssemblyName>
+        <RootNamespace>Qubed.Core.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
