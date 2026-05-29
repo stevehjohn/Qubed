@@ -65,6 +65,8 @@ public sealed class Qubed : Game
 
     private readonly ILogger _logger;
     
+    private TextManager _textManager;
+    
     private BasicEffect _effect;
 
     private Matrix _view;
@@ -170,6 +172,8 @@ public sealed class Qubed : Game
         };
 
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        
+        _textManager = new TextManager(_spriteBatch, Content.Load<SpriteFont>("font"));
 
         _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
 
