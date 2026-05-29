@@ -119,6 +119,8 @@ public sealed class RubiksCube : Game
 
     private SoundEffect _clickSound;
 
+    private SoundEffect _solvedSound;
+
     private readonly Color[] _faceColors =
     [
         Color.White,
@@ -166,6 +168,8 @@ public sealed class RubiksCube : Game
         _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
 
         _clickSound = Content.Load<SoundEffect>("click");
+
+        _solvedSound = Content.Load<SoundEffect>("solved");
 
         UpdateView();
 
@@ -1006,6 +1010,8 @@ public sealed class RubiksCube : Game
         _victoryYaw = _yaw;
 
         _victoryPitch = _pitch;
+
+        _solvedSound.Play();
     }
 
     private void DrawRubiksCube()

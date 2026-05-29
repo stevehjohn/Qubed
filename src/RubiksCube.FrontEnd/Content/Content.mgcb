@@ -17,3 +17,8 @@
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /build:click.wav
+
+#begin solved.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:solved.wav
