@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RubiksCube.Core\RubiksCube.Core.csproj" />
+      <ProjectReference Include="..\Qubed.Core\Qubed.Core.csproj" />
     </ItemGroup>
 
 </Project>
