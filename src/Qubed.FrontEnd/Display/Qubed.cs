@@ -142,6 +142,8 @@ public sealed class Qubed : Game
 
     private Dictionary<Face, Face> _faceMappings;
 
+    private bool _resetOnNextUserMove;
+
     public Qubed(ILogger logger = null)
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -817,7 +819,7 @@ public sealed class Qubed : Game
                 _isScrambling = true;
 
                 _cube.ResetMoveCount();
-                
+
                 _stopwatch.Reset();
             }
             else
@@ -988,6 +990,15 @@ public sealed class Qubed : Game
 
     private void StartFaceRotation(Move move)
     {
+        if (_resetOnNextUserMove && ! _isScrambling && ! _isSolving)
+        {
+            _cube.ResetMoveCount();
+            
+            _stopwatch.Restart();
+            
+            _resetOnNextUserMove = false;
+        }
+
         _activeRotation = new FaceRotation(move);
 
         var pitch = (float) (_random.NextDouble() * 0.3 - 0.15);
@@ -1037,6 +1048,8 @@ public sealed class Qubed : Game
             if (solved)
             {
                 _stopwatch.Stop();
+
+                _resetOnNextUserMove = true;
 
                 TriggerVictory();
             }
