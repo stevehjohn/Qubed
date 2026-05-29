@@ -332,9 +332,18 @@ public sealed class Qubed : Game
 
     private void UpdateText()
     {
-        _textManager.DrawMessage($"Moves: {_cube.MoveCount}", NetLeft + PanelWidth / 4, 20);
-        
-        _textManager.DrawMessage($@"Time: {_stopwatch.Elapsed:mm\:ss\.ff}", NetLeft + PanelWidth / 4, 60);
+        if (_cube.MoveCount == 0)
+        {
+            _textManager.DrawMessage("Moves: -", NetLeft + PanelWidth / 4, 20);
+
+            _textManager.DrawMessage("Time: -", NetLeft + PanelWidth / 4, 60);
+        }
+        else
+        {
+            _textManager.DrawMessage($"Moves: {_cube.MoveCount}", NetLeft + PanelWidth / 4, 20);
+
+            _textManager.DrawMessage($@"Time: {_stopwatch.Elapsed:mm\:ss\.ff}", NetLeft + PanelWidth / 4, 60);
+        }
     }
 
     private void DrawNet()
