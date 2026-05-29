@@ -1,4 +1,6 @@
-# Rubik's Cube Simulator and Solver
+# Qubed. 3 x 3 Cube Game and Solver
+
+Twist. Solve. Master.
 
 ![Game Screenshot](screenshots/cube-1.png)
 
