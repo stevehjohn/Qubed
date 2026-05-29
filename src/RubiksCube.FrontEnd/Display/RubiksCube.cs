@@ -113,7 +113,9 @@ public sealed class RubiksCube : Game
     private float _victoryYaw;
 
     private float _victoryPitch;
-
+    
+    private float _victorySpacingOffset;
+    
     private readonly Color[] _faceColors =
     [
         Color.White,
@@ -244,6 +246,14 @@ public sealed class RubiksCube : Game
 
             _pitch = _victoryPitch + MathF.Sin(_victoryTime * 8f) * 0.15f;
 
+            var progress = MathHelper.Clamp(_victoryTime / 1.25f, 0f, 1f);
+            
+            var fade = 1f - progress;
+
+            _victorySpacingOffset =
+                MathF.Sin(progress * MathHelper.TwoPi * 2f) *
+                fade *
+                0.35f;            
             UpdateView();
 
             if (_victoryTime >= 1.25f)
@@ -1116,7 +1126,7 @@ public sealed class RubiksCube : Game
 
     private void DrawCubie(Cubie cubie)
     {
-        var centre = cubie.Position * _cubeSpacing;
+        var centre = cubie.Position * (_cubeSpacing +  + _victorySpacingOffset);
 
         const float half = CubieSize / 2f;
 
