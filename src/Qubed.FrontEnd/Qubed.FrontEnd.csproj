@@ -7,6 +7,8 @@
         <LangVersion>14</LangVersion>
         <OutputType>WinExe</OutputType>
         <AssemblyName>Qubed</AssemblyName>
+        <Product>Qubed</Product>
+        <Title>Qubed</Title>
         <RootNamespace>Qubed.FrontEnd</RootNamespace>
     </PropertyGroup>
     <PropertyGroup>
