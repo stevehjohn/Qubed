@@ -1,4 +1,4 @@
-namespace RubiksCube.Core.Infrastructure;
+namespace Qubed.Core.Infrastructure;
 
 public class ConsoleLogger : ILogger
 {

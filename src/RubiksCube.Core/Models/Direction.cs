@@ -1,4 +1,4 @@
-namespace RubiksCube.Core.Models;
+namespace Qubed.Core.Models;
 
 public enum Direction
 {

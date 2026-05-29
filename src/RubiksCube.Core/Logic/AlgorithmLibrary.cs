@@ -1,7 +1,7 @@
-using RubiksCube.Core.Exceptions;
-using RubiksCube.Core.Models;
+using Qubed.Core.Exceptions;
+using Qubed.Core.Models;
 
-namespace RubiksCube.Core.Logic;
+namespace Qubed.Core.Logic;
 
 public static class AlgorithmLibrary
 {

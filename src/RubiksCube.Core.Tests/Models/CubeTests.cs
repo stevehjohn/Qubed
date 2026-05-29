@@ -1,4 +1,4 @@
-using RubiksCube.Core.Models;
+using Qubed.Core.Models;
 using Xunit;
 
 namespace RubiksCube.Core.Tests.Models;

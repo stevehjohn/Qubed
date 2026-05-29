@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
-using RubiksCube.Core.Infrastructure;
-using RubiksCube.Core.Logic;
-using RubiksCube.Core.Models;
+using Qubed.Core.Infrastructure;
+using Qubed.Core.Logic;
+using Qubed.Core.Models;
 
-namespace RubiksCube.Core;
+namespace Qubed.Core;
 
 public sealed class Solver
 {

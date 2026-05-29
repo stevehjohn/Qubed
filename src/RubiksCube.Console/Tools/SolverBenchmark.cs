@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using RubiksCube.Core;
-using RubiksCube.Core.Models;
+using Qubed.Core;
+using Qubed.Core.Models;
 using static System.Console;
 
 namespace RubiksCube.Console.Tools;

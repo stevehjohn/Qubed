@@ -6,10 +6,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RubiksCube.Core;
-using RubiksCube.Core.Extensions;
-using RubiksCube.Core.Infrastructure;
-using RubiksCube.Core.Models;
+using Qubed.Core;
+using Qubed.Core.Extensions;
+using Qubed.Core.Infrastructure;
+using Qubed.Core.Models;
+using Cube = Qubed.Core.Models.Cube;
+using Move = Qubed.Core.Models.Move;
 
 namespace RubiksCube.FrontEnd.Display;
 

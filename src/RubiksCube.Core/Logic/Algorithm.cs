@@ -1,5 +1,5 @@
-using RubiksCube.Core.Models;
+using Qubed.Core.Models;
 
-namespace RubiksCube.Core.Logic;
+namespace Qubed.Core.Logic;
 
 public readonly record struct Algorithm(string Name, IReadOnlyList<IReadOnlyList<Move>> MoveSets, Func<Cube, bool>[] IsCompleteChecks);

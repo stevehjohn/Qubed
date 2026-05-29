@@ -1,6 +1,6 @@
-using RubiksCube.Core.Models;
+using Qubed.Core.Models;
 
-namespace RubiksCube.Core.Extensions;
+namespace Qubed.Core.Extensions;
 
 public static class DirectionExtensions
 {

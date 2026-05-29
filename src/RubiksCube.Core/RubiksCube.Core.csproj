@@ -4,6 +4,8 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
+        <AssemblyName>Qubed.Core</AssemblyName>
+        <RootNamespace>Qubed.Core</RootNamespace>
     </PropertyGroup>
 
 </Project>

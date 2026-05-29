@@ -1,7 +1,7 @@
 using System.Text;
-using RubiksCube.Core.Extensions;
+using Qubed.Core.Extensions;
 
-namespace RubiksCube.Core.Models;
+namespace Qubed.Core.Models;
 
 public sealed class Cube
 {

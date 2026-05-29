@@ -1,4 +1,4 @@
-namespace RubiksCube.Core.Exceptions;
+namespace Qubed.Core.Exceptions;
 
 public class ParseException : Exception
 {

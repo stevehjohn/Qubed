@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using RubiksCube.Core.Models;
+using Qubed.Core.Models;
 
 namespace RubiksCube.FrontEnd.Display;
 
