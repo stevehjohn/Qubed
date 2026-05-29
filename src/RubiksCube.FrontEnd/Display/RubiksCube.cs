@@ -142,7 +142,7 @@ public sealed class RubiksCube : Game
 
     protected override void Initialize()
     {
-        Window.Title = "Rubiks Cube";
+        Window.Title = "Qubed";
 
         CreateSolvedCube();
 
