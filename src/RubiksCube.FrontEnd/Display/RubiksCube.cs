@@ -991,6 +991,8 @@ public sealed class RubiksCube : Game
         }
 
         _isUndoRedo = false;
+
+        _clickSound.Play();
     }
 
     private void TriggerVictory()
