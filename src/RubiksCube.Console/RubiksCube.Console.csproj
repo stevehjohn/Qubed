@@ -5,6 +5,8 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
+        <AssemblyName>Qubed.Console</AssemblyName>
+        <RootNamespace>Qubed.Console</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
