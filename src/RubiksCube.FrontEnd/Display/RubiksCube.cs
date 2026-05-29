@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RubiksCube.Core;
@@ -116,6 +117,8 @@ public sealed class RubiksCube : Game
     
     private float _victorySpacingOffset;
     
+    private SoundEffect _clickSound;
+    
     private readonly Color[] _faceColors =
     [
         Color.White,
@@ -150,6 +153,8 @@ public sealed class RubiksCube : Game
 
     protected override void LoadContent()
     {
+        Content.RootDirectory = "Content";
+        
         _effect = new BasicEffect(GraphicsDevice)
         {
             VertexColorEnabled = true,
@@ -159,6 +164,8 @@ public sealed class RubiksCube : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
+        
+        _clickSound = Content.Load<SoundEffect>("click");
 
         UpdateView();
 

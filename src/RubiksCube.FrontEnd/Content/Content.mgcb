@@ -13,3 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin click.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:click.wav
