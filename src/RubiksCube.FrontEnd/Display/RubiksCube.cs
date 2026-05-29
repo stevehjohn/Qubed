@@ -927,8 +927,10 @@ public sealed class RubiksCube : Game
         _activeRotation = new FaceRotation(move);
 
         var pitch = (float) (_random.NextDouble() * 0.3 - 0.15);
+
+        var volume = _isScrambling || _isSolving ? 0.4f : 1f;
         
-        _clickSound.Play(1f, pitch, 0f);
+        _clickSound.Play(volume, pitch, 0f);
     }
 
     private bool WasKeyPressed(KeyboardState keyboard, Keys key, char? character = null)
