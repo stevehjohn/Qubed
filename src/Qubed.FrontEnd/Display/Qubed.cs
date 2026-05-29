@@ -344,6 +344,16 @@ public sealed class Qubed : Game
 
             _textManager.DrawMessage($@"Time: {_stopwatch.Elapsed:mm\:ss\.ff}", NetLeft + PanelWidth / 4, 60);
         }
+
+        if (_isScrambling)
+        {
+            _textManager.DrawMessage("Scrambling!", 200, 20, true);
+        }
+
+        if (_isSolving)
+        {
+            _textManager.DrawMessage("Solving!", 200, 20, true);
+        }
     }
 
     private void DrawNet()
