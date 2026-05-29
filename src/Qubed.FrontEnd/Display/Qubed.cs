@@ -351,12 +351,12 @@ public sealed class Qubed : Game
 
         if (_isScrambling)
         {
-            _textManager.DrawMessage("Scrambling!", 220, 20, true, Color.FromNonPremultiplied(textColour, 0xFF, 0xFF, 0xFF));
+            _textManager.DrawMessage("Scrambling!", 220, 20, true, Color.FromNonPremultiplied(0xFF, 0xFF, textColour, 0xFF));
         }
 
         if (_isSolving)
         {
-            _textManager.DrawMessage("Solving!", 220, 20, true, Color.FromNonPremultiplied(0xFF, textColour, 0xFF, 0xFF));
+            _textManager.DrawMessage("Solving!", 220, 20, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
         }
     }
 
