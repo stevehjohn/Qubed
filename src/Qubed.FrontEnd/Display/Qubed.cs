@@ -63,6 +63,8 @@ public sealed class Qubed : Game
 
     private readonly Lock _solveLock = new();
 
+    private ILogger _logger;
+    
     private BasicEffect _effect;
 
     private Matrix _view;
@@ -133,13 +135,15 @@ public sealed class Qubed : Game
         Color.Blue
     ];
 
-    public Qubed()
+    public Qubed(ILogger logger = null)
     {
         _graphics = new GraphicsDeviceManager(this);
 
         IsMouseVisible = true;
 
         _graphics.PreferMultiSampling = true;
+
+        _logger = logger;
     }
 
     protected override void Initialize()
