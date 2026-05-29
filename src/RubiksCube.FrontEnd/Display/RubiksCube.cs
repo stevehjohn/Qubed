@@ -110,6 +110,10 @@ public sealed class RubiksCube : Game
 
     private float _victoryTime;
 
+    private float _victoryYaw;
+
+    private float _victoryPitch;
+
     private readonly Color[] _faceColors =
     [
         Color.White,
@@ -234,20 +238,17 @@ public sealed class RubiksCube : Game
 
         if (_victoryActive)
         {
-            _victoryTime += (float) gameTime.ElapsedGameTime.TotalSeconds;
+            _victoryTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            _yaw += MathHelper.TwoPi *
-                    (float) gameTime.ElapsedGameTime.TotalSeconds;
+            _yaw = _victoryYaw + MathHelper.TwoPi * _victoryTime;
 
-            _pitch = MathF.Sin(_victoryTime * 8f) * 0.15f;
+            _pitch = _victoryPitch + MathF.Sin(_victoryTime * 8f) * 0.15f;
 
             UpdateView();
 
             if (_victoryTime >= 1.25f)
             {
                 _victoryActive = false;
-
-                _pitch = 0f;
             }
         }
 
@@ -979,6 +980,10 @@ public sealed class RubiksCube : Game
         _victoryActive = true;
 
         _victoryTime = 0f;
+
+        _victoryYaw = _yaw;
+
+        _victoryPitch = _pitch;
     }
 
     private void DrawRubiksCube()
