@@ -817,6 +817,8 @@ public sealed class Qubed : Game
                 _isScrambling = true;
 
                 _cube.ResetMoveCount();
+                
+                _stopwatch.Reset();
             }
             else
             {
@@ -1036,8 +1038,6 @@ public sealed class Qubed : Game
             {
                 _stopwatch.Stop();
 
-                _cube.ResetMoveCount();
-
                 TriggerVictory();
             }
         }
@@ -1062,8 +1062,6 @@ public sealed class Qubed : Game
             _isSolving = false;
 
             _rotationDuration = 0.25f;
-
-            _cube.ResetMoveCount();
         }
 
         if (! _isSolving && _cube.MoveCount > 0)
