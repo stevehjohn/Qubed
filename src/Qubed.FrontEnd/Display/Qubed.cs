@@ -995,6 +995,8 @@ public sealed class Qubed : Game
             {
                 _stopwatch.Stop();
                 
+                _cube.ResetMoveCount();
+                
                 TriggerVictory();
             }
         }
