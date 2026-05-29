@@ -1,6 +1,6 @@
 using Qubed.Core.Models;
 
-namespace RubiksCube.FrontEnd.Display;
+namespace Qubed.FrontEnd.Display;
 
 public sealed class FaceRotation
 {

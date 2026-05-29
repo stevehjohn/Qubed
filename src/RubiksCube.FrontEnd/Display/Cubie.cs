@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace RubiksCube.FrontEnd.Display;
+namespace Qubed.FrontEnd.Display;
 
 public sealed class Cubie(Vector3 position)
 {

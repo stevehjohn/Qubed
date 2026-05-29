@@ -13,9 +13,9 @@ using Qubed.Core.Models;
 using Cube = Qubed.Core.Models.Cube;
 using Move = Qubed.Core.Models.Move;
 
-namespace RubiksCube.FrontEnd.Display;
+namespace Qubed.FrontEnd.Display;
 
-public sealed class RubiksCube : Game
+public sealed class Qubed : Game
 {
     private const int NetTileSize = 20;
 
@@ -133,7 +133,7 @@ public sealed class RubiksCube : Game
         Color.Blue
     ];
 
-    public RubiksCube()
+    public Qubed()
     {
         _graphics = new GraphicsDeviceManager(this);
 

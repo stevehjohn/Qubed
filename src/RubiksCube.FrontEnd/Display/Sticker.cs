@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Qubed.Core.Models;
 
-namespace RubiksCube.FrontEnd.Display;
+namespace Qubed.FrontEnd.Display;
 
 public sealed class Sticker(Face face, Vector3 normal, Color color)
 {

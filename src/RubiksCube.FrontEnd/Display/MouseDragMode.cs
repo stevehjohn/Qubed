@@ -1,4 +1,4 @@
-namespace RubiksCube.FrontEnd.Display;
+namespace Qubed.FrontEnd.Display;
 
 public enum MouseDragMode
 {

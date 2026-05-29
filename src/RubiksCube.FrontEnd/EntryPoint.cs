@@ -1,10 +1,10 @@
-﻿namespace RubiksCube.FrontEnd;
+﻿namespace Qubed.FrontEnd;
 
 public static class EntryPoint
 {
     public static void Main()
     {
-        using var cube = new Display.RubiksCube();
+        using var cube = new Display.Qubed();
         
         cube.Run();
     }
