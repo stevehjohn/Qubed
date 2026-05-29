@@ -63,7 +63,7 @@ public sealed class Qubed : Game
 
     private readonly Lock _solveLock = new();
 
-    private ILogger _logger;
+    private readonly ILogger _logger;
     
     private BasicEffect _effect;
 

@@ -8,7 +8,7 @@ public static class EntryPoint
     {
         ILogger logger = null;
 
-        if (arguments.Length == 1 && arguments[0].ToLower() == "log")
+        if (arguments.Length == 1 && arguments[0].Equals("log", System.StringComparison.InvariantCultureIgnoreCase))
         {
             logger = new ConsoleLogger();
         }
