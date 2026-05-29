@@ -114,11 +114,11 @@ public sealed class RubiksCube : Game
     private float _victoryYaw;
 
     private float _victoryPitch;
-    
+
     private float _victorySpacingOffset;
-    
+
     private SoundEffect _clickSound;
-    
+
     private readonly Color[] _faceColors =
     [
         Color.White,
@@ -154,7 +154,7 @@ public sealed class RubiksCube : Game
     protected override void LoadContent()
     {
         Content.RootDirectory = "Content";
-        
+
         _effect = new BasicEffect(GraphicsDevice)
         {
             VertexColorEnabled = true,
@@ -164,7 +164,7 @@ public sealed class RubiksCube : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
-        
+
         _clickSound = Content.Load<SoundEffect>("click");
 
         UpdateView();
@@ -247,21 +247,21 @@ public sealed class RubiksCube : Game
 
         if (_victoryActive)
         {
-            _victoryTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _victoryTime += (float) gameTime.ElapsedGameTime.TotalSeconds;
 
             _yaw = _victoryYaw + MathHelper.TwoPi * _victoryTime;
 
             _pitch = _victoryPitch + MathF.Sin(_victoryTime * 8f) * 0.15f;
 
             var progress = MathHelper.Clamp(_victoryTime / 1.25f, 0f, 1f);
-            
+
             var fade = 1f - progress;
 
             _victorySpacingOffset =
                 MathF.Sin(progress * MathHelper.TwoPi * 2f) *
                 fade *
                 0.35f;
-            
+
             UpdateView();
 
             if (_victoryTime >= 1.25f)
@@ -922,7 +922,9 @@ public sealed class RubiksCube : Game
     {
         _activeRotation = new FaceRotation(move);
 
-        _clickSound.Play();
+        var pitch = (float) (_random.NextDouble() * 0.3 - 0.15);
+        
+        _clickSound.Play(1f, pitch, 0f);
     }
 
     private bool WasKeyPressed(KeyboardState keyboard, Keys key, char? character = null)
@@ -1136,7 +1138,7 @@ public sealed class RubiksCube : Game
 
     private void DrawCubie(Cubie cubie)
     {
-        var centre = cubie.Position * (_cubeSpacing +  + _victorySpacingOffset);
+        var centre = cubie.Position * (_cubeSpacing + +_victorySpacingOffset);
 
         const float half = CubieSize / 2f;
 
