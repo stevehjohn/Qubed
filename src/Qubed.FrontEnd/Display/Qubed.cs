@@ -332,7 +332,7 @@ public sealed class Qubed : Game
 
     private void UpdateText()
     {
-        if (_cube.MoveCount == 0)
+        if (_stopwatch.Elapsed == TimeSpan.Zero)
         {
             _textManager.DrawMessage("Moves: -", NetLeft + PanelWidth / 4, 20);
 
