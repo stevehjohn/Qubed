@@ -106,6 +106,10 @@ public sealed class RubiksCube : Game
 
     private char? _consoleKey;
 
+    private bool _victoryActive;
+
+    private float _victoryTime;
+
     private readonly Color[] _faceColors =
     [
         Color.White,
@@ -227,6 +231,25 @@ public sealed class RubiksCube : Game
         _previousKeyboard = keyboard;
 
         _previousMouse = mouse;
+
+        if (_victoryActive)
+        {
+            _victoryTime += (float) gameTime.ElapsedGameTime.TotalSeconds;
+
+            _yaw += MathHelper.TwoPi *
+                    (float) gameTime.ElapsedGameTime.TotalSeconds;
+
+            _pitch = MathF.Sin(_victoryTime * 8f) * 0.15f;
+
+            UpdateView();
+
+            if (_victoryTime >= 1.25f)
+            {
+                _victoryActive = false;
+
+                _pitch = 0f;
+            }
+        }
 
         base.Update(gameTime);
     }
@@ -721,7 +744,6 @@ public sealed class RubiksCube : Game
         do
         {
             face = (Face) _random.Next(6);
-            
         } while (face == _previousFace1
                  // ReSharper disable once PossibleInvalidOperationException
                  || (face == _previousFace2 && _previousFace1.Value == _previousFace2.Value.Opposite()));
@@ -911,6 +933,13 @@ public sealed class RubiksCube : Game
         if (! _isUndoRedo)
         {
             _cube.ApplyMove(rotation.Face, rotation.Direction, ! _isScrambling);
+
+            var solved = _cube.IsSolved();
+
+            if (solved)
+            {
+                TriggerVictory();
+            }
         }
 
         if (_scrambleTurns > 0)
@@ -943,6 +972,13 @@ public sealed class RubiksCube : Game
         }
 
         _isUndoRedo = false;
+    }
+
+    private void TriggerVictory()
+    {
+        _victoryActive = true;
+
+        _victoryTime = 0f;
     }
 
     private void DrawRubiksCube()
