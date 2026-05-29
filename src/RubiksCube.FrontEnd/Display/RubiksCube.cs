@@ -253,7 +253,8 @@ public sealed class RubiksCube : Game
             _victorySpacingOffset =
                 MathF.Sin(progress * MathHelper.TwoPi * 2f) *
                 fade *
-                0.35f;            
+                0.35f;
+            
             UpdateView();
 
             if (_victoryTime >= 1.25f)
