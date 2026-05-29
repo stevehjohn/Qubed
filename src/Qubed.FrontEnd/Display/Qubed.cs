@@ -447,6 +447,11 @@ public sealed class Qubed : Game
 
     private void UpdateMouseControls(MouseState mouse)
     {
+        if (! IsActive)
+        {
+            return;
+        }
+
         var leftWasReleased = _previousMouse.LeftButton == ButtonState.Released;
 
         var leftIsPressed = mouse.LeftButton == ButtonState.Pressed;
