@@ -6,6 +6,8 @@ Twist. Solve. Master.
 
 ![Game Screenshot](screenshots/cube-2.png)
 
+![Game Screenshot](screenshots/cube-3.png)
+
 ## Controls
 
 - Use the arrow keys or drag empty space with the left mouse button to orbit the cube.
