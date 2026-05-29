@@ -16,16 +16,18 @@ public class TextManager
         _font = font;
     }
 
-    public void DrawMessage(string message, int left, int top, bool center = false)
+    public void DrawMessage(string message, int left, int top, bool center = false, Color? color = null)
     {
         if (message == null)
         {
             return;
         }
 
+        color ??= Color.White;
+
         if (center)
         {
-            left -= (int) _font.MeasureString(message).X;
+            left -= (int) _font.MeasureString(message).X / 2;
         }
 
         for (var y = -2; y < 3; y++)
@@ -36,6 +38,6 @@ public class TextManager
             }
         }
 
-        _spriteBatch.DrawString(_font, message, new Vector2(left, top), Color.FromNonPremultiplied(255, 255, 255, 255), 0, Vector2.Zero, Vector2.One, SpriteEffects.None, .7f);
+        _spriteBatch.DrawString(_font, message, new Vector2(left, top), color.Value, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, .7f);
     }
 }

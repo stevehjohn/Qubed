@@ -75,7 +75,7 @@ public sealed class Qubed : Game
         Color.Green,
         Color.Blue
     ];
-    
+
     private readonly Stopwatch _stopwatch = new();
 
     private TextManager _textManager;
@@ -323,14 +323,14 @@ public sealed class Qubed : Game
 
         DrawNet();
 
-        UpdateText();
+        UpdateText(gameTime);
 
         _spriteBatch.End();
 
         base.Draw(gameTime);
     }
 
-    private void UpdateText()
+    private void UpdateText(GameTime gameTime)
     {
         if (_stopwatch.Elapsed == TimeSpan.Zero)
         {
@@ -345,14 +345,18 @@ public sealed class Qubed : Game
             _textManager.DrawMessage($@"Time: {_stopwatch.Elapsed:mm\:ss\.ff}", NetLeft + PanelWidth / 4, 60);
         }
 
+        var time = (float) gameTime.TotalGameTime.TotalSeconds;
+
+        var textColour = (byte) (191.5f + MathF.Sin(time * MathHelper.TwoPi) * 63.5f);
+
         if (_isScrambling)
         {
-            _textManager.DrawMessage("Scrambling!", 200, 20, true);
+            _textManager.DrawMessage("Scrambling!", 220, 20, true, Color.FromNonPremultiplied(textColour, 0xFF, 0xFF, 0xFF));
         }
 
         if (_isSolving)
         {
-            _textManager.DrawMessage("Solving!", 200, 20, true);
+            _textManager.DrawMessage("Solving!", 220, 20, true, Color.FromNonPremultiplied(0xFF, textColour, 0xFF, 0xFF));
         }
     }
 
@@ -1013,9 +1017,9 @@ public sealed class Qubed : Game
             if (solved)
             {
                 _stopwatch.Stop();
-                
+
                 _cube.ResetMoveCount();
-                
+
                 TriggerVictory();
             }
         }
