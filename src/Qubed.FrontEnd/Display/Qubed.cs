@@ -503,6 +503,7 @@ public sealed class Qubed : Game
         if (mouse.X < viewport.X || mouse.Y < viewport.Y || mouse.X >= viewport.X + viewport.Width || mouse.Y >= viewport.Y + viewport.Height)
         {
             face = Face.Front;
+            
             return false;
         }
 
@@ -521,6 +522,7 @@ public sealed class Qubed : Game
         if (! distance.HasValue)
         {
             face = Face.Front;
+            
             return false;
         }
 
