@@ -122,9 +122,7 @@ public sealed class Qubed : Game
 
     private Texture2D _texture;
 
-    private bool _isUndo;
-
-    private bool _isRedo;
+    private bool _isUndoRedo;
 
     private char? _consoleKey;
 
@@ -788,7 +786,7 @@ public sealed class Qubed : Game
 
         if (move != null)
         {
-            _isUndo = true;
+            _isUndoRedo = true;
 
             StartFaceRotation(move.Value);
         }
@@ -800,7 +798,7 @@ public sealed class Qubed : Game
 
         if (move != null)
         {
-            _isRedo = true;
+            _isUndoRedo = true;
 
             StartFaceRotation(move.Value);
         }
@@ -1043,7 +1041,7 @@ public sealed class Qubed : Game
             }
         }
 
-        if (! _isUndo && ! _isRedo)
+        if (! _isUndoRedo)
         {
             if (_cube.MoveCount == 0 && ! _isScrambling)
             {
@@ -1091,9 +1089,7 @@ public sealed class Qubed : Game
             _logger?.WriteLine($"Move count: {_cube.MoveCount}.");
         }
 
-        _isUndo = false;
-        
-        _isRedo = false;
+        _isUndoRedo = false;
     }
 
     private void TriggerVictory()
@@ -1143,7 +1139,7 @@ public sealed class Qubed : Game
         {
             Direction.Clockwise => -angle,
             Direction.AntiClockwise => angle,
-            Direction.HalfTurn => _isUndo ? angle * 2 : -angle * 2,
+            Direction.HalfTurn => _isUndoRedo ? angle * 2 : -angle * 2,
             _ => 0
         };
 
