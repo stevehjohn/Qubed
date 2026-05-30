@@ -1427,7 +1427,7 @@ public sealed class Qubed : Game
         }
     }
 
-    private void DrawQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 normal, Color color)
+    private void DrawQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color color)
     {
         var vertices = new[]
         {
