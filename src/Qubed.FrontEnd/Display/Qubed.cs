@@ -186,16 +186,8 @@ public sealed class Qubed : Game
         _effect = new BasicEffect(GraphicsDevice)
         {
             VertexColorEnabled = true,
-            LightingEnabled = true
+            LightingEnabled = false
         };
-        
-        _effect.DirectionalLight0.Enabled = true;
-
-        _effect.DirectionalLight0.Direction = Vector3.Normalize(new Vector3(-1, -1, -1));
-        
-        _effect.DirectionalLight0.DiffuseColor = new Vector3(0.35f);
-        
-        _effect.AmbientLightColor = new Vector3(0.9f);
         
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
