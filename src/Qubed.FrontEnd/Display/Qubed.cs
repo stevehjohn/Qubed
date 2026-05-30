@@ -1093,7 +1093,7 @@ public sealed class Qubed : Game
 
         if (queueMove.PauseAfter)
         {
-            _thinkingPause = _random.Next(20) / 10f;
+            _thinkingPause = 0.25f + _random.Next(20) / 10f;
         }
 
         StartFaceRotation(queueMove.Move);
