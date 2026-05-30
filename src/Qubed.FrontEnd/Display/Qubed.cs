@@ -1350,7 +1350,6 @@ public sealed class Qubed : Game
             new Vector3(c.X + hx, c.Y + hy, c.Z - hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z + hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z + hz),
-            Vector3.Up, 
             color);
 
         DrawQuad(
@@ -1358,7 +1357,6 @@ public sealed class Qubed : Game
             new Vector3(c.X + hx, c.Y - hy, c.Z + hz),
             new Vector3(c.X + hx, c.Y - hy, c.Z - hz),
             new Vector3(c.X - hx, c.Y - hy, c.Z - hz),
-            Vector3.Down,
             color);
 
         DrawQuad(
@@ -1366,7 +1364,6 @@ public sealed class Qubed : Game
             new Vector3(c.X + hx, c.Y - hy, c.Z + hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z + hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z + hz),
-            Vector3.Left, 
             color);
 
         DrawQuad(
@@ -1374,7 +1371,6 @@ public sealed class Qubed : Game
             new Vector3(c.X - hx, c.Y - hy, c.Z - hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z - hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z - hz),
-            Vector3.Right,
             color);
 
         DrawQuad(
@@ -1382,7 +1378,6 @@ public sealed class Qubed : Game
             new Vector3(c.X - hx, c.Y - hy, c.Z + hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z + hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z - hz),
-            Vector3.Forward,
             color);
 
         DrawQuad(
@@ -1390,7 +1385,6 @@ public sealed class Qubed : Game
             new Vector3(c.X + hx, c.Y - hy, c.Z - hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z - hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z + hz),
-            Vector3.Backward,
             color);
     }
 
