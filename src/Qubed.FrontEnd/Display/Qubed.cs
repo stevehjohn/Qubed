@@ -49,7 +49,7 @@ public sealed class Qubed : Game
 
     private const float StickerThickness = 0.07f;
 
-    private const int ProgressGraceMoves = 13;
+    private const int ProgressGraceMoves = 20;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
