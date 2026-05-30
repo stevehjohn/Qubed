@@ -380,7 +380,7 @@ public sealed class Qubed : Game
             }
         }
 
-        if (_cube.IsSolved() && _stopwatch.Elapsed > TimeSpan.Zero)
+        if (_cube.IsSolved() && _stopwatch.Elapsed > TimeSpan.Zero && ! _stopwatch.IsRunning)
         {
             _textManager.DrawMessage("Solved!", 220, 20, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
         }
@@ -1001,6 +1001,11 @@ public sealed class Qubed : Game
 
     private void StartFaceRotation(Move move)
     {
+        if (_cube.MoveCount == 0 && ! _isScrambling)
+        {
+            _stopwatch.Restart();
+        }
+
         if (_resetOnNextUserMove && ! _isScrambling && ! _isSolving)
         {
             _cube.ResetMoveCount();
@@ -1011,6 +1016,12 @@ public sealed class Qubed : Game
         }
 
         _activeRotation = new FaceRotation(move);
+        
+        if (! _isUndoRedo)
+        {
+            _cube.ApplyMove(_activeRotation.Face, _activeRotation.Direction, ! _isScrambling);
+        }
+
 
         var pitch = (float) (_random.NextDouble() * 0.3 - 0.15);
 
@@ -1044,17 +1055,7 @@ public sealed class Qubed : Game
                 sticker.Face = FaceFromNormal(sticker.Normal);
             }
         }
-
-        if (! _isUndoRedo)
-        {
-            _cube.ApplyMove(rotation.Face, rotation.Direction, ! _isScrambling);
-        }
-
-        if (_cube.MoveCount == 0 && ! _isScrambling)
-        {
-            _stopwatch.Restart();
-        }
-
+        
         var solved = _cube.IsSolved();
 
         if (solved)
