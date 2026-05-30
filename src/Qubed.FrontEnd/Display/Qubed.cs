@@ -155,6 +155,8 @@ public sealed class Qubed : Game
 
     private int _progressGraceMoves;
 
+    private float _thinkingPause;
+
     public Qubed(ILogger logger = null)
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -188,7 +190,7 @@ public sealed class Qubed : Game
             VertexColorEnabled = true,
             LightingEnabled = false
         };
-        
+
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _textManager = new TextManager(_spriteBatch, Content.Load<SpriteFont>("font"));
@@ -206,6 +208,11 @@ public sealed class Qubed : Game
 
     protected override void Update(GameTime gameTime)
     {
+        if (_thinkingPause > 0)
+        {
+            _thinkingPause -= (float) gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
         if (_cubeSpacing > CubeSpacingFinal)
         {
             _cubeSpacing -= _cubeSpacingSpeed;
@@ -408,7 +415,7 @@ public sealed class Qubed : Game
         }
 
         var progress = GetProgress();
-        
+
         if (progress > _progress || _progressGraceMoves == 0)
         {
             _progress = progress;
@@ -1000,9 +1007,11 @@ public sealed class Qubed : Game
     {
         lock (_solveLock)
         {
-            foreach (var move in moves)
+            for (var i = 0; i < moves.Count; i++)
             {
-                _solveQueue.Enqueue(new QueueMove(move, stage));
+                var pause = i == moves.Count - 1 && _random.Next(4) == 0;
+                
+                _solveQueue.Enqueue(new QueueMove(moves[i], stage, pause));
             }
         }
     }
@@ -1060,6 +1069,11 @@ public sealed class Qubed : Game
 
     private void StartNextSolveRotation()
     {
+        if (_thinkingPause > 0)
+        {
+            return;
+        }
+
         QueueMove queueMove;
 
         lock (_solveLock)
@@ -1075,6 +1089,11 @@ public sealed class Qubed : Game
             {
                 _rotationDuration = 0.25f;
             }
+        }
+
+        if (queueMove.PauseAfter)
+        {
+            _thinkingPause = _random.Next(20) / 10f;
         }
 
         StartFaceRotation(queueMove.Move);
