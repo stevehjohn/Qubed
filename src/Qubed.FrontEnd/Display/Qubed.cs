@@ -49,6 +49,8 @@ public sealed class Qubed : Game
 
     private const float StickerThickness = 0.07f;
 
+    private const int ProgressGraceMoves = 13;
+
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly GraphicsDeviceManager _graphics;
@@ -148,6 +150,10 @@ public sealed class Qubed : Game
     private bool _resetOnNextUserMove;
 
     private string _solverStage;
+
+    private int _progress = -1;
+
+    private int _progressGraceMoves;
 
     public Qubed(ILogger logger = null)
     {
@@ -388,7 +394,16 @@ public sealed class Qubed : Game
             _textManager.DrawMessage("Solved!", 220, 20, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
 
-        _textManager.DrawMessage(GetProgress().ToString(), 0, 0, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
+        var progress = GetProgress();
+        
+        if (progress > _progress || _progressGraceMoves == 0)
+        {
+            _progress = progress;
+
+            _progressGraceMoves = ProgressGraceMoves;
+        }
+
+        _textManager.DrawMessage(_progress.ToString(), 10, 10, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
 
         if (! string.IsNullOrWhiteSpace(_solverStage))
         {
@@ -396,17 +411,9 @@ public sealed class Qubed : Game
         }
     }
 
-    public int GetProgress()
+    private int GetProgress()
     {
-        if (! (_cube[Face.Down, 1, 0] == Colour.White
-               && _cube[Face.Down, 2, 1] == Colour.White
-               && _cube[Face.Down, 1, 2] == Colour.White
-               && _cube[Face.Down, 0, 1] == Colour.White))
-        {
-            return 0;
-        }
-
-        var progress = 1;
+        var progress = 0;
 
         for (var i = 0; i < AlgorithmLibrary.Algorithms.Count - 1; i++)
         {
