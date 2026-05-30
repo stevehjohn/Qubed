@@ -146,6 +146,8 @@ public sealed class Qubed : Game
 
     private bool _resetOnNextUserMove;
 
+    private string _solverStage;
+    
     public Qubed(ILogger logger = null)
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -384,6 +386,16 @@ public sealed class Qubed : Game
         {
             _textManager.DrawMessage("Solved!", 220, 20, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
         }
+
+        if (! string.IsNullOrWhiteSpace(_solverStage))
+        {
+            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 350, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
+        }
+    }
+
+    private void UpdateSolverStage(string stage)
+    {
+        _solverStage = stage;
     }
 
     private void DrawNet()
@@ -874,7 +886,10 @@ public sealed class Qubed : Game
             return;
         }
 
-        var solver = new Solver(cube, Mode.Fast, _logger);
+        var solver = new Solver(cube, Mode.Fast, _logger)
+        {
+            StepStartCallback = UpdateSolverStage
+        };
 
         lock (_solveLock)
         {
@@ -1107,6 +1122,8 @@ public sealed class Qubed : Game
         _victoryPitch = _pitch;
 
         _solvedSound.Play();
+
+        _solverStage = null;
     }
 
     private void DrawQube()

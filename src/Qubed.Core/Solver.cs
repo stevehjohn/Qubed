@@ -18,6 +18,8 @@ public sealed class Solver
     private readonly ILogger _logger;
 
     private readonly int _degreeOfParallelism;
+    
+    public Action<string> StepStartCallback { get; init; }
 
     public Solver(Cube cube, Mode mode = Mode.HalfCores) : this(cube, mode, null)
     {
@@ -85,6 +87,8 @@ public sealed class Solver
 
         foreach (var algorithm in AlgorithmLibrary.Algorithms)
         {
+            StepStartCallback?.Invoke(algorithm.Name);
+            
             _logger?.WriteLine($"{algorithm.Name}\n");
 
             checks.AddRange(algorithm.IsCompleteChecks);
