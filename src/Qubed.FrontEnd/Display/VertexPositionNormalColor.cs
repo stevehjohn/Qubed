@@ -1,3 +1,5 @@
+// ReSharper disable NotAccessedField.Global
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
