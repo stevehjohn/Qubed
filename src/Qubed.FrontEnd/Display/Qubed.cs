@@ -1000,9 +1000,9 @@ public sealed class Qubed : Game
         if (_resetOnNextUserMove && ! _isScrambling && ! _isSolving)
         {
             _cube.ResetMoveCount();
-            
+
             _stopwatch.Restart();
-            
+
             _resetOnNextUserMove = false;
         }
 
@@ -1131,7 +1131,7 @@ public sealed class Qubed : Game
         return CreateTurnMatrix(rotation.Face, rotation.Direction, easedProgress * QuarterTurn);
     }
 
-    private static Matrix CreateTurnMatrix(Face face, Direction direction, float angle)
+    private Matrix CreateTurnMatrix(Face face, Direction direction, float angle)
     {
         var outwardNormal = NormalForFace(face);
 
@@ -1139,7 +1139,7 @@ public sealed class Qubed : Game
         {
             Direction.Clockwise => -angle,
             Direction.AntiClockwise => angle,
-            Direction.HalfTurn => angle * 2,
+            Direction.HalfTurn => _isUndoRedo ? angle * 2 : -angle * 2,
             _ => 0
         };
 
