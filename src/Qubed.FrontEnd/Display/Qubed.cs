@@ -46,7 +46,7 @@ public sealed class Qubed : Game
 
     private const float StickerOffset = 0.015f;
 
-    private const float StickerThickness = 0.05f;
+    private const float StickerThickness = 0.07f;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
