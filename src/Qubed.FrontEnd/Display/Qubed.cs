@@ -1122,6 +1122,8 @@ public sealed class Qubed : Game
         if (! _isUndoRedo)
         {
             _cube.ApplyMove(_activeRotation.Face, _activeRotation.Direction, ! _isScrambling);
+
+            _progressGraceMoves = Math.Max(--_progressGraceMoves, 0);
         }
 
         if (_cube.IsSolved())
