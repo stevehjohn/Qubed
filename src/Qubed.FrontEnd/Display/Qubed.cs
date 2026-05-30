@@ -186,9 +186,17 @@ public sealed class Qubed : Game
         _effect = new BasicEffect(GraphicsDevice)
         {
             VertexColorEnabled = true,
-            LightingEnabled = false
+            LightingEnabled = true
         };
+        
+        _effect.DirectionalLight0.Enabled = true;
 
+        _effect.DirectionalLight0.Direction = Vector3.Normalize(new Vector3(-1, -1, -1));
+        
+        _effect.DirectionalLight0.DiffuseColor = new Vector3(0.35f);
+        
+        _effect.AmbientLightColor = new Vector3(0.9f);
+        
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _textManager = new TextManager(_spriteBatch, Content.Load<SpriteFont>("font"));
@@ -1350,6 +1358,7 @@ public sealed class Qubed : Game
             new Vector3(c.X + hx, c.Y + hy, c.Z - hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z + hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z + hz),
+            Vector3.Up, 
             color);
 
         DrawQuad(
@@ -1357,6 +1366,7 @@ public sealed class Qubed : Game
             new Vector3(c.X + hx, c.Y - hy, c.Z + hz),
             new Vector3(c.X + hx, c.Y - hy, c.Z - hz),
             new Vector3(c.X - hx, c.Y - hy, c.Z - hz),
+            Vector3.Down,
             color);
 
         DrawQuad(
@@ -1364,6 +1374,7 @@ public sealed class Qubed : Game
             new Vector3(c.X + hx, c.Y - hy, c.Z + hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z + hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z + hz),
+            Vector3.Left, 
             color);
 
         DrawQuad(
@@ -1371,6 +1382,7 @@ public sealed class Qubed : Game
             new Vector3(c.X - hx, c.Y - hy, c.Z - hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z - hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z - hz),
+            Vector3.Right,
             color);
 
         DrawQuad(
@@ -1378,6 +1390,7 @@ public sealed class Qubed : Game
             new Vector3(c.X - hx, c.Y - hy, c.Z + hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z + hz),
             new Vector3(c.X - hx, c.Y + hy, c.Z - hz),
+            Vector3.Forward,
             color);
 
         DrawQuad(
@@ -1385,6 +1398,7 @@ public sealed class Qubed : Game
             new Vector3(c.X + hx, c.Y - hy, c.Z - hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z - hz),
             new Vector3(c.X + hx, c.Y + hy, c.Z + hz),
+            Vector3.Backward,
             color);
     }
 
@@ -1421,17 +1435,17 @@ public sealed class Qubed : Game
         }
     }
 
-    private void DrawQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color color)
+    private void DrawQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 normal, Color color)
     {
         var vertices = new[]
         {
-            new VertexPositionColor(Vector3.Transform(a, _primitiveTransform), color),
-            new VertexPositionColor(Vector3.Transform(b, _primitiveTransform), color),
-            new VertexPositionColor(Vector3.Transform(c, _primitiveTransform), color),
+            new VertexPositionNormalColor(Vector3.Transform(a, _primitiveTransform), normal, color),
+            new VertexPositionNormalColor(Vector3.Transform(b, _primitiveTransform), normal, color),
+            new VertexPositionNormalColor(Vector3.Transform(c, _primitiveTransform), normal, color),
 
-            new VertexPositionColor(Vector3.Transform(a, _primitiveTransform), color),
-            new VertexPositionColor(Vector3.Transform(c, _primitiveTransform), color),
-            new VertexPositionColor(Vector3.Transform(d, _primitiveTransform), color)
+            new VertexPositionNormalColor(Vector3.Transform(a, _primitiveTransform), normal, color),
+            new VertexPositionNormalColor(Vector3.Transform(c, _primitiveTransform), normal, color),
+            new VertexPositionNormalColor(Vector3.Transform(d, _primitiveTransform), normal, color)
         };
 
         GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 2);
