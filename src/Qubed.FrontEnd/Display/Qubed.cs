@@ -404,6 +404,11 @@ public sealed class Qubed : Game
 
     private int GetProgressWithGrace()
     {
+        if (_isScrambling)
+        {
+            return _progress;
+        }
+
         var progress = GetProgress();
         
         if (progress > _progress || _progressGraceMoves == 0)
