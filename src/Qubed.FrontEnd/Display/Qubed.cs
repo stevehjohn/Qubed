@@ -1431,13 +1431,12 @@ public sealed class Qubed : Game
     {
         var vertices = new[]
         {
-            new VertexPositionNormalColor(Vector3.Transform(a, _primitiveTransform), normal, color),
-            new VertexPositionNormalColor(Vector3.Transform(b, _primitiveTransform), normal, color),
-            new VertexPositionNormalColor(Vector3.Transform(c, _primitiveTransform), normal, color),
-
-            new VertexPositionNormalColor(Vector3.Transform(a, _primitiveTransform), normal, color),
-            new VertexPositionNormalColor(Vector3.Transform(c, _primitiveTransform), normal, color),
-            new VertexPositionNormalColor(Vector3.Transform(d, _primitiveTransform), normal, color)
+            new VertexPositionColor(Vector3.Transform(a, _primitiveTransform), color),
+            new VertexPositionColor(Vector3.Transform(b, _primitiveTransform), color),
+            new VertexPositionColor(Vector3.Transform(c, _primitiveTransform), color),
+            new VertexPositionColor(Vector3.Transform(a, _primitiveTransform), color),
+            new VertexPositionColor(Vector3.Transform(c, _primitiveTransform), color),
+            new VertexPositionColor(Vector3.Transform(d, _primitiveTransform), color)
         };
 
         GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertices, 0, 2);
