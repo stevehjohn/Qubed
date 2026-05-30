@@ -54,7 +54,7 @@ public sealed class Qubed : Game
 
     private readonly List<Cubie> _cubies = [];
 
-    private readonly Queue<Move> _solveQueue = [];
+    private readonly Queue<QueueMove> _solveQueue = [];
 
     private readonly Random _random = new();
 
@@ -930,11 +930,9 @@ public sealed class Qubed : Game
         {
             foreach (var move in moves)
             {
-                _solveQueue.Enqueue(move);
+                _solveQueue.Enqueue(new QueueMove(move, stage));
             }
         }
-
-        _solverStage = stage;
     }
 
     private Colour GetFaceColor(Face face, int x, int y)
@@ -990,14 +988,16 @@ public sealed class Qubed : Game
 
     private void StartNextSolveRotation()
     {
-        Move move;
+        QueueMove queueMove;
 
         lock (_solveLock)
         {
-            if (! _solveQueue.TryDequeue(out move))
+            if (! _solveQueue.TryDequeue(out queueMove))
             {
                 return;
             }
+
+            _solverStage = queueMove.Stage;
 
             if (_solveQueue.Count < 2)
             {
@@ -1005,7 +1005,7 @@ public sealed class Qubed : Game
             }
         }
 
-        StartFaceRotation(move);
+        StartFaceRotation(queueMove.Move);
     }
 
     private void StartFaceRotation(Move move)
