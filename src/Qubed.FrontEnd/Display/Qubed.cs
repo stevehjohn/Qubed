@@ -147,7 +147,7 @@ public sealed class Qubed : Game
     private bool _resetOnNextUserMove;
 
     private string _solverStage;
-    
+
     public Qubed(ILogger logger = null)
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -391,11 +391,6 @@ public sealed class Qubed : Game
         {
             _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
         }
-    }
-
-    private void UpdateSolverStage(string stage)
-    {
-        _solverStage = stage;
     }
 
     private void DrawNet()
@@ -886,10 +881,7 @@ public sealed class Qubed : Game
             return;
         }
 
-        var solver = new Solver(cube, Mode.Fast, _logger)
-        {
-            StepStartCallback = UpdateSolverStage
-        };
+        var solver = new Solver(cube, Mode.Fast, _logger);
 
         lock (_solveLock)
         {
@@ -932,7 +924,7 @@ public sealed class Qubed : Game
         _rotationDuration = Math.Min(_rotationDuration, 0.25f);
     }
 
-    private void StepCallback(List<Move> moves)
+    private void StepCallback(List<Move> moves, string stage)
     {
         lock (_solveLock)
         {
@@ -941,6 +933,8 @@ public sealed class Qubed : Game
                 _solveQueue.Enqueue(move);
             }
         }
+
+        _solverStage = stage;
     }
 
     private Colour GetFaceColor(Face face, int x, int y)
@@ -1031,7 +1025,7 @@ public sealed class Qubed : Game
         }
 
         _activeRotation = new FaceRotation(move);
-        
+
         var pitch = (float) (_random.NextDouble() * 0.3 - 0.15);
 
         var volume = _isScrambling || _isSolving ? 0.4f : 1f;
@@ -1064,7 +1058,7 @@ public sealed class Qubed : Game
                 sticker.Face = FaceFromNormal(sticker.Normal);
             }
         }
-        
+
         if (! _isUndoRedo)
         {
             _cube.ApplyMove(_activeRotation.Face, _activeRotation.Direction, ! _isScrambling);
@@ -1078,7 +1072,7 @@ public sealed class Qubed : Game
 
             TriggerVictory();
         }
-        
+
         if (_scrambleTurns > 0)
         {
             _scrambleTurns--;

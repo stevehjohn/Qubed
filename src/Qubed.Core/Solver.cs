@@ -19,8 +19,6 @@ public sealed class Solver
 
     private readonly int _degreeOfParallelism;
     
-    public Action<string> StepStartCallback { get; init; }
-
     public Solver(Cube cube, Mode mode = Mode.HalfCores) : this(cube, mode, null)
     {
     }
@@ -40,7 +38,7 @@ public sealed class Solver
         _logger = logger;
     }
 
-    public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback, Action<List<Move>> stepCallback = null)
+    public void SolveAsync(Action<(bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration)> callback, Action<List<Move>, string> stepCallback = null)
     {
         Task.Run(() => Solve(stepCallback))
             .ContinueWith(task =>
@@ -58,7 +56,7 @@ public sealed class Solver
             });
     }
 
-    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<List<Move>> stepCallback = null)
+    public (bool Solved, IReadOnlyList<Move> Moves, TimeSpan Duration) Solve(Action<List<Move>, string> stepCallback = null)
     {
         _moves.Clear();
 
@@ -68,7 +66,7 @@ public sealed class Solver
         {
             _logger?.WriteLine(_cube.ToString());
 
-            stepCallback?.Invoke(_moves);
+            stepCallback?.Invoke(_moves, null);
 
             return (true, _moves, TimeSpan.Zero);
         }
@@ -87,8 +85,6 @@ public sealed class Solver
 
         foreach (var algorithm in AlgorithmLibrary.Algorithms)
         {
-            StepStartCallback?.Invoke(algorithm.Name);
-            
             _logger?.WriteLine($"{algorithm.Name}\n");
 
             checks.AddRange(algorithm.IsCompleteChecks);
@@ -98,7 +94,7 @@ public sealed class Solver
                 continue;
             }
 
-            var result = BruteForceAlgorithm(checks, algorithm.MoveSets, stepCallback);
+            var result = BruteForceAlgorithm(checks, algorithm, stepCallback);
 
             _logger?.WriteLine($"\nAlgorithm nodes explored: {result.NodesExplored:N0}.");
 
@@ -129,7 +125,7 @@ public sealed class Solver
         return (solved, _moves, stopwatch.Elapsed);
     }
 
-    private (bool ChecksPass, int NodesExplored) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, IReadOnlyList<IReadOnlyList<Move>> moveSets, Action<List<Move>> stepCallback)
+    private (bool ChecksPass, int NodesExplored) BruteForceAlgorithm(List<Func<Cube, bool>> heuristics, Algorithm algorithm, Action<List<Move>, string> stepCallback)
     {
         var totalStopwatch = Stopwatch.StartNew();
 
@@ -153,7 +149,7 @@ public sealed class Solver
 
             nodesExplored = 0;
 
-            Parallel.ForEach(moveSets, new ParallelOptions
+            Parallel.ForEach(algorithm.MoveSets, new ParallelOptions
             {
                 MaxDegreeOfParallelism = _degreeOfParallelism
             }, (moveSet, _, index) =>
@@ -181,7 +177,7 @@ public sealed class Solver
 
                 var visitedDepths = new Dictionary<(ulong A, ulong B, ulong C), int>();
 
-                if (SearchAlgorithm(heuristics, moveSets, cubeCopy, newMoves, algorithmIndices, visitedDepths, innerDepth - 1, ref nodesExplored))
+                if (SearchAlgorithm(heuristics, algorithm.MoveSets, cubeCopy, newMoves, algorithmIndices, visitedDepths, innerDepth - 1, ref nodesExplored))
                 {
                     lock (stateLock)
                     {
@@ -208,7 +204,7 @@ public sealed class Solver
 
                 _logger?.WriteLine($"\nNew moves: {foundMoves.Count:N0}, duration: {totalStopwatch.Elapsed:ss\\.fff}");
 
-                stepCallback?.Invoke(foundMoves);
+                stepCallback?.Invoke(foundMoves, algorithm.Name);
 
                 return (true, nodesExplored);
             }
