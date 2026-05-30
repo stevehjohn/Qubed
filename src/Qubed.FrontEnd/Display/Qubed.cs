@@ -389,7 +389,7 @@ public sealed class Qubed : Game
 
         if (! string.IsNullOrWhiteSpace(_solverStage))
         {
-            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 350, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
+            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
         }
     }
 
