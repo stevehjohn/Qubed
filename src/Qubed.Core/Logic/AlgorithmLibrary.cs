@@ -123,24 +123,6 @@ public static class AlgorithmLibrary
         }
     }
 
-    public static int GetProgress(Cube cube)
-    {
-        if (! (cube[Face.Down, 1, 0] == Colour.White
-               && cube[Face.Down, 2, 1] == Colour.White
-               && cube[Face.Down, 1, 2] == Colour.White
-               && cube[Face.Down, 0, 1] == Colour.White))
-        {
-            return 0;
-        }
-
-        if (! Algorithms[0].IsCompleteChecks(cube))
-        {
-            return 1;
-        }
-
-        return 2;
-    }
-
     private static List<string> ExpandMacro(string macro)
     {
         var expandedMacro = new List<string> { macro };

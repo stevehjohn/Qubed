@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Qubed.Core;
 using Qubed.Core.Extensions;
 using Qubed.Core.Infrastructure;
+using Qubed.Core.Logic;
 using Qubed.Core.Models;
 using Cube = Qubed.Core.Models.Cube;
 using Move = Qubed.Core.Models.Move;
@@ -391,6 +392,56 @@ public sealed class Qubed : Game
         {
             _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
         }
+    }
+
+    public int GetProgress()
+    {
+        if (! (_cube[Face.Down, 1, 0] == Colour.White
+               && _cube[Face.Down, 2, 1] == Colour.White
+               && _cube[Face.Down, 1, 2] == Colour.White
+               && _cube[Face.Down, 0, 1] == Colour.White))
+        {
+            return 0;
+        }
+
+        var progress = 1;
+
+        for (var i = 0; i < AlgorithmLibrary.Algorithms.Count - 1; i++)
+        {
+            if (! AlgorithmLibrary.Algorithms[i].IsCompleteChecks(_cube))
+            {
+                return progress;
+            }
+
+            progress++;
+        }
+        
+        if (! (_cube[Face.Down, 1, 0] == Colour.Yellow
+               && _cube[Face.Down, 2, 1] == Colour.Yellow
+               && _cube[Face.Down, 1, 2] == Colour.Yellow
+               && _cube[Face.Down, 0, 1] == Colour.Yellow))
+        {
+            return progress;
+        }
+
+        progress++;
+        
+        if (! (_cube[Face.Down, 0, 0] == Colour.Yellow
+               && _cube[Face.Down, 2, 0] == Colour.Yellow
+               && _cube[Face.Down, 0, 2] == Colour.Yellow
+               && _cube[Face.Down, 0, 2] == Colour.Yellow))
+        {
+            return progress;
+        }
+
+        progress++;
+
+        if (! _cube.IsSolved())
+        {
+            return progress;
+        }
+
+        return progress + 1;
     }
 
     private void DrawNet()
