@@ -368,29 +368,31 @@ public sealed class Qubed : Game
 
         if (_isScrambling)
         {
-            _textManager.DrawMessage("Scrambling!", 220, 20, true, Color.FromNonPremultiplied(0xFF, textColour, textColour, 0xFF));
+            _textManager.DrawMessage("Scrambling!", 220, 20, Color.FromNonPremultiplied(0xFF, textColour, textColour, 0xFF), true);
         }
 
         if (_isSolving)
         {
             if (_activeRotation == null)
             {
-                _textManager.DrawMessage("Thinking...", 220, 20, true, Color.FromNonPremultiplied(0xFF, textColour, 0xFF, 0xFF));
+                _textManager.DrawMessage("Thinking...", 220, 20, Color.FromNonPremultiplied(0xFF, textColour, 0xFF, 0xFF), true);
             }
             else
             {
-                _textManager.DrawMessage("Solving!", 220, 20, true, Color.FromNonPremultiplied(0xFF, 0xFF, textColour, 0xFF));
+                _textManager.DrawMessage("Solving!", 220, 20, Color.FromNonPremultiplied(0xFF, 0xFF, textColour, 0xFF), true);
             }
         }
 
         if (_cube.IsSolved() && _stopwatch.Elapsed > TimeSpan.Zero && ! _stopwatch.IsRunning)
         {
-            _textManager.DrawMessage("Solved!", 220, 20, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
+            _textManager.DrawMessage("Solved!", 220, 20, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
+
+        _textManager.DrawMessage(GetProgress().ToString(), 0, 0, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
 
         if (! string.IsNullOrWhiteSpace(_solverStage))
         {
-            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, true, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
+            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
     }
 
@@ -415,7 +417,7 @@ public sealed class Qubed : Game
 
             progress++;
         }
-        
+
         if (! (_cube[Face.Down, 1, 0] == Colour.Yellow
                && _cube[Face.Down, 2, 1] == Colour.Yellow
                && _cube[Face.Down, 1, 2] == Colour.Yellow
@@ -425,7 +427,7 @@ public sealed class Qubed : Game
         }
 
         progress++;
-        
+
         if (! (_cube[Face.Down, 0, 0] == Colour.Yellow
                && _cube[Face.Down, 2, 0] == Colour.Yellow
                && _cube[Face.Down, 0, 2] == Colour.Yellow

@@ -16,7 +16,7 @@ public class TextManager
         _font = font;
     }
 
-    public void DrawMessage(string message, int left, int top, bool center = false, Color? color = null)
+    public void DrawMessage(string message, int left, int top, Color? color = null, bool center = false)
     {
         if (message == null)
         {
