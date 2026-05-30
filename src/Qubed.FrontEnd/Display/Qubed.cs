@@ -899,6 +899,10 @@ public sealed class Qubed : Game
                 _cube.ResetMoveCount();
 
                 _stopwatch.Reset();
+
+                _progress = 0;
+
+                _progressGraceMoves = 0;
             }
             else
             {
