@@ -393,7 +393,17 @@ public sealed class Qubed : Game
         {
             _textManager.DrawMessage("Solved!", 220, 20, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
+        
+        _textManager.DrawMessage(GetProgressWithGrace().ToString(), 10, 10, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
 
+        if (! string.IsNullOrWhiteSpace(_solverStage))
+        {
+            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
+        }
+    }
+
+    private int GetProgressWithGrace()
+    {
         var progress = GetProgress();
         
         if (progress > _progress || _progressGraceMoves == 0)
@@ -403,12 +413,7 @@ public sealed class Qubed : Game
             _progressGraceMoves = ProgressGraceMoves;
         }
 
-        _textManager.DrawMessage(_progress.ToString(), 10, 10, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF));
-
-        if (! string.IsNullOrWhiteSpace(_solverStage))
-        {
-            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
-        }
+        return _progress;
     }
 
     private int GetProgress()
