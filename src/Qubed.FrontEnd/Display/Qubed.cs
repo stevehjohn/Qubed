@@ -429,7 +429,7 @@ public sealed class Qubed : Game
         if (! (_cube[Face.Down, 0, 0] == Colour.Yellow
                && _cube[Face.Down, 2, 0] == Colour.Yellow
                && _cube[Face.Down, 0, 2] == Colour.Yellow
-               && _cube[Face.Down, 0, 2] == Colour.Yellow))
+               && _cube[Face.Down, 2, 2] == Colour.Yellow))
         {
             return progress;
         }
