@@ -1017,12 +1017,6 @@ public sealed class Qubed : Game
 
         _activeRotation = new FaceRotation(move);
         
-        if (! _isUndoRedo)
-        {
-            _cube.ApplyMove(_activeRotation.Face, _activeRotation.Direction, ! _isScrambling);
-        }
-
-
         var pitch = (float) (_random.NextDouble() * 0.3 - 0.15);
 
         var volume = _isScrambling || _isSolving ? 0.4f : 1f;
@@ -1056,9 +1050,12 @@ public sealed class Qubed : Game
             }
         }
         
-        var solved = _cube.IsSolved();
+        if (! _isUndoRedo)
+        {
+            _cube.ApplyMove(_activeRotation.Face, _activeRotation.Direction, ! _isScrambling);
+        }
 
-        if (solved)
+        if (_cube.IsSolved())
         {
             _stopwatch.Stop();
 
@@ -1066,8 +1063,7 @@ public sealed class Qubed : Game
 
             TriggerVictory();
         }
-
-
+        
         if (_scrambleTurns > 0)
         {
             _scrambleTurns--;
