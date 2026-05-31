@@ -728,8 +728,6 @@ public sealed class Qubed : Game
             return;
         }
 
-        rotation.Elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
-
         if (rotation.Direction == Direction.HalfTurn && ! rotation.MidClickPlayed && rotation.Elapsed >= _rotationDuration / 2f)
         {
             rotation.MidClickPlayed = true;
@@ -854,7 +852,7 @@ public sealed class Qubed : Game
 
                 _scrambleTurns = 20;
 
-                _rotationDuration = 0.2f;
+                _rotationDuration = 0.1f;
 
                 _isScrambling = true;
 
