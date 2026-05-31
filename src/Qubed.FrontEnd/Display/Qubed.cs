@@ -48,6 +48,12 @@ public sealed class Qubed : Game
 
     private const float StickerThickness = 0.07f;
 
+    private const float RotationDuration = 0.25f;
+
+    private const float ScrambleRotationDuration = 0.1f;
+
+    private const float SolveAnimationSeconds = 10f;
+
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly GraphicsDeviceManager _graphics;
@@ -106,7 +112,7 @@ public sealed class Qubed : Game
 
     private int _scrambleTurns;
 
-    private float _rotationDuration = 0.25f;
+    private float _rotationDuration = RotationDuration;
 
     private bool _solverFinished;
 
@@ -940,10 +946,10 @@ public sealed class Qubed : Game
         _solverFinished = true;
 
         _rotationDuration = _solveQueue.Count > 0
-            ? 10f / _solveQueue.Count
-            : 0.25f;
+            ? SolveAnimationSeconds / _solveQueue.Count
+            : RotationDuration;
 
-        _rotationDuration = Math.Min(_rotationDuration, 0.25f);
+        _rotationDuration = Math.Min(_rotationDuration, RotationDuration);
     }
 
     private void StepCallback(List<Move> moves, string stage)
@@ -1030,13 +1036,13 @@ public sealed class Qubed : Game
 
             if (_solveQueue.Count < 2)
             {
-                _rotationDuration = 0.25f;
+                _rotationDuration = RotationDuration;
             }
         }
 
         if (queueMove.PauseAfter)
         {
-            _thinkingPause = 0.25f + _random.Next(20) / 10f;
+            _thinkingPause = RotationDuration + _random.Next(20) / 10f;
         }
 
         StartFaceRotation(queueMove.Move);
@@ -1115,7 +1121,7 @@ public sealed class Qubed : Game
 
             if (_scrambleTurns < 2)
             {
-                _rotationDuration = 0.25f;
+                _rotationDuration = RotationDuration;
             }
 
             if (_scrambleTurns == 0)
@@ -1128,7 +1134,7 @@ public sealed class Qubed : Game
         {
             _isSolving = false;
 
-            _rotationDuration = 0.25f;
+            _rotationDuration = RotationDuration;
         }
 
         if (! _isSolving && _cube.MoveCount > 0)
