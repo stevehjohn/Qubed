@@ -485,6 +485,17 @@ public sealed class Qubed : Game
             }
         }
 
+        if (progress < 8)
+        {
+            for (var y = ProgressBarBorderWidth; y < innerBottom; y++)
+            {
+                for (var x = 0; x < innerWidth / 8; x++)
+                {
+                    _progressData[y * ProgressBarWidth + x + barLength + ProgressBarBorderWidth] = Color.FromNonPremultiplied(0x00,0x40, 0x00, 0xFF);
+                }
+            }
+        }
+
         _progressTexture.SetData(_progressData);
 
         _spriteBatch.Draw(_progressTexture, new Vector2(ProgressBarLeft, ProgressBarTop), new Rectangle(0, 0, ProgressBarWidth, ProgressBarHeight), Color.White);
