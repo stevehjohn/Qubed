@@ -854,7 +854,7 @@ public sealed class Qubed : Game
 
                 _scrambleTurns = 20;
 
-                _rotationDuration = 0.1f;
+                _rotationDuration = 0.2f;
 
                 _isScrambling = true;
 
