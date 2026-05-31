@@ -65,6 +65,14 @@ public sealed class Qubed : Game
 
     private const int ProgressGraceMoves = 20;
 
+    private const int ProgressBarWidth = 100;
+
+    private const int ProgressBarHeight = 30;
+
+    private const int ProgressBarLeft = 220 - ProgressBarWidth / 2;
+
+    private const int ProgressBarTop = 420;
+
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly GraphicsDeviceManager _graphics;
@@ -77,7 +85,9 @@ public sealed class Qubed : Game
 
     private readonly Cube _cube = new();
 
-    private readonly Color[] _data = new Color[PanelWidth * PanelHeight];
+    private readonly Color[] _netData = new Color[PanelWidth * PanelHeight];
+
+    private readonly Color[] _progressData = new Color[ProgressBarWidth * ProgressBarHeight];
 
     private readonly Lock _solveLock = new();
 
@@ -137,7 +147,9 @@ public sealed class Qubed : Game
 
     private SpriteBatch _spriteBatch;
 
-    private Texture2D _texture;
+    private Texture2D _netTexture;
+
+    private Texture2D _progressTexture;
 
     private bool _isUndo;
 
@@ -213,7 +225,9 @@ public sealed class Qubed : Game
 
         _textManager = new TextManager(_spriteBatch, Content.Load<SpriteFont>("font"));
 
-        _texture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
+        _netTexture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
+
+        _progressTexture = new Texture2D(GraphicsDevice, ProgressBarWidth, ProgressBarHeight);
 
         _clickSound = Content.Load<SoundEffect>("click");
 
@@ -372,6 +386,8 @@ public sealed class Qubed : Game
         DrawNet();
 
         UpdateText(gameTime);
+        
+        DrawProgress();
 
         _spriteBatch.End();
 
@@ -423,6 +439,25 @@ public sealed class Qubed : Game
         {
             _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 460, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
+    }
+
+    private void DrawProgress()
+    {
+        var progress = GetProgressWithGrace();
+
+        for (var y = 0; y < 4; y++)
+        {
+            for (var x = 0; x < ProgressBarWidth; x++)
+            {
+                _progressData[y * ProgressBarWidth + x] = Color.Black;
+                
+                _progressData[(ProgressBarHeight - 1 - y) * ProgressBarWidth + x] = Color.Black;
+            }
+        }
+
+        _progressTexture.SetData(_progressData);
+        
+        _spriteBatch.Draw(_progressTexture, new Vector2(ProgressBarLeft, ProgressBarTop), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
     }
 
     private int GetProgressWithGrace()
@@ -488,8 +523,6 @@ public sealed class Qubed : Game
 
     private void DrawNet()
     {
-        _texture.SetData(_data);
-
         const int unit = NetTileSize + NetSpacing;
 
         DrawFace(Face.Up, NetSpacing + unit * 3, NetSpacing);
@@ -504,7 +537,9 @@ public sealed class Qubed : Game
 
         DrawFace(Face.Down, NetSpacing + unit * 3, NetSpacing + unit * 6);
 
-        _spriteBatch.Draw(_texture, new Vector2(NetLeft, NetTop), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
+        _netTexture.SetData(_netData);
+
+        _spriteBatch.Draw(_netTexture, new Vector2(NetLeft, NetTop), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
     }
 
     private void DrawFace(Face face, int left, int top)
@@ -540,7 +575,7 @@ public sealed class Qubed : Game
                     continue;
                 }
 
-                _data[x + y * PanelWidth] = Color.Black;
+                _netData[x + y * PanelWidth] = Color.Black;
             }
         }
     }
@@ -551,7 +586,7 @@ public sealed class Qubed : Game
         {
             for (var x = 0; x < NetTileSize; x++)
             {
-                _data[left + x + (top + y) * PanelWidth] = color;
+                _netData[left + x + (top + y) * PanelWidth] = color;
             }
         }
     }
