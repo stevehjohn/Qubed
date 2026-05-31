@@ -632,7 +632,7 @@ public sealed class Qubed : Game
 
     private Viewport GetCubeViewport()
     {
-        return new Viewport(-40, -15, ViewportWidth, ViewportWidth);
+        return new Viewport(-40, -15, ViewportWidth, ViewportHeight);
     }
 
     private static Face FaceFromHitPoint(Vector3 hit)
