@@ -457,7 +457,7 @@ public sealed class Qubed : Game
 
         _progressTexture.SetData(_progressData);
         
-        _spriteBatch.Draw(_progressTexture, new Vector2(ProgressBarLeft, ProgressBarTop), new Rectangle(0, 0, PanelWidth, PanelHeight), Color.White);
+        _spriteBatch.Draw(_progressTexture, new Vector2(ProgressBarLeft, ProgressBarTop), new Rectangle(0, 0, ProgressBarWidth, ProgressBarHeight), Color.White);
     }
 
     private int GetProgressWithGrace()
