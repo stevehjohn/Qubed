@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Qubed.Core;
 using Qubed.Core.Extensions;
 using Qubed.Core.Infrastructure;
+using Qubed.Core.Logic;
 using Qubed.Core.Models;
 using Cube = Qubed.Core.Models.Cube;
 using Move = Qubed.Core.Models.Move;
@@ -19,13 +20,13 @@ namespace Qubed.FrontEnd.Display;
 public sealed class Qubed : Game
 {
     private const int WindowWidth = 800;
-    
-    private const int WindowHeight = 480;
-    
+
+    private const int WindowHeight = 520;
+
     private const int ViewportWidth = 528;
-    
+
     private const int ViewportHeight = 480;
-    
+
     private const int NetTileSize = 20;
 
     private const int NetSpacing = 6;
@@ -61,6 +62,8 @@ public sealed class Qubed : Game
     private const float ScrambleRotationDuration = 0.1f;
 
     private const float SolveAnimationSeconds = 10f;
+
+    private const int ProgressGraceMoves = 20;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -163,6 +166,10 @@ public sealed class Qubed : Game
     private string _solverStage;
 
     private float _thinkingPause;
+
+    private int _progress;
+
+    private int _progressGraceMoves;
 
     public Qubed(ILogger logger = null)
     {
@@ -414,8 +421,69 @@ public sealed class Qubed : Game
 
         if (! string.IsNullOrWhiteSpace(_solverStage))
         {
-            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
+            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 460, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
+    }
+
+    private int GetProgressWithGrace()
+    {
+        if (_isScrambling)
+        {
+            return _progress;
+        }
+
+        var progress = GetProgress();
+
+        if (progress > _progress || _progressGraceMoves == 0)
+        {
+            _progress = progress;
+
+            _progressGraceMoves = ProgressGraceMoves;
+        }
+
+        return _progress;
+    }
+
+    private int GetProgress()
+    {
+        var progress = 0;
+
+        for (var i = 0; i < AlgorithmLibrary.Algorithms.Count - 1; i++)
+        {
+            if (! AlgorithmLibrary.Algorithms[i].IsCompleteChecks(_cube))
+            {
+                return progress;
+            }
+
+            progress++;
+        }
+
+        if (! (_cube[Face.Down, 1, 0] == Colour.Yellow
+               && _cube[Face.Down, 2, 1] == Colour.Yellow
+               && _cube[Face.Down, 1, 2] == Colour.Yellow
+               && _cube[Face.Down, 0, 1] == Colour.Yellow))
+        {
+            return progress;
+        }
+
+        progress++;
+
+        if (! (_cube[Face.Down, 0, 0] == Colour.Yellow
+               && _cube[Face.Down, 2, 0] == Colour.Yellow
+               && _cube[Face.Down, 0, 2] == Colour.Yellow
+               && _cube[Face.Down, 2, 2] == Colour.Yellow))
+        {
+            return progress;
+        }
+
+        progress++;
+
+        if (! _cube.IsSolved())
+        {
+            return progress;
+        }
+
+        return progress + 1;
     }
 
     private void DrawNet()
@@ -750,7 +818,7 @@ public sealed class Qubed : Game
         {
             rotation.Elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
         }
-        
+
         if (rotation.Direction == Direction.HalfTurn && ! rotation.MidClickPlayed && rotation.Elapsed >= _rotationDuration / 2f)
         {
             rotation.MidClickPlayed = true;
