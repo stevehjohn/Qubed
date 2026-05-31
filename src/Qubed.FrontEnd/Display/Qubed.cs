@@ -22,6 +22,10 @@ public sealed class Qubed : Game
     
     private const int WindowHeight = 480;
     
+    private const int ViewportWidth = 528;
+    
+    private const int ViewportHeight = 480;
+    
     private const int NetTileSize = 20;
 
     private const int NetSpacing = 6;
@@ -157,8 +161,6 @@ public sealed class Qubed : Game
     private bool _resetOnNextUserMove;
 
     private string _solverStage;
-
-    private int _progressGraceMoves;
 
     private float _thinkingPause;
 
@@ -630,9 +632,7 @@ public sealed class Qubed : Game
 
     private Viewport GetCubeViewport()
     {
-        var fullViewport = GraphicsDevice.Viewport;
-
-        return new Viewport(-40, -15, (int) (fullViewport.Width * 0.66f), fullViewport.Height);
+        return new Viewport(-40, -15, ViewportWidth, ViewportWidth);
     }
 
     private static Face FaceFromHitPoint(Vector3 hit)
@@ -880,8 +880,6 @@ public sealed class Qubed : Game
                 _cube.ResetMoveCount();
 
                 _stopwatch.Reset();
-
-                _progressGraceMoves = 0;
             }
             else
             {
@@ -1117,8 +1115,6 @@ public sealed class Qubed : Game
         if (! _isUndoRedo)
         {
             _cube.ApplyMove(_activeRotation.Face, _activeRotation.Direction, ! _isScrambling);
-
-            _progressGraceMoves = Math.Max(--_progressGraceMoves, 0);
         }
 
         if (_cube.IsSolved())
