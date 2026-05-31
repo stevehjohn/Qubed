@@ -8,7 +8,7 @@ public sealed class Cube
     private readonly Colour[][,] _faces = new Colour[6][,];
 
     private readonly Stack<Move> _history = [];
-    
+
     private readonly Stack<Move> _redoStack = [];
 
     private readonly Random _random = new();
@@ -71,7 +71,7 @@ public sealed class Cube
                 ]
             }
         };
-    
+
     public int MoveCount { get; private set; }
 
     public Cube()
@@ -131,7 +131,7 @@ public sealed class Cube
         RotateFace(move.Face, opposite);
 
         RotateEdges(move.Face, opposite);
-        
+
         _redoStack.Push(move);
 
         MoveCount--;
@@ -145,11 +145,11 @@ public sealed class Cube
         {
             return null;
         }
-        
+
         var move = _redoStack.Pop();
-        
+
         ApplyMove(move, true, false);
-        
+
         return move;
     }
 
@@ -167,7 +167,7 @@ public sealed class Cube
         if (addToHistory)
         {
             _history.Push(move);
-            
+
             MoveCount++;
         }
 
@@ -221,7 +221,6 @@ public sealed class Cube
             do
             {
                 face = (Face) _random.Next(6);
-
             } while (face == previousFace1
                      || (face == previousFace2 && previousFace1.Value == previousFace2.Value.Opposite()));
 
@@ -230,9 +229,52 @@ public sealed class Cube
             ApplyMove(face, direction);
 
             previousFace2 = previousFace1;
-            
+
             previousFace1 = face;
         }
+    }
+
+    public int CountSolvedCubies()
+    {
+        var solved = 0;
+
+        foreach (var cubie in GetCubieStickerSets())
+        {
+            if (cubie.All(sticker => this[sticker.Face, sticker.X, sticker.Y] == this[sticker.Face, 1, 1]))
+            {
+                solved++;
+            }
+        }
+
+        return solved;
+    }
+
+    private static IEnumerable<(Face Face, int X, int Y)[]> GetCubieStickerSets()
+    {
+        yield return [(Face.Up, 1, 0), (Face.Back, 1, 0)];
+        yield return [(Face.Up, 2, 1), (Face.Right, 1, 0)];
+        yield return [(Face.Up, 1, 2), (Face.Front, 1, 0)];
+        yield return [(Face.Up, 0, 1), (Face.Left, 1, 0)];
+
+        yield return [(Face.Down, 1, 2), (Face.Back, 1, 2)];
+        yield return [(Face.Down, 2, 1), (Face.Right, 1, 2)];
+        yield return [(Face.Down, 1, 0), (Face.Front, 1, 2)];
+        yield return [(Face.Down, 0, 1), (Face.Left, 1, 2)];
+
+        yield return [(Face.Front, 2, 1), (Face.Right, 0, 1)];
+        yield return [(Face.Front, 0, 1), (Face.Left, 2, 1)];
+        yield return [(Face.Back, 0, 1), (Face.Right, 2, 1)];
+        yield return [(Face.Back, 2, 1), (Face.Left, 0, 1)];
+
+        yield return [(Face.Up, 0, 0), (Face.Left, 0, 0), (Face.Back, 2, 0)];
+        yield return [(Face.Up, 2, 0), (Face.Right, 2, 0), (Face.Back, 0, 0)];
+        yield return [(Face.Up, 0, 2), (Face.Left, 2, 0), (Face.Front, 0, 0)];
+        yield return [(Face.Up, 2, 2), (Face.Right, 0, 0), (Face.Front, 2, 0)];
+
+        yield return [(Face.Down, 0, 0), (Face.Left, 2, 2), (Face.Front, 0, 2)];
+        yield return [(Face.Down, 2, 0), (Face.Right, 0, 2), (Face.Front, 2, 2)];
+        yield return [(Face.Down, 0, 2), (Face.Left, 0, 2), (Face.Back, 2, 2)];
+        yield return [(Face.Down, 2, 2), (Face.Right, 2, 2), (Face.Back, 0, 2)];
     }
 
     public (ulong A, ulong B, ulong C) GetHash()

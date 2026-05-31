@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Input;
 using Qubed.Core;
 using Qubed.Core.Extensions;
 using Qubed.Core.Infrastructure;
-using Qubed.Core.Logic;
 using Qubed.Core.Models;
 using Cube = Qubed.Core.Models.Cube;
 using Move = Qubed.Core.Models.Move;
@@ -65,7 +64,7 @@ public sealed class Qubed : Game
 
     private const int ProgressGraceMoves = 20;
 
-    private const int ProgressBarWidth = 100;
+    private const int ProgressBarWidth = 208;
 
     private const int ProgressBarHeight = 20;
 
@@ -74,6 +73,8 @@ public sealed class Qubed : Game
     private const int ProgressBarTop = 430;
 
     private const int ProgressBarBorderWidth = 4;
+
+    private const int MaxProgress = 20;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -475,9 +476,9 @@ public sealed class Qubed : Game
 
         const int innerWidth = innerRight - ProgressBarBorderWidth;
 
-        var barLength = innerWidth * progress / 8;
+        var barLength = innerWidth * progress / MaxProgress;
 
-        var progressAmount = progress / 8f;
+        var progressAmount = progress / MaxProgress;
 
         var red = (byte) (0xD0 * (1f - progressAmount));
 
@@ -491,13 +492,13 @@ public sealed class Qubed : Game
             }
         }
 
-        if (progress < 8)
+        if (progress < MaxProgress)
         {
             for (var y = ProgressBarBorderWidth; y < innerBottom; y++)
             {
-                for (var x = 0; x < innerWidth / 8; x++)
+                for (var x = 0; x < innerWidth / MaxProgress; x++)
                 {
-                    var alpha = (byte) (255 - 255 * x / (innerWidth / 8 - 1));
+                    var alpha = (byte) (255 - 255 * x / (innerWidth / MaxProgress - 1));
 
                     _progressData[y * ProgressBarWidth + x + barLength + ProgressBarBorderWidth] = Color.FromNonPremultiplied(red, green, 0x00, alpha);
                 }
@@ -516,7 +517,7 @@ public sealed class Qubed : Game
             return _progress;
         }
 
-        var progress = GetProgress();
+        var progress = _cube.CountSolvedCubies();
 
         if (progress > _progress || _progressGraceMoves == 0)
         {
@@ -526,48 +527,6 @@ public sealed class Qubed : Game
         }
 
         return _progress;
-    }
-
-    private int GetProgress()
-    {
-        var progress = 0;
-
-        for (var i = 0; i < AlgorithmLibrary.Algorithms.Count - 1; i++)
-        {
-            if (! AlgorithmLibrary.Algorithms[i].IsCompleteChecks(_cube))
-            {
-                return progress;
-            }
-
-            progress++;
-        }
-
-        if (! (_cube[Face.Down, 1, 0] == Colour.Yellow
-               && _cube[Face.Down, 2, 1] == Colour.Yellow
-               && _cube[Face.Down, 1, 2] == Colour.Yellow
-               && _cube[Face.Down, 0, 1] == Colour.Yellow))
-        {
-            return progress;
-        }
-
-        progress++;
-
-        if (! (_cube[Face.Down, 0, 0] == Colour.Yellow
-               && _cube[Face.Down, 2, 0] == Colour.Yellow
-               && _cube[Face.Down, 0, 2] == Colour.Yellow
-               && _cube[Face.Down, 2, 2] == Colour.Yellow))
-        {
-            return progress;
-        }
-
-        progress++;
-
-        if (! _cube.IsSolved())
-        {
-            return progress;
-        }
-
-        return progress + 1;
     }
 
     private void DrawNet()
