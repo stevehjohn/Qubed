@@ -471,11 +471,11 @@ public sealed class Qubed : Game
 
         var barLength = (ProgressBarWidth - ProgressBarBorderWidth * 2) / 8 * progress;
 
-        for (var y = ProgressBarBorderWidth; y < ProgressBarHeight - ProgressBarBorderWidth * 2; y++)
+        for (var y = ProgressBarBorderWidth; y <= ProgressBarHeight - ProgressBarBorderWidth * 2; y++)
         {
-            for (var x = 0; x < barLength; x++)
+            for (var x = 0; x <= barLength; x++)
             {
-                _progressData[y * ProgressBarWidth + x] = Color.Green;
+                _progressData[y * ProgressBarWidth + x + ProgressBarBorderWidth] = Color.FromNonPremultiplied(0x00, 0xFF,0x00, 0xFF);
             }
         }
 
