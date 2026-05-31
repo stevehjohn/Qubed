@@ -18,6 +18,10 @@ namespace Qubed.FrontEnd.Display;
 
 public sealed class Qubed : Game
 {
+    private const int WindowWidth = 800;
+    
+    private const int WindowHeight = 480;
+    
     private const int NetTileSize = 20;
 
     private const int NetSpacing = 6;
@@ -160,7 +164,11 @@ public sealed class Qubed : Game
 
     public Qubed(ILogger logger = null)
     {
-        _graphics = new GraphicsDeviceManager(this);
+        _graphics = new GraphicsDeviceManager(this)
+        {
+            PreferredBackBufferWidth = WindowWidth,
+            PreferredBackBufferHeight = WindowHeight
+        };
 
         IsMouseVisible = true;
 
