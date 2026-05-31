@@ -745,8 +745,15 @@ public sealed class Qubed : Game
             _clickSound.Play(volume, pitch, 0f);
         }
 
-        rotation.Elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
-
+        if (rotation.Direction == Direction.HalfTurn)
+        {
+            rotation.Elapsed += (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.4);
+        }
+        else
+        {
+            rotation.Elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
+        }
+        
         if (rotation.Elapsed < _rotationDuration)
         {
             return;
