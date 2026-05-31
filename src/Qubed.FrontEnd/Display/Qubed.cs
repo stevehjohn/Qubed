@@ -447,6 +447,8 @@ public sealed class Qubed : Game
     {
         var progress = GetProgressWithGrace();
 
+        Array.Fill(_progressData, Color.Transparent);
+
         for (var y = 0; y < ProgressBarBorderWidth; y++)
         {
             for (var x = 0; x < ProgressBarWidth; x++)
@@ -476,7 +478,7 @@ public sealed class Qubed : Game
                 _progressData[y * ProgressBarWidth + x] = Color.Green;
             }
         }
-        
+
         _progressTexture.SetData(_progressData);
 
         _spriteBatch.Draw(_progressTexture, new Vector2(ProgressBarLeft, ProgressBarTop), new Rectangle(0, 0, ProgressBarWidth, ProgressBarHeight), Color.White);
@@ -992,6 +994,10 @@ public sealed class Qubed : Game
         {
             if (WasKeyPressed(keyboard, Keys.S, 's'))
             {
+                _progress = 0;
+
+                _progressGraceMoves = 0;
+
                 _previousFace1 = null;
 
                 _previousFace2 = null;
@@ -1017,7 +1023,6 @@ public sealed class Qubed : Game
         do
         {
             face = (Face) _random.Next(6);
-            
         } while (face == _previousFace1
                  // ReSharper disable once PossibleInvalidOperationException
                  || (face == _previousFace2 && _previousFace1.Value == _previousFace2.Value.Opposite()));
