@@ -470,7 +470,7 @@ public sealed class Qubed : Game
         }
 
         const int innerRight = ProgressBarWidth - ProgressBarBorderWidth;
-        
+
         const int innerBottom = ProgressBarHeight - ProgressBarBorderWidth;
 
         const int innerWidth = innerRight - ProgressBarBorderWidth;
@@ -491,7 +491,9 @@ public sealed class Qubed : Game
             {
                 for (var x = 0; x < innerWidth / 8; x++)
                 {
-                    _progressData[y * ProgressBarWidth + x + barLength + ProgressBarBorderWidth] = Color.FromNonPremultiplied(0x00,0x40, 0x00, 0xFF);
+                    var alpha = (byte) (255 - 255 * x / (innerWidth / 8 - 1));
+
+                    _progressData[y * ProgressBarWidth + x + barLength + ProgressBarBorderWidth] = Color.FromNonPremultiplied(0x00, 0x40, 0x00, alpha);
                 }
             }
         }
