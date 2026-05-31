@@ -478,7 +478,7 @@ public sealed class Qubed : Game
 
         var barLength = innerWidth * progress / MaxProgress;
 
-        var progressAmount = progress / MaxProgress;
+        var progressAmount = progress / (float) MaxProgress;
 
         var red = (byte) (0xD0 * (1f - progressAmount));
 
