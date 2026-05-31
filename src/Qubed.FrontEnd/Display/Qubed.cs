@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Input;
 using Qubed.Core;
 using Qubed.Core.Extensions;
 using Qubed.Core.Infrastructure;
-using Qubed.Core.Logic;
 using Qubed.Core.Models;
 using Cube = Qubed.Core.Models.Cube;
 using Move = Qubed.Core.Models.Move;
@@ -48,8 +47,6 @@ public sealed class Qubed : Game
     private const float StickerOffset = 0.015f;
 
     private const float StickerThickness = 0.07f;
-
-    private const int ProgressGraceMoves = 20;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -150,8 +147,6 @@ public sealed class Qubed : Game
     private bool _resetOnNextUserMove;
 
     private string _solverStage;
-
-    private int _progress = -1;
 
     private int _progressGraceMoves;
 
@@ -405,67 +400,6 @@ public sealed class Qubed : Game
         {
             _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 420, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
-    }
-
-    private int GetProgressWithGrace()
-    {
-        if (_isScrambling)
-        {
-            return _progress;
-        }
-
-        var progress = GetProgress();
-
-        if (progress > _progress || _progressGraceMoves == 0)
-        {
-            _progress = progress;
-
-            _progressGraceMoves = ProgressGraceMoves;
-        }
-
-        return _progress;
-    }
-
-    private int GetProgress()
-    {
-        var progress = 0;
-
-        for (var i = 0; i < AlgorithmLibrary.Algorithms.Count - 1; i++)
-        {
-            if (! AlgorithmLibrary.Algorithms[i].IsCompleteChecks(_cube))
-            {
-                return progress;
-            }
-
-            progress++;
-        }
-
-        if (! (_cube[Face.Down, 1, 0] == Colour.Yellow
-               && _cube[Face.Down, 2, 1] == Colour.Yellow
-               && _cube[Face.Down, 1, 2] == Colour.Yellow
-               && _cube[Face.Down, 0, 1] == Colour.Yellow))
-        {
-            return progress;
-        }
-
-        progress++;
-
-        if (! (_cube[Face.Down, 0, 0] == Colour.Yellow
-               && _cube[Face.Down, 2, 0] == Colour.Yellow
-               && _cube[Face.Down, 0, 2] == Colour.Yellow
-               && _cube[Face.Down, 2, 2] == Colour.Yellow))
-        {
-            return progress;
-        }
-
-        progress++;
-
-        if (! _cube.IsSolved())
-        {
-            return progress;
-        }
-
-        return progress + 1;
     }
 
     private void DrawNet()
@@ -927,8 +861,6 @@ public sealed class Qubed : Game
                 _cube.ResetMoveCount();
 
                 _stopwatch.Reset();
-
-                _progress = 0;
 
                 _progressGraceMoves = 0;
             }
