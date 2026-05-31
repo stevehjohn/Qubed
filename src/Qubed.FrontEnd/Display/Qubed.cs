@@ -747,7 +747,7 @@ public sealed class Qubed : Game
 
         if (rotation.Direction == Direction.HalfTurn)
         {
-            rotation.Elapsed += (float) (gameTime.ElapsedGameTime.TotalSeconds * 1.4);
+            rotation.Elapsed += (float) (gameTime.ElapsedGameTime.TotalSeconds / 1.4);
         }
         else
         {
