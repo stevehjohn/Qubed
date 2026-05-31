@@ -796,6 +796,19 @@ public sealed class Qubed : Game
 
         rotation.Elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
 
+        if (rotation.Direction == Direction.HalfTurn && ! rotation.MidClickPlayed && rotation.Elapsed >= _rotationDuration / 2f)
+        {
+            rotation.MidClickPlayed = true;
+
+            var pitch = (float) (_random.NextDouble() * 0.3 - 0.15);
+
+            var volume = _isScrambling || _isSolving ? 0.4f : 1f;
+
+            _clickSound.Play(volume, pitch, 0f);
+        }
+
+        rotation.Elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
+
         if (rotation.Elapsed < _rotationDuration)
         {
             return;
@@ -1010,7 +1023,7 @@ public sealed class Qubed : Game
             for (var i = 0; i < moves.Count; i++)
             {
                 var pause = i == moves.Count - 1 && _random.Next(4) == 0;
-                
+
                 _solveQueue.Enqueue(new QueueMove(moves[i], stage, pause));
             }
         }

@@ -16,4 +16,6 @@ public sealed class FaceRotation
     public Direction Direction => _move.Direction;
 
     public float Elapsed { get; set; }
+    
+    public bool MidClickPlayed { get; set; }
 }
