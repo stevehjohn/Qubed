@@ -734,6 +734,15 @@ public sealed class Qubed : Game
             return;
         }
 
+        if (rotation.Direction == Direction.HalfTurn)
+        {
+            rotation.Elapsed += (float) (gameTime.ElapsedGameTime.TotalSeconds / 1.4);
+        }
+        else
+        {
+            rotation.Elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
+        }
+        
         if (rotation.Direction == Direction.HalfTurn && ! rotation.MidClickPlayed && rotation.Elapsed >= _rotationDuration / 2f)
         {
             rotation.MidClickPlayed = true;
@@ -745,15 +754,6 @@ public sealed class Qubed : Game
             _clickSound.Play(volume, pitch, 0f);
         }
 
-        if (rotation.Direction == Direction.HalfTurn)
-        {
-            rotation.Elapsed += (float) (gameTime.ElapsedGameTime.TotalSeconds / 1.4);
-        }
-        else
-        {
-            rotation.Elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
-        }
-        
         if (rotation.Elapsed < _rotationDuration)
         {
             return;
