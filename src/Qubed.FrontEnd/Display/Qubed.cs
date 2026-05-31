@@ -67,11 +67,13 @@ public sealed class Qubed : Game
 
     private const int ProgressBarWidth = 100;
 
-    private const int ProgressBarHeight = 30;
+    private const int ProgressBarHeight = 20;
 
-    private const int ProgressBarLeft = 220 - ProgressBarWidth / 2;
+    private const int ProgressBarLeft = 225 - ProgressBarWidth / 2;
 
-    private const int ProgressBarTop = 420;
+    private const int ProgressBarTop = 430;
+
+    private const int ProgressBarBorderWidth = 4;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -386,7 +388,7 @@ public sealed class Qubed : Game
         DrawNet();
 
         UpdateText(gameTime);
-        
+
         DrawProgress();
 
         _spriteBatch.End();
@@ -437,7 +439,7 @@ public sealed class Qubed : Game
 
         if (! string.IsNullOrWhiteSpace(_solverStage))
         {
-            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 460, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
+            _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 470, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
     }
 
@@ -445,18 +447,38 @@ public sealed class Qubed : Game
     {
         var progress = GetProgressWithGrace();
 
-        for (var y = 0; y < 4; y++)
+        for (var y = 0; y < ProgressBarBorderWidth; y++)
         {
             for (var x = 0; x < ProgressBarWidth; x++)
             {
                 _progressData[y * ProgressBarWidth + x] = Color.Black;
-                
+
                 _progressData[(ProgressBarHeight - 1 - y) * ProgressBarWidth + x] = Color.Black;
             }
         }
 
-        _progressTexture.SetData(_progressData);
+        for (var x = 0; x < ProgressBarBorderWidth; x++)
+        {
+            for (var y = 0; y < ProgressBarHeight; y++)
+            {
+                _progressData[y * ProgressBarWidth + x] = Color.Black;
+
+                _progressData[y * ProgressBarWidth + (ProgressBarWidth - 1 - x)] = Color.Black;
+            }
+        }
+
+        var barLength = (ProgressBarWidth - ProgressBarBorderWidth * 2) / 8 * progress;
+
+        for (var y = ProgressBarBorderWidth; y < ProgressBarHeight - ProgressBarBorderWidth * 2; y++)
+        {
+            for (var x = 0; x < barLength; x++)
+            {
+                _progressData[y * ProgressBarWidth + x] = Color.Green;
+            }
+        }
         
+        _progressTexture.SetData(_progressData);
+
         _spriteBatch.Draw(_progressTexture, new Vector2(ProgressBarLeft, ProgressBarTop), new Rectangle(0, 0, ProgressBarWidth, ProgressBarHeight), Color.White);
     }
 
@@ -995,6 +1017,7 @@ public sealed class Qubed : Game
         do
         {
             face = (Face) _random.Next(6);
+            
         } while (face == _previousFace1
                  // ReSharper disable once PossibleInvalidOperationException
                  || (face == _previousFace2 && _previousFace1.Value == _previousFace2.Value.Opposite()));
