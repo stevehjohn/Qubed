@@ -493,7 +493,7 @@ public sealed class Qubed : Game
                 {
                     var alpha = (byte) (255 - 255 * x / (innerWidth / 8 - 1));
 
-                    _progressData[y * ProgressBarWidth + x + barLength + ProgressBarBorderWidth] = Color.FromNonPremultiplied(0x00, 0x40, 0x00, alpha);
+                    _progressData[y * ProgressBarWidth + x + barLength + ProgressBarBorderWidth] = Color.FromNonPremultiplied(0x00, 0xD0, 0x00, alpha);
                 }
             }
         }
