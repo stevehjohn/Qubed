@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -197,7 +198,7 @@ public sealed class Qubed : Game
     
     private string _message;
 
-    private IReadOnlyList<Move> _hintMoves;
+    private IReadOnlyList<Move> _helpMoves;
 
     public Qubed(ILogger logger = null)
     {
@@ -449,13 +450,34 @@ public sealed class Qubed : Game
             
             _message = null;
 
-            _hintMoves = task.Result.Moves;
+            _helpMoves = task.Result.Moves;
         });
     }
 
     private void DrawHelp()
     {
+        if (_helpMoves == null || _helpMoves.Count == 0)
+        {
+            return;
+        }
+
+        var help = new StringBuilder();
+
+        Move move;
+
+        var index = 0;
         
+        do
+        {
+            move = _helpMoves[index];
+
+            help.Append($"{move.ToString()} ");
+            
+            index++;
+
+        } while (! move.IsSequenceEnd);
+
+        _textManager.DrawMessage(help.ToString().Trim(), 220, 20, Color.FromNonPremultiplied(0xFF, 0xFF, 0xFF, 0xFF), true);
     }
 
     private void TryResetView()
