@@ -480,14 +480,7 @@ public sealed class Qubed : Game
 
         var barLength = innerWidth * progress / MaxProgress;
 
-        if (_progressDisplayed < barLength)
-        {
-            _progressDisplayed++;
-        } 
-        else if (_progressDisplayed > barLength)
-        {
-            _progressDisplayed--;
-        }
+        _progressDisplayed += Math.Sign(barLength - _progressDisplayed);
 
         var progressAmount = progress / (float) MaxProgress;
 
