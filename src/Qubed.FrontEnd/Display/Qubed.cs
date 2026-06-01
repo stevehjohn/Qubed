@@ -777,6 +777,8 @@ public sealed class Qubed : Game
 
             _pitch += (mouse.Y - _previousMouse.Y) * MouseRotationScale;
 
+            _isResettingView = false;
+
             UpdateView();
         }
     }
