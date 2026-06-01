@@ -489,7 +489,7 @@ public sealed class Qubed : Game
             return;
         }
 
-        if (_helpMoves[0] == move)
+        if (_helpMoves[0].ToString() == move.ToString())
         {
             _helpMoves.RemoveAt(0);
         }
