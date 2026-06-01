@@ -1,4 +1,4 @@
-# Qubed. 3 x 3 Cube Game and Solver
+# Qubed. 3x3x3 Cube Game and Solver
 
 Twist. Solve. Master.
 
