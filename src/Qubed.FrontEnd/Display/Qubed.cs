@@ -473,7 +473,7 @@ public sealed class Qubed : Game
         {
             move = _helpMoves[index];
 
-            help.Append($"{new Move(_faceMappings[move.Face], move.Direction).ToString()} ");
+            help.Append($"{new Move(_faceMappings.Single(f => f.Value == move.Face).Key, move.Direction).ToString()} ");
             
             index++;
 
