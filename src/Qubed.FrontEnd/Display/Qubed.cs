@@ -130,7 +130,7 @@ public sealed class Qubed : Game
 
     private bool _isScrambling;
 
-    private float _yaw = -0.789994895f;
+    private float _yaw = -0.659995019f;
 
     private float _pitch = 0.490001917f;
 
