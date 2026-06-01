@@ -408,9 +408,11 @@ public sealed class Qubed : Game
 
         DrawNet();
 
-        UpdateText(gameTime);
+        DrawText(gameTime);
 
         DrawProgress();
+
+        DrawHelp();
 
         _spriteBatch.End();
 
@@ -451,6 +453,11 @@ public sealed class Qubed : Game
         });
     }
 
+    private void DrawHelp()
+    {
+        
+    }
+
     private void TryResetView()
     {
         if (! _isResettingView)
@@ -481,7 +488,7 @@ public sealed class Qubed : Game
         return current + difference * amount;
     }
 
-    private void UpdateText(GameTime gameTime)
+    private void DrawText(GameTime gameTime)
     {
         if (_stopwatch.Elapsed == TimeSpan.Zero)
         {
