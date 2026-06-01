@@ -169,15 +169,15 @@ public static class AlgorithmLibrary
 
         var moves = new List<Move>();
 
-        foreach (var step in steps)
+        for (var i = 0; i < steps.Length; i++)
         {
-            moves.Add(ParseMove(step));
+            moves.Add(ParseMove(steps[i], i == steps.Length - 1));
         }
 
         return moves;
     }
 
-    private static Move ParseMove(string move)
+    private static Move ParseMove(string move, bool isSequenceEnd)
     {
         var face = move[0] switch
         {
@@ -202,6 +202,6 @@ public static class AlgorithmLibrary
             };
         }
 
-        return new Move(face, direction);
+        return new Move(face, direction, isSequenceEnd);
     }
 }
