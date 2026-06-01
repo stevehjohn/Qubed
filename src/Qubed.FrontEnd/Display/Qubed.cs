@@ -834,7 +834,7 @@ public sealed class Qubed : Game
         };
     }
 
-    private Viewport GetCubeViewport()
+    private static Viewport GetCubeViewport()
     {
         return new Viewport(-40, -15, ViewportWidth, ViewportHeight);
     }
