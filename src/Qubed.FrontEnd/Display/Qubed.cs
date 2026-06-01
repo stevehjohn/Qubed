@@ -491,6 +491,10 @@ public sealed class Qubed : Game
         {
             _helpMoves.RemoveAt(0);
         }
+        else
+        {
+            _helpMoves = null;
+        }
     }
 
     private void TryResetView()
