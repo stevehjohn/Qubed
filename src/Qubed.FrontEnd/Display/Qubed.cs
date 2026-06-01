@@ -1131,6 +1131,8 @@ public sealed class Qubed : Game
 
                 _isScrambling = true;
 
+                _helpMoves = null;
+
                 _cube.ResetMoveCount();
 
                 _stopwatch.Reset();
@@ -1165,6 +1167,8 @@ public sealed class Qubed : Game
         }
 
         FindSolveMoves();
+
+        _helpMoves = null;
     }
 
     private void FindSolveMoves()
