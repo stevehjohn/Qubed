@@ -186,6 +186,8 @@ public sealed class Qubed : Game
 
     private int _progressGraceMoves;
 
+    private int _progressDisplayed = ProgressBarWidth - ProgressBarBorderWidth * 2;
+
     public Qubed(ILogger logger = null)
     {
         _graphics = new GraphicsDeviceManager(this)
@@ -478,15 +480,24 @@ public sealed class Qubed : Game
 
         var barLength = innerWidth * progress / MaxProgress;
 
+        if (_progressDisplayed < barLength)
+        {
+            _progressDisplayed++;
+        } 
+        else if (_progressDisplayed > barLength)
+        {
+            _progressDisplayed--;
+        }
+
         var progressAmount = progress / (float) MaxProgress;
 
         var red = (byte) (0xD0 * (1f - progressAmount));
 
-        var green = (byte) 0xD0;
+        const byte green = 0xD0;
 
         for (var y = ProgressBarBorderWidth; y < innerBottom; y++)
         {
-            for (var x = ProgressBarBorderWidth; x < ProgressBarBorderWidth + barLength; x++)
+            for (var x = ProgressBarBorderWidth; x < ProgressBarBorderWidth + _progressDisplayed; x++)
             {
                 _progressData[y * ProgressBarWidth + x] = Color.FromNonPremultiplied(red, green, 0x00, 0xFF);
             }
@@ -500,7 +511,7 @@ public sealed class Qubed : Game
                 {
                     var alpha = (byte) (255 - 255 * x / (innerWidth / MaxProgress - 1));
 
-                    _progressData[y * ProgressBarWidth + x + barLength + ProgressBarBorderWidth] = Color.FromNonPremultiplied(red, green, 0x00, alpha);
+                    _progressData[y * ProgressBarWidth + x + _progressDisplayed + ProgressBarBorderWidth] = Color.FromNonPremultiplied(red, green, 0x00, alpha);
                 }
             }
         }
