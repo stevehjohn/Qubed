@@ -64,7 +64,7 @@ public sealed class Qubed : Game
 
     private const float SolveAnimationSeconds = 10f;
 
-    private const int ProgressGraceMoves = 20;
+    private const int ProgressGraceMoves = 11;
 
     private const int ProgressBarWidth = 208;
 
