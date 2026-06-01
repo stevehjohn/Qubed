@@ -198,7 +198,7 @@ public sealed class Qubed : Game
     
     private string _message;
 
-    private IReadOnlyList<Move> _helpMoves;
+    private List<Move> _helpMoves;
 
     public Qubed(ILogger logger = null)
     {
@@ -450,7 +450,7 @@ public sealed class Qubed : Game
             
             _message = null;
 
-            _helpMoves = task.Result.Moves;
+            _helpMoves = task.Result.Moves.ToList();
         });
     }
 
