@@ -75,7 +75,7 @@ public sealed class Qubed : Game
     private const int ProgressBarBorderWidth = 4;
 
     private const int MaxProgress = 20;
-    
+
     private const float DefaultYaw = -0.659995019f;
 
     private const float DefaultPitch = 0.490001917f;
@@ -424,18 +424,29 @@ public sealed class Qubed : Game
             return;
         }
 
-        _yaw += LerpAngle(_yaw, DefaultYaw, 0.02f);
+        _yaw = LerpAngle(_yaw, DefaultYaw, 0.06f);
+
+        _pitch = LerpAngle(_pitch, DefaultPitch, 0.06f);
         
-        _pitch += LerpAngle(_pitch, DefaultPitch, 0.02f);
+        if (Math.Abs(MathHelper.WrapAngle(DefaultYaw - _yaw)) < 0.001f && Math.Abs(DefaultPitch - _pitch) < 0.001f)
+        {
+            _yaw = DefaultYaw;
+            
+            _pitch = DefaultPitch;
+            
+            _isResettingView = false;
+        }
+
+        UpdateView();
     }
-    
+
     private static float LerpAngle(float current, float target, float amount)
     {
         var difference = MathHelper.WrapAngle(target - current);
 
         return current + difference * amount;
     }
-    
+
     private void UpdateText(GameTime gameTime)
     {
         if (_stopwatch.Elapsed == TimeSpan.Zero)
