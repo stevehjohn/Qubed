@@ -422,7 +422,7 @@ public sealed class Qubed : Game
 
     private void StartHelp()
     {
-        if (_isScrambling || _isSolving || _isResettingView || _cube.IsSolved())
+        if (_isScrambling || _isSolving || _cube.IsSolved())
         {
             return;
         }
