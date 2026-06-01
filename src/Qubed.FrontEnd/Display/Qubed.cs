@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -193,6 +194,8 @@ public sealed class Qubed : Game
     private int _progressDisplayed = ProgressBarWidth - ProgressBarBorderWidth * 2;
 
     private bool _isResettingView;
+    
+    private string _message;
 
     public Qubed(ILogger logger = null)
     {
@@ -414,7 +417,39 @@ public sealed class Qubed : Game
 
     private void StartHelp()
     {
+        if (_isScrambling || _isSolving || _isResettingView || _cube.IsSolved())
+        {
+            return;
+        }
+
         _isResettingView = true;
+
+        _message = "Thinking...";
+
+        Task.Run(() =>
+        {
+            var solver = new Solver(_cube, Mode.Fast, _logger);
+            
+            var result = solver.Solve();
+
+            return result;
+
+        }).ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                _logger?.WriteLine(task.Exception?.GetBaseException().ToString());
+
+                return;
+            }
+            
+            SolutionFound(task.Result.Moves);
+        });
+    }
+
+    private void SolutionFound(IReadOnlyList<Move> moves)
+    {
+        _message = null;
     }
 
     private void TryResetView()
@@ -481,6 +516,11 @@ public sealed class Qubed : Game
             {
                 _textManager.DrawMessage("Solving!", 220, 20, Color.FromNonPremultiplied(0xFF, 0xFF, textColour, 0xFF), true);
             }
+        }
+
+        if (! string.IsNullOrWhiteSpace(_message))
+        {
+            _textManager.DrawMessage(_message, 220, 20, Color.FromNonPremultiplied(0xFF, textColour, 0xFF, 0xFF), true);
         }
 
         if (_cube.IsSolved() && _stopwatch.Elapsed > TimeSpan.Zero && ! _stopwatch.IsRunning)
