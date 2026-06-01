@@ -496,16 +496,18 @@ public sealed class Qubed : Game
             }
         }
 
-        if (progress < MaxProgress)
+        for (var y = ProgressBarBorderWidth; y < innerBottom; y++)
         {
-            for (var y = ProgressBarBorderWidth; y < innerBottom; y++)
+            for (var x = 0; x < innerWidth / MaxProgress; x++)
             {
-                for (var x = 0; x < innerWidth / MaxProgress; x++)
+                if (x + _progressDisplayed >= ProgressBarWidth - ProgressBarBorderWidth * 2)
                 {
-                    var alpha = (byte) (255 - 255 * x / (innerWidth / MaxProgress - 1));
-
-                    _progressData[y * ProgressBarWidth + x + _progressDisplayed + ProgressBarBorderWidth] = Color.FromNonPremultiplied(red, green, 0x00, alpha);
+                    break;
                 }
+
+                var alpha = (byte) (255 - 255 * x / (innerWidth / MaxProgress - 1));
+
+                _progressData[y * ProgressBarWidth + x + _progressDisplayed + ProgressBarBorderWidth] = Color.FromNonPremultiplied(red, green, 0x00, alpha);
             }
         }
 
