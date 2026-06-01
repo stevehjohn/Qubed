@@ -197,6 +197,8 @@ public sealed class Qubed : Game
     
     private string _message;
 
+    private IReadOnlyList<Move> _hintMoves;
+
     public Qubed(ILogger logger = null)
     {
         _graphics = new GraphicsDeviceManager(this)
@@ -443,13 +445,10 @@ public sealed class Qubed : Game
                 return;
             }
             
-            SolutionFound(task.Result.Moves);
-        });
-    }
+            _message = null;
 
-    private void SolutionFound(IReadOnlyList<Move> moves)
-    {
-        _message = null;
+            _hintMoves = task.Result.Moves;
+        });
     }
 
     private void TryResetView()
