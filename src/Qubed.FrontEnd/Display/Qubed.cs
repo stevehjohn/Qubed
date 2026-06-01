@@ -192,6 +192,8 @@ public sealed class Qubed : Game
 
     private int _progressDisplayed = ProgressBarWidth - ProgressBarBorderWidth * 2;
 
+    private bool _isResettingView;
+
     public Qubed(ILogger logger = null)
     {
         _graphics = new GraphicsDeviceManager(this)
@@ -329,6 +331,11 @@ public sealed class Qubed : Game
 
         TryScramble(keyboard);
 
+        if (WasKeyPressed(keyboard, Keys.H, 'h'))
+        {
+            StartHelp();
+        }
+
         _previousKeyboard = keyboard;
 
         _previousMouse = mouse;
@@ -392,6 +399,8 @@ public sealed class Qubed : Game
 
         _spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
+        TryResetView();
+
         DrawNet();
 
         UpdateText(gameTime);
@@ -403,6 +412,30 @@ public sealed class Qubed : Game
         base.Draw(gameTime);
     }
 
+    private void StartHelp()
+    {
+        _isResettingView = true;
+    }
+
+    private void TryResetView()
+    {
+        if (! _isResettingView)
+        {
+            return;
+        }
+
+        _yaw += LerpAngle(_yaw, DefaultYaw, 0.02f);
+        
+        _pitch += LerpAngle(_pitch, DefaultPitch, 0.02f);
+    }
+    
+    private static float LerpAngle(float current, float target, float amount)
+    {
+        var difference = MathHelper.WrapAngle(target - current);
+
+        return current + difference * amount;
+    }
+    
     private void UpdateText(GameTime gameTime)
     {
         if (_stopwatch.Elapsed == TimeSpan.Zero)
