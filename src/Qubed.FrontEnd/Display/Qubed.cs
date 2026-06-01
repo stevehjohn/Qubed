@@ -480,6 +480,19 @@ public sealed class Qubed : Game
         _textManager.DrawMessage(help.ToString().Trim(), 220, 20, Color.FromNonPremultiplied(0xFF, 0xFF, 0xFF, 0xFF), true);
     }
 
+    private void UpdateHelp(Move move)
+    {
+        if (_helpMoves == null || _helpMoves.Count == 0)
+        {
+            return;
+        }
+
+        if (_helpMoves[0].ToString() == move.ToString())
+        {
+            _helpMoves.RemoveAt(0);
+        }
+    }
+
     private void TryResetView()
     {
         if (! _isResettingView)
@@ -1321,6 +1334,8 @@ public sealed class Qubed : Game
         var volume = _isScrambling || _isSolving ? 0.4f : 1f;
 
         _clickSound.Play(volume, pitch, 0f);
+        
+        UpdateHelp(move);
     }
 
     private bool WasKeyPressed(KeyboardState keyboard, Keys key, char? character = null)
