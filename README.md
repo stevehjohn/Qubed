@@ -19,6 +19,7 @@ Twist. Solve. Master.
 - Press `S` to scramble.
 - Press `Control` + `Z` to undo a move.
 - Press `Control` + `Shift` + `Z` to redo a move.
+- Press `H` to get help solving.
 
 ## Ideas
 
