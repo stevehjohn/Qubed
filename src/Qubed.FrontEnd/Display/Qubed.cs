@@ -75,6 +75,10 @@ public sealed class Qubed : Game
     private const int ProgressBarBorderWidth = 4;
 
     private const int MaxProgress = 20;
+    
+    private const float DefaultYaw = -0.659995019f;
+
+    private const float DefaultPitch = 0.490001917f;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -130,9 +134,9 @@ public sealed class Qubed : Game
 
     private bool _isScrambling;
 
-    private float _yaw = -0.659995019f;
+    private float _yaw = DefaultYaw;
 
-    private float _pitch = 0.490001917f;
+    private float _pitch = DefaultPitch;
 
     private int _scrambleTurns;
 
