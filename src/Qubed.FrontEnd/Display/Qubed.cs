@@ -429,6 +429,8 @@ public sealed class Qubed : Game
 
         _isResettingView = true;
 
+        _helpMoves = null;
+
         _message = "Thinking...";
 
         Task.Run(() =>
@@ -487,7 +489,7 @@ public sealed class Qubed : Game
             return;
         }
 
-        if (_helpMoves[0].ToString() == move.ToString())
+        if (_helpMoves[0] == move)
         {
             _helpMoves.RemoveAt(0);
         }
@@ -1092,6 +1094,8 @@ public sealed class Qubed : Game
 
             StartFaceRotation(move.Value);
         }
+
+        _helpMoves = null;
     }
 
     private void RedoMove()
@@ -1104,6 +1108,8 @@ public sealed class Qubed : Game
 
             StartFaceRotation(move.Value);
         }
+        
+        _helpMoves = null;
     }
 
     private void TryScramble(KeyboardState keyboard)
@@ -1342,8 +1348,6 @@ public sealed class Qubed : Game
         var volume = _isScrambling || _isSolving ? 0.4f : 1f;
 
         _clickSound.Play(volume, pitch, 0f);
-        
-        UpdateHelp(move);
     }
 
     private bool WasKeyPressed(KeyboardState keyboard, Keys key, char? character = null)
@@ -1416,6 +1420,8 @@ public sealed class Qubed : Game
         _isUndoRedo = false;
 
         _isUndo = false;
+        
+        UpdateHelp(new Move(rotation.Face, rotation.Direction));
     }
 
     private void TriggerVictory()
@@ -1431,6 +1437,8 @@ public sealed class Qubed : Game
         _solvedSound.Play();
 
         _solverStage = null;
+
+        _helpMoves = null;
     }
 
     private void DrawQube()
