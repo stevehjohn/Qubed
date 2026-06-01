@@ -477,7 +477,7 @@ public sealed class Qubed : Game
             
             index++;
 
-        } while (! move.IsSequenceEnd);
+        } while (! move.IsSequenceEnd && index < _helpMoves.Count);
 
         _textManager.DrawMessage(help.ToString().Trim(), 220, 20, Color.FromNonPremultiplied(0xFF, 0xFF, 0xFF, 0xFF), true);
     }
