@@ -1047,31 +1047,31 @@ public sealed class Qubed : Game
             direction = Direction.HalfTurn;
         }
 
-        if (WasKeyPressed(keyboard, Keys.U))
+        if (WasKeyPressed(keyboard, Keys.U, 'u'))
         {
             StartFaceRotation(new Move(_faceMappings[Face.Up], direction));
         }
-        else if (WasKeyPressed(keyboard, Keys.D))
+        else if (WasKeyPressed(keyboard, Keys.D, 'd'))
         {
             StartFaceRotation(new Move(_faceMappings[Face.Down], direction));
         }
-        else if (WasKeyPressed(keyboard, Keys.F))
+        else if (WasKeyPressed(keyboard, Keys.F, 'f'))
         {
             StartFaceRotation(new Move(_faceMappings[Face.Front], direction));
         }
-        else if (WasKeyPressed(keyboard, Keys.B))
+        else if (WasKeyPressed(keyboard, Keys.B, 'b'))
         {
             StartFaceRotation(new Move(_faceMappings[Face.Back], direction));
         }
-        else if (WasKeyPressed(keyboard, Keys.L))
+        else if (WasKeyPressed(keyboard, Keys.L, 'l'))
         {
             StartFaceRotation(new Move(_faceMappings[Face.Left], direction));
         }
-        else if (WasKeyPressed(keyboard, Keys.R))
+        else if (WasKeyPressed(keyboard, Keys.R, 'r'))
         {
             StartFaceRotation(new Move(_faceMappings[Face.Right], direction));
         }
-        else if (WasKeyPressed(keyboard, Keys.Z) && (keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl)))
+        else if (WasKeyPressed(keyboard, Keys.Z, 'z') && (keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl)))
         {
             if (keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift))
             {
