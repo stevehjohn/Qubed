@@ -1123,7 +1123,7 @@ public sealed class Qubed : Game
 
         if (_scrambleTurns == 0)
         {
-            if (WasKeyPressed(keyboard, Keys.Tab, 's'))
+            if (WasKeyPressed(keyboard, Keys.Tab, '\t'))
             {
                 _progress = 0;
 
@@ -1169,7 +1169,7 @@ public sealed class Qubed : Game
 
     private void TryStartSolveAnimation(KeyboardState keyboard)
     {
-        if (_activeRotation is not null || _isSolving || _scrambleTurns > 0 || ! WasKeyPressed(keyboard, Keys.Enter, ' '))
+        if (_activeRotation is not null || _isSolving || _scrambleTurns > 0 || ! WasKeyPressed(keyboard, Keys.Enter, '\r'))
         {
             return;
         }
