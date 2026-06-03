@@ -44,7 +44,7 @@ public sealed class Qubed : Game
 
     private const float CubieSize = 1f;
 
-    private const float CubeSpacingFinal = 1.25f;
+    private const float CubeSpacingFinal = 1f;
 
     private const float QuarterTurn = MathHelper.PiOver2;
 
@@ -359,9 +359,9 @@ public sealed class Qubed : Game
             var fade = 1f - progress;
 
             _victorySpacingOffset =
-                MathF.Sin(progress * MathHelper.TwoPi * 2f) *
+                MathF.Abs(MathF.Sin(progress * MathHelper.TwoPi * 2f)) *
                 fade *
-                0.35f;
+                0.5f;
 
             UpdateView();
 
