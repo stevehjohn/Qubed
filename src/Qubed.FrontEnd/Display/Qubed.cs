@@ -1568,7 +1568,7 @@ public sealed class Qubed : Game
 
     private void DrawBox(Vector3 c, float h, Color color)
     {
-        DrawBox(c, h, h, h, color);
+        //DrawBox(c, h, h, h, color);
     }
 
     private void DrawCubie(Cubie cubie)
