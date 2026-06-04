@@ -7,3 +7,4 @@ rm -rf ./src/Qubed.Core.Tests/bin
 rm -rf ./src/Qubed.Core.Tests/obj
 rm -rf ./src/Qubed.FrontEnd/bin
 rm -rf ./src/Qubed.FrontEnd/obj
+rm *.zip
