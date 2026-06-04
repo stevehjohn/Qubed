@@ -21,6 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{30A1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qubed.Console", "Qubed.Console\Qubed.Console.csproj", "{98CE56C2-A3BD-4552-91E1-56DD8CB9251B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{84251F24-4DBE-453A-9391-4AD6B4D7F03F}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\publish-all.yml = ..\.github\workflows\publish-all.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -27,8 +27,8 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          Zen.Desktop.Host.Windows.Intel.zip
-          Zen.Desktop.Host.Linux.Intel.zip
-          Zen.Desktop.Host.Linux.Arm.zip
-          Zen.Desktop.Host.macOS.Apple.zip
-          Zen.Desktop.Host.macOS.Intel.zip
+          Qubed.FrontEnd.Windows.Intel.zip
+          Qubed.FrontEnd.Linux.Intel.zip
+          Qubed.FrontEnd.Linux.Arm.zip
+          Qubed.FrontEnd.macOS.Apple.zip
+          Qubed.FrontEnd.macOS.Intel.zip
