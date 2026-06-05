@@ -5,6 +5,13 @@ namespace Qubed.Core.Tests;
 
 public class SolverTests
 {
+    private readonly ITestOutputHelper _outputHelper;
+    
+    public SolverTests(ITestOutputHelper outputHelper)
+    {
+        _outputHelper = outputHelper;
+    }
+    
     [Fact]
     public void Solve()
     {
@@ -12,13 +19,44 @@ public class SolverTests
         
         cube.Scramble();
         
-        Console.WriteLine(cube);
+        Assert.NotEqual(
+@"       W W W 
+       W W W 
+       W W W 
+
+G G G  R R R  B B B  O O O  
+G G G  R R R  B B B  O O O  
+G G G  R R R  B B B  O O O  
+
+       Y Y Y 
+       Y Y Y 
+       Y Y Y ", cube.ToString());
+        
+        _outputHelper.WriteLine(cube.ToString());
         
         var solver = new Solver(cube);
         
         var result = solver.Solve();
+
+        foreach (var move in result.Moves)
+        {
+            cube.ApplyMove(move);
+        }
         
-        Console.WriteLine(cube);
+        Assert.Equal(
+@"       W W W 
+       W W W 
+       W W W 
+
+G G G  R R R  B B B  O O O  
+G G G  R R R  B B B  O O O  
+G G G  R R R  B B B  O O O  
+
+       Y Y Y 
+       Y Y Y 
+       Y Y Y ", cube.ToString());
+        
+        _outputHelper.WriteLine(cube.ToString());
         
         Assert.True(result.Solved);
     }
