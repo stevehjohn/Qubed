@@ -150,7 +150,7 @@ public sealed class Qubed : Game
 
     private float _cubeSpacing = 9f;
 
-    private float _cubeSpacingSpeed = 0.1f;
+    private float _cubeSpacingSpeed = -0.1f;
 
     private Face? _previousFace1;
 
@@ -264,15 +264,20 @@ public sealed class Qubed : Game
             _thinkingPause -= (float) gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        if (_cubeSpacing > CubeSpacingFinal)
+        if (_cubeSpacingSpeed != 0)
         {
-            _cubeSpacing -= _cubeSpacingSpeed;
+            if (_cubeSpacingSpeed < 0 && _cubeSpacing > CubeSpacingFinal)
+            {
+                _cubeSpacing += _cubeSpacingSpeed;
 
-            _cubeSpacingSpeed += 0.01f;
+                _cubeSpacingSpeed -= 0.01f;
+            }
         }
         else
         {
             _cubeSpacing = CubeSpacingFinal;
+
+            _cubeSpacingSpeed = 0f;
         }
 
         if (Console.KeyAvailable)
