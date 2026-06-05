@@ -35,6 +35,7 @@ Twist. Solve. Master.
 - Save points (not necessarily to disc, but maybe).
 - Immediate solve button to skip to the end.
 - Scramble, solve, repeat with stats.
+- Reset button to get a fresh cube.
 
 ## Notes
 
