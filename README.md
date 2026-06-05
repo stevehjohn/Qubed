@@ -8,6 +8,10 @@ Twist. Solve. Master.
 
 ![Game Screenshot](screenshots/cube-3.png)
 
+## Status
+
+[![.NET](https://github.com/stevehjohn/Qubed/actions/workflows/dotnet.yml/badge.svg)](https://github.com/stevehjohn/Qubed/actions/workflows/dotnet.yml)
+
 ## Controls
 
 - Use the arrow keys or drag empty space with the left mouse button to orbit the cube.
