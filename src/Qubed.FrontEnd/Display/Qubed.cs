@@ -279,7 +279,12 @@ public sealed class Qubed : Game
             {
                 _cubeSpacing += _cubeSpacingSpeed;
 
-                _cubeSpacingSpeed += 0.1f;
+                _cubeSpacingSpeed += 0.01f;
+            }
+
+            if (_cubeSpacingSpeed > 0 && _cubeSpacing > CubeSpacingMax)
+            {
+                _cubeSpacingSpeed = -0.1f;
             }
         }
         else
