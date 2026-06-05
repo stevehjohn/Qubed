@@ -46,6 +46,8 @@ public sealed class Qubed : Game
 
     private const float CubeSpacingFinal = 1.25f;
 
+    private const float CubeSpacingMax = 9f;
+
     private const float QuarterTurn = MathHelper.PiOver2;
 
     private const float MouseRotationScale = 0.01f;
@@ -272,6 +274,13 @@ public sealed class Qubed : Game
 
                 _cubeSpacingSpeed -= 0.01f;
             }
+
+            if (_cubeSpacingSpeed > 0 && _cubeSpacing < CubeSpacingMax)
+            {
+                _cubeSpacing += _cubeSpacingSpeed;
+
+                _cubeSpacingSpeed += 0.1f;
+            }
         }
         else
         {
@@ -347,6 +356,11 @@ public sealed class Qubed : Game
         if (WasKeyPressed(keyboard, Keys.H, 'h'))
         {
             StartHelp();
+        }
+
+        if (WasKeyPressed(keyboard, Keys.Q, 'q') && _cubeSpacingSpeed != 0)
+        {
+            _cubeSpacingSpeed = 0.1f;
         }
 
         _previousKeyboard = keyboard;
