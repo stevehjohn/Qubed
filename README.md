@@ -10,7 +10,7 @@ Twist. Solve. Master.
 
 ## Status
 
-[![Tests Status](https://github.com/stevehjohn/Qubed/actions/workflows/dotnet.yml/badge.svg)](https://github.com/stevehjohn/Qubed/actions/workflows/dotnet.yml)
+[![Tests Status](https://github.com/stevehjohn/Qubed/actions/workflows/test.yml/badge.svg)](https://github.com/stevehjohn/Qubed/actions/workflows/test.yml)
 
 ## Controls
 
