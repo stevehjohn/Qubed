@@ -581,6 +581,11 @@ public sealed class Qubed : Game
         {
             _textManager.DrawMessage(_solverStage, Window.ClientBounds.Width / 2, 470, Color.FromNonPremultiplied(textColour, 0xFF, textColour, 0xFF), true);
         }
+
+        if (_helpMoves != null && _helpMoves.Count > 0)
+        {
+            _textManager.DrawMessage($"Hints: {_helpMoves.Count}", NetLeft + PanelWidth / 4, 380);
+        }
     }
 
     private void DrawProgress()
