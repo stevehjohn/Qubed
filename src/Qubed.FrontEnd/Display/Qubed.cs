@@ -81,8 +81,8 @@ public sealed class Qubed : Game
     private const float DefaultYaw = -0.659995019f;
 
     private const float DefaultPitch = 0.490001917f;
-    
-    private const float VictoryRotationDuration = 1.5f
+
+    private const float VictoryRotationDuration = 1.5f;
 
     // ReSharper disable once NotAccessedField.Local
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
