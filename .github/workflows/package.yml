@@ -1,6 +1,9 @@
 name: Publish Packages
 
-on: push
+on:
+  push:
+    tags:
+      - "v*.*.*"
 
 permissions:
   contents: read
