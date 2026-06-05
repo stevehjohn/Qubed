@@ -32,7 +32,7 @@ G G G  R R R  B B B  O O O
        Y Y Y 
        Y Y Y ", cube.ToString());
         
-        _outputHelper.WriteLine(cube.ToString());
+        _outputHelper.WriteLine($"{cube}\n");
         
         var solver = new Solver(cube);
         
