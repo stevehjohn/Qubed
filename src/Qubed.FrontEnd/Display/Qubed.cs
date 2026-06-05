@@ -289,7 +289,21 @@ public sealed class Qubed : Game
                 CreateSolvedCube();
 
                 _cube.Reset(); 
+                
+                _helpMoves = null;
+                
+                _solverStage = null;
+                
+                _message = null;
+                
+                _stopwatch.Reset();
+                
+                _cube.ResetMoveCount();
+                
+                _progressGraceMoves = 0;
 
+                _resetOnNextUserMove = false;
+                
                 _cubeSpacing = CubeSpacingMax;
             }
         }
