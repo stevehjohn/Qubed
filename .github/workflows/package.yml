@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 10.0.x
     - name: Build
-      run: dotnet build src/Qubed.Core/Qubed.Core.csproj -c Release
+      run: dotnet build src -c Release
     - name: Run Tests
       run: dotnet test src --no-build --configuration Release --logger "console;verbosity=detailed" --collect "Code Coverage;Format=cobertura"
     - name: Build Package
