@@ -7,7 +7,12 @@
         <AssemblyName>Qubed.Core</AssemblyName>
         <RootNamespace>Qubed.Core</RootNamespace>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.0.1</Version>
+        <Version>1.0.3</Version>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="README.md"/>
+    </ItemGroup>
+    
 </Project>
