@@ -81,18 +81,7 @@ public sealed class Cube
             this[face] = new Colour[3, 3];
         }
 
-        for (var x = 0; x < 3; x++)
-        {
-            for (var y = 0; y < 3; y++)
-            {
-                this[Face.Up, x, y] = Colour.White;
-                this[Face.Down, x, y] = Colour.Yellow;
-                this[Face.Front, x, y] = Colour.Red;
-                this[Face.Back, x, y] = Colour.Orange;
-                this[Face.Left, x, y] = Colour.Green;
-                this[Face.Right, x, y] = Colour.Blue;
-            }
-        }
+        Reset();
     }
 
     private Cube(Cube cube)
@@ -137,6 +126,22 @@ public sealed class Cube
         MoveCount--;
 
         return move with { Direction = opposite };
+    }
+
+    public void Reset()
+    {
+        for (var x = 0; x < 3; x++)
+        {
+            for (var y = 0; y < 3; y++)
+            {
+                this[Face.Up, x, y] = Colour.White;
+                this[Face.Down, x, y] = Colour.Yellow;
+                this[Face.Front, x, y] = Colour.Red;
+                this[Face.Back, x, y] = Colour.Orange;
+                this[Face.Left, x, y] = Colour.Green;
+                this[Face.Right, x, y] = Colour.Blue;
+            }
+        }
     }
 
     public Move? RedoMove()
