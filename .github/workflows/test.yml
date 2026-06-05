@@ -13,5 +13,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 10.0.x
+    - name: Build
+      run: dotnet build src --configuration Debug
     - name: Run Tests
-      run: dotnet test src --no-build --verbosity normal --collect "Code Coverage;Format=cobertura"
+      run: dotnet test src --no-build --configuration Debug --verbosity normal --collect "Code Coverage;Format=cobertura"
