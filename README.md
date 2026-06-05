@@ -24,6 +24,7 @@ Twist. Solve. Master.
 - Press `Control` + `Z` to undo a move.
 - Press `Control` + `Shift` + `Z` to redo a move.
 - Press `H` to get help solving.
+- Press `Q` to get a fresh cube.
 
 ## Ideas
 
