@@ -1,3 +1,3 @@
-dotnet build src --no-incremental
+dotnet build src --configuration Release
 
-dotnet test --no-build -l "console;verbosity=detailed" src
+dotnet test src --no-build --configuration Release --verbosity normal
