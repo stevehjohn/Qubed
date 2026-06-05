@@ -7,7 +7,7 @@
         <AssemblyName>Qubed.Core</AssemblyName>
         <RootNamespace>Qubed.Core</RootNamespace>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 

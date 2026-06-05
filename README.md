@@ -2,11 +2,11 @@
 
 Twist. Solve. Master.
 
-![Game Screenshot](screenshots/cube-1.png)
+![Game Screenshot](https://raw.githubusercontent.com/stevehjohn/Qubed/master/screenshots/cube-1.png)
 
-![Game Screenshot](screenshots/cube-2.png)
+![Game Screenshot](https://raw.githubusercontent.com/stevehjohn/Qubed/master/screenshots/cube-2.png)
 
-![Game Screenshot](screenshots/cube-3.png)
+![Game Screenshot](https://raw.githubusercontent.com/stevehjohn/Qubed/master/screenshots/cube-3.png)
 
 ## Status
 
