@@ -5,6 +5,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6EDDE475-D096-47F8-B473-8D4A6EEAEFA1}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
+		..\LICENSE = ..\LICENSE
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qubed.Core", "Qubed.Core\Qubed.Core.csproj", "{BE1A0C21-3D7E-4E53-BB8C-8EBB0BC86DBC}"
@@ -26,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\publish-all.yml = ..\.github\workflows\publish-all.yml
 		..\.github\workflows\test.yml = ..\.github\workflows\test.yml
+		..\.github\workflows\package.yml = ..\.github\workflows\package.yml
 	EndProjectSection
 EndProject
 Global

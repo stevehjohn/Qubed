@@ -6,6 +6,7 @@
         <Nullable>disable</Nullable>
         <AssemblyName>Qubed.Core</AssemblyName>
         <RootNamespace>Qubed.Core</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
 </Project>
