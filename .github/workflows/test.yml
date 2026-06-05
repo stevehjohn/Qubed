@@ -14,7 +14,4 @@ jobs:
       with:
         dotnet-version: 10.0.x
     - name: Run Tests
-      run: |
-        cd src
-        pwd
-        dotnet test -l "console;verbosity=detailed"
+      run: dotnet test src --no-build --verbosity normal --collect "Code Coverage;Format=cobertura"
