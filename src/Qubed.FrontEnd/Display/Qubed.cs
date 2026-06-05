@@ -285,6 +285,8 @@ public sealed class Qubed : Game
             if (_cubeSpacingSpeed > 0 && _cubeSpacing > CubeSpacingMax)
             {
                 _cubeSpacingSpeed = -0.1f;
+
+                _cubeSpacing = CubeSpacingMax;
             }
         }
         else
