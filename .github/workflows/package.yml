@@ -20,10 +20,12 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 10.0.x
-    - name: Build Package
-      run: dotnet pack src/Qubed.Core/Qubed.Core.csproj -c Release
+    - name: Build
+      run: dotnet build src/Qubed.Core/Qubed.Core.csproj -c Release
     - name: Run Tests
       run: dotnet test src --no-build --configuration Release --logger "console;verbosity=detailed" --collect "Code Coverage;Format=cobertura"
+    - name: Build Package
+      run: dotnet pack src/Qubed.Core/Qubed.Core.csproj -c Release
     - name: Publish the package to NuGet
       run: dotnet nuget push src/Qubed.Core/bin/Release/*.nupkg -k ${{secrets.NUGET_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
     - name: Publish the package to GitHub
