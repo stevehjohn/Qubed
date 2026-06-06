@@ -550,7 +550,7 @@ public sealed class Qubed : Game
 
     private void TriggerReset()
     {
-        if (_cubeSpacingSpeed != 0 && ! _isScrambling && ! _isSolving && ! _cube.IsSolved())
+        if (_cubeSpacingSpeed == 0 && ! _isScrambling && ! _isSolving && ! _cube.IsSolved())
         {
             _cubeSpacingSpeed = 0.1f;
 
