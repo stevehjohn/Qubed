@@ -447,8 +447,6 @@ public sealed class Qubed : Game
                     _cubeSpacing = CubeSpacingFinal;
 
                     _cubeSpacingSpeed = 0;
-
-                    _clickSound.Play();
                 }
             }
 
