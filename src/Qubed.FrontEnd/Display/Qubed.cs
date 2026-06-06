@@ -383,7 +383,7 @@ public sealed class Qubed : Game
             StartHelp();
         }
 
-        if (WasKeyPressed(keyboard, Keys.Q, 'q') && _cubeSpacingSpeed != 0 && ! _isScrambling && ! _isSolving)
+        if (WasKeyPressed(keyboard, Keys.Q, 'q') && _cubeSpacingSpeed != 0 && ! _isScrambling && ! _isSolving && ! _cube.IsSolved())
         {
             _cubeSpacingSpeed = 0.1f;
         }
