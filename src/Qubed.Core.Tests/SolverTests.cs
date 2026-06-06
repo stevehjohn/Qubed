@@ -20,17 +20,19 @@ public class SolverTests
         cube.Scramble();
         
         Assert.NotEqual(
-@"       W W W 
-       W W W 
-       W W W 
+            """
+                   W W W 
+                   W W W 
+                   W W W 
 
-G G G  R R R  B B B  O O O  
-G G G  R R R  B B B  O O O  
-G G G  R R R  B B B  O O O  
+            G G G  R R R  B B B  O O O  
+            G G G  R R R  B B B  O O O  
+            G G G  R R R  B B B  O O O  
 
-       Y Y Y 
-       Y Y Y 
-       Y Y Y ", cube.ToString());
+                   Y Y Y 
+                   Y Y Y 
+                   Y Y Y 
+            """, cube.ToString());
         
         _outputHelper.WriteLine($"{cube}\n");
         
@@ -44,17 +46,19 @@ G G G  R R R  B B B  O O O
         }
         
         Assert.Equal(
-@"       W W W 
-       W W W 
-       W W W 
+            """
+                   W W W 
+                   W W W 
+                   W W W 
 
-G G G  R R R  B B B  O O O  
-G G G  R R R  B B B  O O O  
-G G G  R R R  B B B  O O O  
+            G G G  R R R  B B B  O O O  
+            G G G  R R R  B B B  O O O  
+            G G G  R R R  B B B  O O O  
 
-       Y Y Y 
-       Y Y Y 
-       Y Y Y ", cube.ToString());
+                   Y Y Y 
+                   Y Y Y 
+                   Y Y Y 
+            """, cube.ToString());
         
         _outputHelper.WriteLine(cube.ToString());
         

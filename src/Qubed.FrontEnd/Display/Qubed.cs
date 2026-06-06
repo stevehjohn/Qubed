@@ -184,9 +184,9 @@ public sealed class Qubed : Game
 
     private SoundEffect _solvedSound;
 
-    private readonly SoundEffect[] _whooshSounds = new SoundEffect[2];
+    private SoundEffect _whooshSound;
 
-    private readonly SoundEffect[] _reversedWhooshSounds = new SoundEffect[2];
+    private SoundEffect _reversedWhooshSound;
 
     private Dictionary<Face, Face> _faceMappings;
 
@@ -258,12 +258,9 @@ public sealed class Qubed : Game
 
         _solvedSound = Content.Load<SoundEffect>("solved");
 
-        for (var i = 0; i < 2; i++)
-        {
-            _whooshSounds[i] = Content.Load<SoundEffect>($"whoosh-{i + 1}");
+        _whooshSound = Content.Load<SoundEffect>("whoosh");
 
-            _reversedWhooshSounds[i] = Content.Load<SoundEffect>($"whoosh-reversed-{i + 1}");
-        }
+        _reversedWhooshSound = Content.Load<SoundEffect>("whoosh-reversed");
 
         UpdateView();
 
@@ -473,7 +470,7 @@ public sealed class Qubed : Game
 
                 _cubeSpacing = CubeSpacingMax;
 
-                _reversedWhooshSounds[_random.Next(2)].Play();
+                _reversedWhooshSound.Play();
             }
         }
         else
@@ -550,7 +547,7 @@ public sealed class Qubed : Game
         {
             _cubeSpacingSpeed = 0.1f;
 
-            _whooshSounds[_random.Next(2)].Play();
+            _whooshSound.Play();
         }
     }
 
