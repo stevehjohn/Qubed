@@ -65,7 +65,7 @@ public sealed class Solver
         if (_cube.IsSolved())
         {
             _logger?.WriteLine(_cube.ToString());
-
+            
             stepCallback?.Invoke(_moves, null);
 
             return (true, _moves, TimeSpan.Zero);
@@ -109,7 +109,7 @@ public sealed class Solver
 
         _logger?.WriteLine();
 
-        CompressMoves();
+        CompressMoves(_moves);
 
         foreach (var move in _moves)
         {
@@ -196,6 +196,8 @@ public sealed class Solver
             if (found)
             {
                 _moves.AddRange(foundMoves);
+                
+                CompressMoves(foundMoves);
 
                 foreach (var move in foundMoves)
                 {
@@ -329,7 +331,7 @@ public sealed class Solver
         return true;
     }
 
-    private void CompressMoves()
+    private static void CompressMoves(List<Move> moves)
     {
         var changed = true;
 
@@ -337,11 +339,11 @@ public sealed class Solver
         {
             changed = false;
 
-            for (var i = 0; i < _moves.Count - 1; i++)
+            for (var i = 0; i < moves.Count - 1; i++)
             {
-                var first = _moves[i];
+                var first = moves[i];
 
-                var second = _moves[i + 1];
+                var second = moves[i + 1];
 
                 if (first.Face == second.Face)
                 {
@@ -349,13 +351,13 @@ public sealed class Solver
 
                     var newDirection = GetCompressedDirection(first.Direction, second.Direction);
 
-                    _moves.RemoveRange(i, 2);
+                    moves.RemoveRange(i, 2);
 
                     if (newDirection != null)
                     {
                         var newMove = first with { Direction = newDirection.Value };
 
-                        _moves.Insert(i, newMove);
+                        moves.Insert(i, newMove);
                     }
 
                     break;
