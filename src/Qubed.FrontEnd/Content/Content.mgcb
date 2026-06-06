@@ -23,6 +23,15 @@
 /processor:SoundEffectProcessor
 /build:solved.wav
 
+#begin whoosh-1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:whoosh-1.wav
+
+#begin whoosh-2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:whoosh-2.wav
 
 #begin font.spritefont
 /importer:FontDescriptionImporter
