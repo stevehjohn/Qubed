@@ -33,6 +33,11 @@
 /processor:SoundEffectProcessor
 /build:whoosh-reversed.wav
 
+#begin clunk.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/build:clunk.wav
+
 #begin font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

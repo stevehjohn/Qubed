@@ -180,6 +180,8 @@ public sealed class Qubed : Game
 
     private float _victorySpacingOffset;
 
+    private SoundEffect _clunckSound;
+
     private SoundEffect _clickSound;
 
     private SoundEffect _solvedSound;
@@ -253,6 +255,8 @@ public sealed class Qubed : Game
         _netTexture = new Texture2D(GraphicsDevice, PanelWidth, PanelHeight);
 
         _progressTexture = new Texture2D(GraphicsDevice, ProgressBarWidth, ProgressBarHeight);
+
+        _clunckSound = Content.Load<SoundEffect>("clunk");
 
         _clickSound = Content.Load<SoundEffect>("click");
 
@@ -447,6 +451,8 @@ public sealed class Qubed : Game
                     _cubeSpacing = CubeSpacingFinal;
 
                     _cubeSpacingSpeed = 0;
+
+                    _clunckSound.Play(0.75f, 0, 0);
                 }
             }
 
