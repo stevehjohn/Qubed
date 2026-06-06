@@ -434,11 +434,22 @@ public sealed class Qubed : Game
     {
         if (_cubeSpacingSpeed != 0)
         {
-            if (_cubeSpacingSpeed < 0 && _cubeSpacing > CubeSpacingFinal)
+            if (_cubeSpacingSpeed < 0)
             {
-                _cubeSpacing += _cubeSpacingSpeed;
+                if (_cubeSpacing > CubeSpacingFinal)
+                {
+                    _cubeSpacing += _cubeSpacingSpeed;
 
-                _cubeSpacingSpeed -= 0.01f;
+                    _cubeSpacingSpeed -= 0.01f;
+                }
+                else
+                {
+                    _cubeSpacing = CubeSpacingFinal;
+
+                    _cubeSpacingSpeed = 0;
+
+                    _clickSound.Play();
+                }
             }
 
             if (_cubeSpacingSpeed > 0 && _cubeSpacing < CubeSpacingMax)
@@ -474,12 +485,6 @@ public sealed class Qubed : Game
 
                 _reversedWhooshSound.Play();
             }
-        }
-        else
-        {
-            _cubeSpacing = CubeSpacingFinal;
-
-            _cubeSpacingSpeed = 0f;
         }
     }
 
