@@ -472,6 +472,8 @@ public sealed class Qubed : Game
                 _resetOnNextUserMove = false;
 
                 _cubeSpacing = CubeSpacingMax;
+
+                _reversedWhooshSounds[_random.Next(2)].Play();
             }
         }
         else
