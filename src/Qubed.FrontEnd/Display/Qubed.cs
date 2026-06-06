@@ -262,6 +262,8 @@ public sealed class Qubed : Game
 
         _reversedWhooshSound = Content.Load<SoundEffect>("whoosh-reversed");
 
+        _reversedWhooshSound.Play();
+
         UpdateView();
 
         _cubeViewport = GetCubeViewport();

@@ -33,11 +33,6 @@
 /processor:SoundEffectProcessor
 /build:whoosh-reversed.wav
 
-#begin whoosh-2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/build:whoosh-reversed-2.wav
-
 #begin font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
