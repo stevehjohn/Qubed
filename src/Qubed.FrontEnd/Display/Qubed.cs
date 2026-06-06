@@ -203,7 +203,7 @@ public sealed class Qubed : Game
     private int _progressDisplayed = ProgressBarWidth - ProgressBarBorderWidth * 2;
 
     private bool _isResettingView;
-    
+
     private string _message;
 
     private List<Move> _helpMoves;
@@ -261,7 +261,7 @@ public sealed class Qubed : Game
         for (var i = 0; i < 2; i++)
         {
             _whooshSounds[i] = Content.Load<SoundEffect>($"whoosh-{i + 1}");
-            
+
             _reversedWhooshSounds[i] = Content.Load<SoundEffect>($"whoosh-reversed-{i + 1}");
         }
 
@@ -277,53 +277,7 @@ public sealed class Qubed : Game
             _thinkingPause -= (float) gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        if (_cubeSpacingSpeed != 0)
-        {
-            if (_cubeSpacingSpeed < 0 && _cubeSpacing > CubeSpacingFinal)
-            {
-                _cubeSpacing += _cubeSpacingSpeed;
-
-                _cubeSpacingSpeed -= 0.01f;
-            }
-
-            if (_cubeSpacingSpeed > 0 && _cubeSpacing < CubeSpacingMax)
-            {
-                _cubeSpacing += _cubeSpacingSpeed;
-
-                _cubeSpacingSpeed += 0.01f;
-            }
-
-            if (_cubeSpacingSpeed > 0 && _cubeSpacing > CubeSpacingMax)
-            {
-                _cubeSpacingSpeed = -0.1f;
-                
-                CreateSolvedCube();
-
-                _cube.Reset(); 
-                
-                _helpMoves = null;
-                
-                _solverStage = null;
-                
-                _message = null;
-                
-                _stopwatch.Reset();
-                
-                _cube.ResetMoveCount();
-                
-                _progressGraceMoves = 0;
-
-                _resetOnNextUserMove = false;
-                
-                _cubeSpacing = CubeSpacingMax;
-            }
-        }
-        else
-        {
-            _cubeSpacing = CubeSpacingFinal;
-
-            _cubeSpacingSpeed = 0f;
-        }
+        UpdateExplosion();
 
         if (Console.KeyAvailable)
         {
@@ -477,6 +431,57 @@ public sealed class Qubed : Game
         base.Draw(gameTime);
     }
 
+    private void UpdateExplosion()
+    {
+        if (_cubeSpacingSpeed != 0)
+        {
+            if (_cubeSpacingSpeed < 0 && _cubeSpacing > CubeSpacingFinal)
+            {
+                _cubeSpacing += _cubeSpacingSpeed;
+
+                _cubeSpacingSpeed -= 0.01f;
+            }
+
+            if (_cubeSpacingSpeed > 0 && _cubeSpacing < CubeSpacingMax)
+            {
+                _cubeSpacing += _cubeSpacingSpeed;
+
+                _cubeSpacingSpeed += 0.01f;
+            }
+
+            if (_cubeSpacingSpeed > 0 && _cubeSpacing > CubeSpacingMax)
+            {
+                _cubeSpacingSpeed = -0.1f;
+
+                CreateSolvedCube();
+
+                _cube.Reset();
+
+                _helpMoves = null;
+
+                _solverStage = null;
+
+                _message = null;
+
+                _stopwatch.Reset();
+
+                _cube.ResetMoveCount();
+
+                _progressGraceMoves = 0;
+
+                _resetOnNextUserMove = false;
+
+                _cubeSpacing = CubeSpacingMax;
+            }
+        }
+        else
+        {
+            _cubeSpacing = CubeSpacingFinal;
+
+            _cubeSpacingSpeed = 0f;
+        }
+    }
+
     private void StartHelp()
     {
         if (_isScrambling || _isSolving || _cube.IsSolved())
@@ -493,11 +498,10 @@ public sealed class Qubed : Game
         Task.Run(() =>
         {
             var solver = new Solver(_cube, Mode.Fast, _logger);
-            
+
             var result = solver.Solve();
 
             return result;
-
         }).ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -506,7 +510,7 @@ public sealed class Qubed : Game
 
                 return;
             }
-            
+
             _message = null;
 
             _helpMoves = task.Result.Moves.ToList();
@@ -525,15 +529,14 @@ public sealed class Qubed : Game
         Move move;
 
         var index = 0;
-        
+
         do
         {
             move = _helpMoves[index];
 
             help.Append($"{new Move(_faceMappings.Single(f => f.Value == move.Face).Key, move.Direction).ToString()} ");
-            
-            index++;
 
+            index++;
         } while (! move.IsSequenceEnd && index < _helpMoves.Count);
 
         _textManager.DrawMessage(help.ToString().Trim(), 220, 20, Color.FromNonPremultiplied(0xFF, 0xFF, 0xFF, 0xFF), true);
@@ -576,13 +579,13 @@ public sealed class Qubed : Game
         _yaw = LerpAngle(_yaw, DefaultYaw, 0.06f);
 
         _pitch = LerpAngle(_pitch, DefaultPitch, 0.06f);
-        
+
         if (Math.Abs(MathHelper.WrapAngle(DefaultYaw - _yaw)) < 0.001f && Math.Abs(DefaultPitch - _pitch) < 0.001f)
         {
             _yaw = DefaultYaw;
-            
+
             _pitch = DefaultPitch;
-            
+
             _isResettingView = false;
         }
 
@@ -1182,7 +1185,7 @@ public sealed class Qubed : Game
 
             StartFaceRotation(move.Value);
         }
-        
+
         _helpMoves = null;
     }
 
@@ -1494,7 +1497,7 @@ public sealed class Qubed : Game
         _isUndoRedo = false;
 
         _isUndo = false;
-        
+
         UpdateHelp(new Move(rotation.Face, rotation.Direction));
     }
 
