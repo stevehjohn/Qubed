@@ -184,6 +184,10 @@ public sealed class Qubed : Game
 
     private SoundEffect _solvedSound;
 
+    private readonly SoundEffect[] _whooshSounds = new SoundEffect[2];
+
+    private readonly SoundEffect[] _reversedWhooshSounds = new SoundEffect[2];
+
     private Dictionary<Face, Face> _faceMappings;
 
     private bool _resetOnNextUserMove;
@@ -253,6 +257,13 @@ public sealed class Qubed : Game
         _clickSound = Content.Load<SoundEffect>("click");
 
         _solvedSound = Content.Load<SoundEffect>("solved");
+
+        for (var i = 0; i < 2; i++)
+        {
+            _whooshSounds[i] = Content.Load<SoundEffect>($"whoosh-{i + 1}");
+            
+            _reversedWhooshSounds[i] = Content.Load<SoundEffect>($"whoosh-reversed-{i + 1}");
+        }
 
         UpdateView();
 
@@ -383,9 +394,9 @@ public sealed class Qubed : Game
             StartHelp();
         }
 
-        if (WasKeyPressed(keyboard, Keys.Q, 'q') && _cubeSpacingSpeed != 0 && ! _isScrambling && ! _isSolving && ! _cube.IsSolved())
+        if (WasKeyPressed(keyboard, Keys.Q, 'q'))
         {
-            _cubeSpacingSpeed = 0.1f;
+            TriggerReset();
         }
 
         _previousKeyboard = keyboard;
@@ -526,6 +537,16 @@ public sealed class Qubed : Game
         } while (! move.IsSequenceEnd && index < _helpMoves.Count);
 
         _textManager.DrawMessage(help.ToString().Trim(), 220, 20, Color.FromNonPremultiplied(0xFF, 0xFF, 0xFF, 0xFF), true);
+    }
+
+    private void TriggerReset()
+    {
+        if (_cubeSpacingSpeed != 0 && ! _isScrambling && ! _isSolving && ! _cube.IsSolved())
+        {
+            _cubeSpacingSpeed = 0.1f;
+
+            _whooshSounds[_random.Next(2)].Play();
+        }
     }
 
     private void UpdateHelp(Move move)
